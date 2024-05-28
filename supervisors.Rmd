@@ -1,0 +1,740 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: supervisor variables"
+date: "Last compiled on `r Sys.Date()`"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+    
+---
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, results="hide"}
+
+library(knitr)
+library(formatR)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=FALSE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"), cache.lazy = FALSE)
+options(width = 100)
+rgl::setupKnitr()
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+
+klippy::klippy(position = c('top', 'right'))
+
+```
+
+
+
+
+----
+
+
+This lab journal shows how we construct the variables for resources present in the supervision team. 
+
+
+----
+
+
+# Custom functions
+
+- `package.check`: Check if packages are installed (and install if not) in R ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)). 
+
+
+```{r, results='hide'}
+
+rm(list=ls())
+
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+
+```
+
+---  
+
+# Packages
+
+
+
+- `tidyverse`: For general data manipulaion
+
+- `stringr`: For string manipulations
+
+- `stringi`: For string manipulations
+
+
+```{r, results='hide'}
+
+packages = c("tidyverse", "stringr", "stringi")
+
+fpackage.check(packages)
+
+
+```
+
+--- 
+
+
+# Input
+
+We use four processed datasets and one raw dataset
+
+* [phdgender](https://github.com/ammulders/amatteroftime/data/processed/phdgender.rda): example dataset of 8 (fictional) PhDs with first and last names and gender
+    - For construction of this dataset see [Independent variables: gender](gender.html)
+    - name of dataset: `phdgender` 
+    
+* [profs](https://github.com/ammulders/amatteroftime/data/professors/profs.rda): a (fictional) list of professors, the structure of which is a copy of the original lists obtained from NARCIS
+    - name of dataset: `profs`     
+
+* [ln_origin](https://github.com/ammulders/amatteroftime/data/processed/ln_origin.rda): ethnicity information associated with the last names in our data 
+    - Ethnicity is not a main covariate in this paper, so we do not have a separate page detailing how we 
+    construct it here, but our method can be found [here](https://ammulders.github.io/amatteroftime/ethnicity.html)
+    - name of dataset: `ln_origin` 
+    
+* [gender](https://github.com/ammulders/amatteroftime/data/processed/gender.rda): web scraped gender data for the 8 first names in the example data, from Meertens Voornamenbank
+    - name of dataset: `gender` 
+
+* [genderizer](https://github.com/ammulders/amatteroftime/data/processed/genderizer.rda): web scraped gender data for the first names in the example data, from GenderizeR global, Morocco, Turkey and Netherlands
+    - name of dataset: `genderizer`  
+
+
+```{r files, eval=TRUE}
+
+load(file = "data/processed/phdgender.rda")
+
+load(file = "data/professors/profs.rda")
+
+load(file = "./data/processed/ln_origin.rda")
+
+load(file = "data/processed/gender.rda")
+
+load(file = "data/processed/genderizer.rda")
+
+
+```
+
+
+---  
+
+
+
+# Combining the two supervisor columns in phd_metadf to one 
+
+
+
+# Transforming the data so that we have one supervisor per row
+
+```{r}
+
+# create one object for each supervisor
+
+# supervisor 1 and 2
+phdgender$supervisor1 <- str_remove(phdgender$supervisors, ";.*") # delete everything after the first ;
+phdgender$supervisor2 <- str_remove_all(phdgender$supervisors, phdgender$supervisor1) # remove supervisor1 from the supervisor object to get supervisors 2-k
+phdgender$supervisor2 <- str_remove_all(phdgender$supervisor2, "^(\\s)?;\\s") # remove ; at the beginning of this object
+phdgender$supervisor2 <- ifelse(phdgender$supervisor2=="" | phdgender$supervisor2==" ", NA, phdgender$supervisor2)
+
+# supervisor 3
+phdgender$supervisor3 <- str_extract(phdgender$supervisor2, ";.*$") # get supervisor 3 by extracting everything after ; in supervisor 2
+phdgender$supervisor2 <- ifelse(!is.na(phdgender$supervisor3), str_remove(phdgender$supervisor2, phdgender$supervisor3), phdgender$supervisor2) 
+# remove supervisor 3 from the supervisor 2 object, but only if there is a third supervisor present
+phdgender$supervisor3 <- str_extract(phdgender$supervisor3, "[:upper:].*") # remove ; at the beginning of this object
+
+# supervisor 4
+phdgender$supervisor4 <- str_extract(phdgender$supervisor3, ";.*$") # same procedure as for supervisor 3 from now on
+phdgender$supervisor3 <- ifelse(!is.na(phdgender$supervisor4), str_remove(phdgender$supervisor3, phdgender$supervisor4), phdgender$supervisor3) 
+phdgender$supervisor4 <- str_extract(phdgender$supervisor4, "[:upper:].*")
+
+# supervisor 5
+phdgender$supervisor5 <- str_extract(phdgender$supervisor4, ";.*$") 
+phdgender$supervisor4 <- ifelse(!is.na(phdgender$supervisor5), str_remove(phdgender$supervisor4, phdgender$supervisor5), phdgender$supervisor4) 
+phdgender$supervisor5 <- str_extract(phdgender$supervisor5, "[:upper:].*") 
+
+# supervisor 6
+phdgender$supervisor6 <- str_extract(phdgender$supervisor5, ";.*$") 
+phdgender$supervisor5 <- ifelse(!is.na(phdgender$supervisor6),str_remove(phdgender$supervisor5, phdgender$supervisor6), phdgender$supervisor5) 
+phdgender$supervisor6 <- str_extract(phdgender$supervisor6, "[:upper:].*") 
+
+# supervisor 7
+phdgender$supervisor7 <- str_extract(phdgender$supervisor6, ";.*$") 
+phdgender$supervisor6 <- ifelse(!is.na(phdgender$supervisor7),str_remove(phdgender$supervisor6, phdgender$supervisor7), phdgender$supervisor6) 
+phdgender$supervisor7 <- str_extract(phdgender$supervisor7, "[:upper:].*") 
+
+# supervisor 8
+phdgender$supervisor8 <- str_extract(phdgender$supervisor7, ";.*$") 
+phdgender$supervisor7 <- ifelse(!is.na(phdgender$supervisor8),str_remove(phdgender$supervisor7, phdgender$supervisor8), phdgender$supervisor7) 
+phdgender$supervisor8 <- str_extract(phdgender$supervisor8, "[:upper:].*") 
+
+# supervisor 9
+phdgender$supervisor9 <- str_extract(phdgender$supervisor8, ";.*$") 
+phdgender$supervisor8 <- ifelse(!is.na(phdgender$supervisor9),str_remove(phdgender$supervisor8, phdgender$supervisor9), phdgender$supervisor8) 
+phdgender$supervisor9 <- str_extract(phdgender$supervisor9, "[:upper:].*") 
+
+# supervisor 10
+phdgender$supervisor10 <- str_extract(phdgender$supervisor9, ";.*$") 
+phdgender$supervisor9 <- ifelse(!is.na(phdgender$supervisor10), str_remove(phdgender$supervisor9, phdgender$supervisor10), phdgender$supervisor9) 
+phdgender$supervisor10 <- str_extract(phdgender$supervisor10, "[:upper:].*") 
+
+# supervisor 11
+phdgender$supervisor11 <- str_extract(phdgender$supervisor10, ";.*$") 
+phdgender$supervisor10 <- ifelse(!is.na(phdgender$supervisor11),str_remove(phdgender$supervisor10, phdgender$supervisor11), phdgender$supervisor10) 
+phdgender$supervisor11 <- str_extract(phdgender$supervisor11, "[:upper:].*") 
+
+# trim whitespaces
+phdgender$supervisor1 <- trimws(phdgender$supervisor1)
+phdgender$supervisor2 <- trimws(phdgender$supervisor2)
+phdgender$supervisor3 <- trimws(phdgender$supervisor3)
+phdgender$supervisor4 <- trimws(phdgender$supervisor4)
+phdgender$supervisor5 <- trimws(phdgender$supervisor5)
+phdgender$supervisor6 <- trimws(phdgender$supervisor6)
+phdgender$supervisor7 <- trimws(phdgender$supervisor7)
+phdgender$supervisor8 <- trimws(phdgender$supervisor8)
+phdgender$supervisor9 <- trimws(phdgender$supervisor9)
+phdgender$supervisor10 <- trimws(phdgender$supervisor10)
+phdgender$supervisor11 <- trimws(phdgender$supervisor11)
+
+
+phdgender <- pivot_longer(phdgender, cols=c(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisor6, supervisor7, supervisor8, supervisor9, supervisor10, supervisor11), names_to="sv_n", values_to="supervisor")
+
+
+# adding a phd-supervisor ID variable
+phdgender$id_phd_sv <- paste0(phdgender$id, "-", str_extract(phdgender$sv_n, "[:digit:]+"))
+
+# removing empty lines
+phdgender <- phdgender[!is.na(phdgender$supervisor), ]
+
+```
+
+
+
+
+
+# Gathering supervisors' first and last names into separate columns
+
+```{r}
+
+# defining nobiliary particles so that these can be removed
+vande0 <- c("(V|v)an (D|d)er", "(V|v)an (D|d)en", "(V|v)an (D|d)e", "(V|v)ande(n)?", "(V|v)an '(T|t)", "(V|v)an'(T|t)", "(V|v)an (H|h)et", "(V|v)on (D|d)er", "(O|o)p den", "(O|o)p 't", "(O|o)f ten", "(A|a)an de(n)?", "(D|d)e (L|l)a", "(I|i)n (H|h)et", "(I|i)n '(T|t)", "(I|i)n'(T|t)", "(I|i)n (D|d)er", "(B|b)ij (D|d)e") # nobiliary particles anywhere in string
+
+vande1 <- c("^(L|l)a\\s", "^(O|o)p\\s" ,"^(V|v)an\\s", "^(V|v)on\\s", "^(D|d)en\\s", "^(D|d)er\\s", "^(D|d)el\\s", "^(D|d)(e|a|u|i)\\s", "^(D|d)os?\\s", "^(T|t)er\\s" , "^(T|t)en\\s", "^(T|t)e\\s", "^'(T|t)\\s", "^(L|l)e\\s", "^El-", "^[(A|a)(E|e)](L|l)'?\\s", "^(D|d)'", "^zu\\s", "^(Z|z)ur\\s", "^e\\s") # starts with np
+
+vande2 <- c("\\s(L|l)a$", "\\s(O|o)p$" ,"\\s(V|v)an$", "\\s(V|v)on$", "\\s(D|d)en$", "\\s(D|d)er$", "\\s(D|d)el$", "\\s(D|d)(e|a|u|i)$", "\\s(D|d)os?$", "\\s(T|t)er$", "\\s(T|t)en$", "\\s(T|t)e$", "\\s'(T|t)$", "\\s(L|l)e$", "\\s[(A|a)(E|e)](L|l)'?$", "\\s(D|d)'$", "\\szu$", "\\s(Z|z)ur$") # ends with np
+
+vande3 <- c("\\s(L|l)a\\s", "\\s(O|o)p\\s" ,"\\s(V|v)an\\s", "\\s(V|v)on\\s", "\\s(D|d)en\\s", "\\s(D|d)er\\s", "\\s(D|d)el\\s", "\\s(D|d)(e|a|u|i)\\s", "\\s(D|d)os?\\s", "\\s(T|t)er\\s", "\\s(T|t)en\\s", "\\s(T|t)e\\s", "\\s'(T|t)\\s", "\\s(L|l)e\\s", "\\s(E|A)l-", "\\s[(A|a)(E|e)](L|l)'?\\s", "\\s(D|d)'", "\\szu\\s", "\\s(Z|z)ur\\s", "\\s(Y|y)\\s", "\\s(E|e)\\s") # np in the middle
+
+vande4 <- c("^(L|l)a$", "^(O|o)p$" , "^(V|v)an$", "^(V|v)on$", "^(D|d)en$", "^(D|d)er$", "^(D|d)el$", "^(D|d)(e|a|u|i)$", "^(D|d)os?$", "^Vande[$//s]", "^(T|t)er$",  "^(T|t)en$", "^(T|t)e$", "^'(T|t)$", "^(L|l)e$", "^[(A|a)(E|e)](L|l)'?$", "^(D|d)'$", "^zu$", "^(Z|z)ur$") # entire string is a np
+
+
+
+
+# first name of supervisor
+phdgender$sv_fn <- str_remove(phdgender$supervisor, "^.*,") # name after comma
+phdgender$sv_fn <- ifelse(as.numeric(str_detect(phdgender$sv_fn, "(?<=\\().*(?=\\))"))==1, str_extract(phdgender$sv_fn,  "(?<=\\().*(?=\\))"), phdgender$sv_fn)  # name in brackets
+phdgender$sv_fn <- trimws(phdgender$sv_fn, which="both")
+
+# Extract nobiliary particles
+phdgender$sv_np <- str_extract(phdgender$sv_fn, paste0(c(vande0, vande1, vande2), collapse="|"))
+phdgender$sv_np <- tolower(phdgender$sv_np)
+
+# Remove nobiliary particles from the firstname
+phdgender$sv_fn <- str_remove_all(phdgender$sv_fn, paste0(vande0, collapse="|")) # remove nobiliary particles
+phdgender$sv_fn <- str_remove_all(phdgender$sv_fn, paste0(vande1, collapse="|")) # remove nobiliary particles
+phdgender$sv_fn <- str_remove_all(phdgender$sv_fn, paste0(vande2, collapse="|")) # remove nobiliary particles
+phdgender$sv_fn <- str_remove_all(phdgender$sv_fn, paste0(vande3, collapse="|")) # remove nobiliary particles
+
+phdgender$sv_fn <- ifelse(phdgender$sv_fn == "", NA, phdgender$sv_fn) # set to NA if missing
+
+
+# extract initials based on full first names
+phdgender$sv_ini <- str_extract_all(phdgender$sv_fn, "[:upper:]")
+# combine multiple initials in c() object into a single string
+phdgender$sv_ini <- gsub("c\\(\"", "", phdgender$sv_ini)
+phdgender$sv_ini <- gsub("\", \"", ".", phdgender$sv_ini)
+phdgender$sv_ini <- gsub("\"\\)", ".", phdgender$sv_ini)
+# add full stop at the end of single-letter initials
+phdgender$sv_ini <- trimws(phdgender$sv_ini)
+phdgender$sv_ini <- ifelse(as.numeric(str_detect(phdgender$sv_ini, "^[:upper:]$"))==1, paste0(phdgender$sv_ini, "."), phdgender$sv_ini)
+
+
+# next, we remove initials from the supervisors' names
+initialpattern <- paste(c("^([:upper:]\\.?\\-\\.?)+",                 # A- or A-. or A.-
+                          "(T|t|C|c|P|p)h\\.\\s?",                    # Th. Ph. Ch. 
+                          "^([:upper:]\\.)+[:upper:](\\s)?$",         # A.A.A
+                          "([:upper:]\\.+)+", "([:lower:]\\.){2,}",   # A.  or a.
+                          "^\\s?([:alpha:]\\s)+",                     # A or a surrounded by whitespace
+                          "^\\s?[:alpha:]\\.?\\s?$",                  # entire string consists of a single letter
+                          "^\\s?[:upper:]{2,4}\\s?$"),                # entire string consists of 2-4 capital letters
+                        collapse = "|")
+
+# removing lowercase v.d. at the beginning of first name, since this tends to signal "van de" in Dutch
+phdgender$sv_fn <- gsub("^v.d.\\s", "", phdgender$sv_fn)
+phdgender$sv_fn <- gsub("^v\\s", "", phdgender$sv_fn)
+
+# removing initials from first name object
+phdgender$sv_fn <- str_remove_all(phdgender$sv_fn, initialpattern)
+
+
+# some cleaning: lowercase names and extracting only the first-mentioned last name
+phdgender$sv_fn <- trimws(phdgender$sv_fn)
+phdgender$sv_fn <- tolower(phdgender$sv_fn) # lowercase
+phdgender$sv_fn <- stri_trans_general(phdgender$sv_fn, id="latin-ascii")
+
+phdgender$sv_fn <- str_extract(phdgender$sv_fn, "[a-z]+\\-*[a-z]*")
+
+# last names of supervisor 
+phdgender$sv_ln <- str_remove(phdgender$supervisor, ",.*$")
+phdgender$sv_ln <- str_remove(phdgender$sv_ln, paste0(vande0, collapse="|")) # remove nobiliary particles
+phdgender$sv_ln <- str_remove(phdgender$sv_ln, paste0(vande1, collapse="|")) # remove nobiliary particles
+
+phdgender$sv_ln <- tolower(phdgender$sv_ln) # lowercase
+phdgender$sv_ln <- stri_trans_general(phdgender$sv_ln, id="latin-ascii")
+
+phdgender$sv_ln <- str_extract(phdgender$sv_ln, "[a-z]+") # first-mentioned last name
+
+
+```
+
+
+
+# Create a matchable dataframe of supervisors
+
+```{r}
+
+supervisors <- subset(phdgender, select=c(id, id_phd_sv, phd_year, supervisors, sv_fn, sv_ini, sv_ln, sv_n))
+
+supervisors %>%
+  rename(id_phd = id,
+         phd_year_phd = phd_year) -> supervisors
+
+
+# fill first names for supervisors in case the name format varies per PhD (e.g. some have only initials, some have name and initials) 
+supervisors %>%
+  group_by(sv_ln, sv_ini) %>%
+  fill(sv_fn, .direction="downup") -> supervisors
+
+
+```
+
+
+
+
+
+# Adding professor titles
+
+```{r}
+
+full <- profs[profs$title=="full",]
+
+
+full <- subset(full, select=c("id_pr", "firstname_pr", "ini", "lastname", "fullname_pr", "np_pr", "firstyear"))
+
+# We first match supervisors to the professor database based on firstname 
+full_firstname <- full[!is.na(full$firstname_pr),]
+
+
+supervisors <- left_join(supervisors, full_firstname, by=c("sv_ln"="lastname", "sv_fn"="firstname_pr"))
+# creates about 2k duplicates, upon inspection, these seem to be the same people
+
+# remove duplicates
+supervisors %>%
+  group_by(id_phd_sv) %>%
+  slice_head() %>%
+  ungroup -> supervisors
+
+
+# Then, we match supervisors to the professor database based on initials
+# But only the part that is not yet matched 
+
+supervisors_match <- supervisors[!is.na(supervisors$firstyear),] # 58K supervisors are matched
+
+supervisors_nomatch <- supervisors[is.na(supervisors$firstyear),] # not yet matched supervisors 
+supervisors_nomatch <- subset(supervisors_nomatch, select=c("id_phd", "id_phd_sv", "phd_year_phd", "supervisors", "sv_fn", "sv_ini", "sv_ln", "sv_n" ))
+
+supervisors_nomatch <- left_join(supervisors_nomatch, full, by=c("sv_ln"="lastname", "sv_ini"="ini"))
+
+# removing duplicates again
+
+supervisors_nomatch %>%
+  group_by(id_phd_sv) %>%
+  fill(firstname_pr, .direction="downup") %>%
+  fill(id_pr, .direction="downup") %>%
+  slice_head() -> supervisors_nomatch
+
+
+```
+
+
+# Adding names from the professors database
+
+```{r}
+
+nrow(supervisors_nomatch[!is.na(supervisors_nomatch$sv_fn),])
+
+
+# Copy the professors' first names if they are not yet filled
+supervisors_nomatch$sv_fn <- ifelse(is.na(supervisors_nomatch$sv_fn), supervisors_nomatch$firstname_pr, supervisors_nomatch$sv_fn)
+
+
+nrow(supervisors_nomatch[!is.na(supervisors_nomatch$sv_fn),])
+
+
+```
+
+
+# Combining the professor info based on the two matching strategies
+
+```{r}
+
+supervisors_match <- subset(supervisors_match, select=c("id_phd", "id_phd_sv", "phd_year_phd", "supervisors", "sv_fn", "sv_ini", "sv_ln", "id_pr", "firstyear"))
+
+supervisors_nomatch <- subset(supervisors_nomatch, select=c("id_phd", "id_phd_sv", "phd_year_phd", "supervisors", "sv_fn", "sv_ini", "sv_ln",  "id_pr", "firstyear"))
+
+
+supervisors <- rbind.data.frame(supervisors_match, supervisors_nomatch)
+
+supervisors$prof <- ifelse((!is.na(supervisors$firstyear) & supervisors$firstyear < supervisors$phd_year_phd), 1, 0)
+
+```
+
+
+# Adding names from publications co-authored with PhDs
+
+The code below is provided to show how we extracted supervisors' names from the publications co-authored with their PhDs. 
+
+
+```{r, eval=FALSE}
+
+# load in the publications
+
+
+# We only select supervisors from the batch whose name we do not yet know
+missingname <- supervisors[is.na(supervisors$sv_fn),]
+
+# Keep the variables that are necessary to match on
+missingname <- subset(missingname, select=c("sv_ln", "id_phd", "id_phd_sv"))
+
+
+# adding pubs
+pubsmissingname <- left_join(missingname, pubs, by=c("id_phd"="id"))
+
+
+# Make sure the format of last name aligns with the notation in the 'auteur' column of the publications data
+pubsmissingname$lastname <- str_to_title(pubsmissingname$sv_ln) # start with a capital letter
+pubsmissingname$lastname <- unaccent(pubsmissingname$lastname) # no diacritics
+pubsmissingname$lastname <- paste0(pubsmissingname$lastname, ",") # add comma so that only a 1:1 match is detected, not partial matches 
+
+# Create a 0/1 variable indicating whether a certain publication is co-authored by supervisor
+pubsmissingname$with_sv <- as.numeric(str_detect(pubsmissingname$auteur, pubsmissingname$lastname))
+
+# Only select publications co-authored by the supervisor
+pubsmissingname <- pubsmissingname[pubsmissingname$with_sv==1,]
+
+
+# Get everything after the last name of the supervisor
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$auteur, paste0("^\n?.*", pubsmissingname$lastname))
+
+# Remove author information that comes after the supervisor (if present)
+pubsmissingname$fullname <- ifelse(as.numeric(str_detect(pubsmissingname$fullname, ";"))==1, str_remove(pubsmissingname$fullname, ";.*$"), pubsmissingname$fullname)
+
+
+# Remove double last names (usually separated by a -)
+# A good signal that this is the case, is when the string (after above manipulations starts with "-")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0("^-((V|v)an)?\\s?((D|d)e)?\\s?[A-Za-z]+"))
+
+
+# Remove initials
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, initialpattern)
+
+# Remove commas
+# I do this before removing nobiliary particles, because sometimes, a nobiliary particle is immediately followed by a comma
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, ",")
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+# Remove nobiliary particles
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0(vande0, collapse="|"))
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0(vande1, collapse="|"))
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0(vande2, collapse="|"))
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0(vande3, collapse="|"))
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, paste0(vande4, collapse="|"))
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+# Remove a couple of odd characters and non-names I detected
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "†")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "(co-)?promotor")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "[Ii]n\\.")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "[Vv]an\\.")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "[Dd]e\\.")
+# Removing brackets
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "\\(")
+pubsmissingname$fullname <- str_remove_all(pubsmissingname$fullname, "\\)")
+pubsmissingname$fullname <- trimws(pubsmissingname$fullname)
+
+# Extract only the first-mentioned name
+pubsmissingname$firstname <- str_extract(pubsmissingname$fullname, "[:alpha:]+")
+
+# Remove one-character (initial) names
+pubsmissingname$firstname <- ifelse(nchar(pubsmissingname$firstname)==1, NA, pubsmissingname$firstname) 
+pubsmissingname$firstname <- ifelse(pubsmissingname$firstname=="^Th$", NA, pubsmissingname$firstname) 
+
+# lowercase
+pubsmissingname$firstname <- unaccent(tolower(pubsmissingname$firstname))
+
+pubsmissingname$firstname <- tolower(pubsmissingname$firstname)
+
+
+# levels(as.factor(pubsmissingname$firstname)) # optional check
+
+
+# selecting only the relevant columns
+pubsmissingname <- subset(pubsmissingname, select=c("id_phd_sv", "firstname"))
+pubsmissingname <- rename(pubsmissingname, firstname_pubs = firstname)
+
+
+# removing empty lines
+pubsmissingname <- pubsmissingname[!is.na(pubsmissingname$firstname_pubs),]
+
+
+# in case a PhD has multiple co-authors with the same last name but different first names, we pick the name that is most common
+pubsmissingname %>%
+  group_by(id_phd_sv, firstname_pubs) %>%
+  summarise(counter = n(), .groups='drop') %>%
+  ungroup() -> namecounter
+
+
+# this piece of code is used to check how many names are added
+namecounter %>%
+group_by(id_phd_sv) %>%
+arrange(desc(counter)) %>%
+filter(row_number()==1) %>%
+select(id_phd_sv, firstname_pubs) -> namecounter
+
+
+# merging the names back into the data
+nrow(supervisors[!is.na(supervisors$sv_fn),]) nrow(supervisors[!is.na(supervisors$sv_fn),]) # check how many supervisors' first names are missing before adding names from publications
+ 
+supervisors %>% left_join(namecounter, by="id_phd_sv") -> supervisors # add names
+
+supervisors$sv_fn <- ifelse(is.na(supervisors$sv_fn), supervisors$firstname_pubs, supervisors$sv_fn) # fill names based on the publications
+
+
+nrow(supervisors[!is.na(supervisors$sv_fn),]) # check how many supervisors' first names are missing after adding names from publications
+
+```
+
+
+
+# Adding gender
+
+From Meertens first name database
+
+```{r}
+
+supervisors <- left_join(supervisors, gender, by=c("sv_fn" = "firstname"))
+
+
+supervisors %>% 
+  mutate(freq_m = ifelse((freq_m=="--"), 0, freq_m), 
+         freq_f = ifelse((freq_f=="--"), 0, freq_f), 
+         female = ifelse((freq_f > freq_m), 1, 0),
+         female = ifelse((freq_m == freq_f), NA, female)) -> supervisors
+
+
+# renaming the variable and transforming into a factor
+
+supervisors$female <- as.factor(supervisors$female)
+levels(supervisors$female)
+levels(supervisors$female) <- c("men", "women")
+supervisors <- supervisors %>% dplyr::rename(sv_gender = female)
+
+# dropping the frequency variables
+supervisors <- supervisors %>% select(id_phd, id_phd_sv, phd_year_phd, supervisors, sv_fn, sv_ini, sv_ln,  id_pr, firstyear, prof, sv_gender)
+
+```
+
+
+## Gender based on GenderizeR 
+
+We use GenderizeR to supplement gender based on Meertens Voornamenbank, the same way we do for PhDs themselves as detailed in [gender](gender.html). Given that the method is exactly the same, we repeat the code here to illuminate our workflow, but set it to non-active. 
+
+```{r, eval=FALSE}
+
+# Merging the origin variables onto supervisors
+supervisors <- left_join(supervisors, ln_origin, by = c("sv_ln" = "lastname"))
+
+supervisors <- supervisors %>% rename(sv_ethnicity=origin) # rename the variable to make clear it is the supervisors
+
+supervisors <- left_join(supervisors, genderizer, by=c("sv_fn" = "firstname"))
+
+
+# Take country-specific genderizeR data where applicable, else the complete genderizeR database
+supervisors %>%
+  mutate(genderZ = gender_all,
+         genderZ = ifelse(sv_ethnicity=="dutch", gender_nl, genderZ),
+         genderZ = ifelse(sv_ethnicity=="moroccan", gender_ma, genderZ),
+         genderZ = ifelse(sv_ethnicity=="turkish", gender_tr, genderZ)) -> supervisors
+
+supervisors$genderZ <- as.factor(supervisors$genderZ)
+
+# Only use genderizeR when gender is not present from Meertens
+supervisors$sv_gender <- ifelse(is.na(supervisors$sv_gender), supervisors$genderZ, supervisors$sv_gender)
+
+supervisors$sv_gender <- as.factor(supervisors$sv_gender)
+levels(supervisors$sv_gender) <- c("men", "women")
+
+# recall Meertens + genderizeR
+nrow(supervisors[(!is.na(supervisors$sv_gender)),]) / nrow(supervisors) * 100
+
+
+# Create an extra value for missing
+supervisors$sv_gender <- fct_explicit_na(supervisors$sv_gender, "missing")
+
+
+# Only keeping relevant variables
+supervisors %>%
+  select(c("id_phd", "id_phd_sv", "phd_year_phd", "supervisors", "sv_fn", "sv_ini", "sv_ln", "sv_gender", "prof", "id_pr")) -> supervisors
+
+
+
+```
+
+
+
+# Creating variables at the level of the supervisory team
+
+More than 1 professor
+
+```{r}
+
+supervisors %>%
+  group_by(id_phd) %>%
+  summarise(sumprof = sum(prof)) -> sumprof # group by id and then sum the number of supervisors who are professor
+
+supervisors %>%
+  left_join(sumprof, by="id_phd") %>%
+  mutate(prof2p = ifelse(sumprof<2, 0, 1)) -> professorsteam # create a new variable on the level of PhDs specifying if the phd has 2+ professors in their team (prof2p)
+
+professorsteam <- subset(professorsteam, select=c("id_phd", "prof2p")) # extract only the id and the relevant variable so we can easily add this to our dataframe of phds
+
+professorsteam <- professorsteam[!duplicated(professorsteam$id_phd),] # remove duplicaties
+
+summary(as.factor(professorsteam$prof2p)) # check how many people score a 0 and a 1 on the new variable
+
+
+```
+
+
+
+Size of the team
+
+```{r}
+
+supervisors %>%
+  group_by(id_phd) %>%
+  summarise(teamsize = n()) %>%
+  select(id_phd, teamsize) -> teamsize # grouping the dataframe by PhD and tallying up the number of supervisors
+
+summary(as.factor(teamsize$teamsize))
+
+```
+
+
+Percentage of women in the team
+
+```{r}
+
+summary(as.factor(supervisors$sv_gender))
+
+supervisors %>%
+  group_by(id_phd) %>%
+  count(sv_gender) -> teamgender # creating a dataframe with the number of women/men/missing gender per phd
+
+
+teamgender %>%
+  left_join(teamsize, by="id_phd") -> teamgender # adding the teamsize variable we created in the chunk before, so we can calculate the share of supervisors from each gender
+
+
+teamgender$prop <- teamgender$n / teamgender$teamsize # calculating the share of m/f/missing gender supervisors
+
+
+teamgender <- pivot_wider(teamgender, id_cols="id_phd", names_from = "sv_gender", names_prefix = "prop", values_from = "prop") # reshaping the dataframe so that one phd has one row again
+
+# set NA values to 0
+teamgender$propmen <- ifelse(is.na(teamgender$propmen), 0, teamgender$propmen) # some PhDs have no men on their supervision team
+teamgender$propwomen <- ifelse(is.na(teamgender$propwomen), 0, teamgender$propwomen) # or no women
+teamgender$propNA <- ifelse(is.na(teamgender$propNA), 0, teamgender$propNA) # or no supervisors with a missing gender
+
+
+
+```
+
+1+ woman in the team
+
+```{r}
+
+teamgender$wom_sv1 <- ifelse(teamgender$propwomen==0, 0, 1)
+
+
+```
+
+
+
+Adding both variables to the PhD dataframe
+
+```{r}
+
+# selecting relevant variables
+phd_supervisors <- subset(phdgender, select=c(id, supervisors))
+
+# collapsing the data again
+phd_supervisors <- phd_supervisors[!duplicated(phd_supervisors$id),]
+
+# adding teamsize, gender variables and professor variable
+phd_supervisors <- left_join(phd_supervisors, teamsize, by=c("id"="id_phd"))
+phd_supervisors <- left_join(phd_supervisors, teamgender, by=c("id"="id_phd"))
+phd_supervisors <- left_join(phd_supervisors, professorsteam, by=c("id"="id_phd"))
+
+# removing the supervisors string, as it is already present in the base data
+phd_supervisors <- subset(phd_supervisors, select=-supervisors)
+supervisors <- subset(supervisors, select=-supervisors)
+
+```
+
+
+
+
+# saving
+
+```{r, eval=FALSE}
+
+save(supervisors, file="./data/processed/supervisors.rda") # saving the data in the format of one row per supervisor
+
+save(phd_supervisors, file="./data/processed/phd_supervisors.rda") # saving the data with the variables at the level of phds
+
+```
+
+
+
+

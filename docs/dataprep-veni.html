@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Mentoring for gender equality in early-career grant receipt: Veni receipt variable</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Independent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="names.html">Names</a>
+    </li>
+    <li>
+      <a href="gender.html">Gender</a>
+    </li>
+    <li>
+      <a href="supervisors.html">Supervisor variables</a>
+    </li>
+    <li>
+      <a href="discipline.html">Discipline</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Dependent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dataprep-veni.html">Veni receipt</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analyses.html">Main analysis Veni receipt</a>
+    </li>
+    <li>
+      <a href="robustness.html">Supplementary analyses</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="figures.html">Figures</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Mentoring for gender equality in
+early-career grant receipt: Veni receipt variable</h1>
+<h4 class="date">Last compiled on 2024-05-28</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<hr />
+<p>This lab journal demonstrates how we create the dependent variable in
+our analyses.</p>
+<hr />
+<div id="custom-functions" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Custom functions</h1>
+<ul>
+<li><code>package.check</code>: Check if packages are installed (and
+install if not) in R (<a
+href="https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/">source</a>).</li>
+</ul>
+<pre class="r test"><code>rm(list = ls())
+
+
+fpackage.check &lt;- function(packages) {
+    lapply(packages, FUN = function(x) {
+        if (!require(x, character.only = TRUE)) {
+            install.packages(x, dependencies = TRUE)
+            library(x, character.only = TRUE)
+        }
+    })
+}</code></pre>
+<hr />
+</div>
+<div id="packages" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Packages</h1>
+<ul>
+<li><p><code>tidyverse</code>: For general data manipulation</p></li>
+<li><p><code>stringr/stringi</code>: For string manipulations</p></li>
+</ul>
+<pre class="r test"><code>packages = c(&quot;tidyverse&quot;, &quot;stringr&quot;, &quot;stringi&quot;)
+
+fpackage.check(packages)</code></pre>
+<hr />
+<p>We use two processed datasets and three raw datasets</p>
+<ul>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/phdgender.rda">phdgender.rda</a>:
+example dataset of 8 (fictional) PhDs with all independent variables
+added in the previous steps
+<ul>
+<li>For construction of this dataset see <a
+href="gender.html">Independent variables: gender</a></li>
+<li>name of dataset: <code>phdgender</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/phd_supervisors.rda">phd_supervisors.rda</a>:
+cleaned dataframe of PhDs with the supervisor variables
+<ul>
+<li>For construction of this dataset see <a
+href="supervisors.html">Independent variables: supervisor
+variables</a></li>
+<li>name of dataset: <code>phd_supervisors</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/veni_NWO.rda">veni_NWO.rda</a>:
+list of Veni’s, web scraped from <a
+href="https://www.nwo.nl/en/researchprogrammes/nwo-talent-programme/projects-veni/veni-2022#:~:text=NWO%20has%20awarded%20Veni%20funding,over%20the%20next%20three%20years.">NWO</a>
+<ul>
+<li>name of dataset: <code>veni_NWO</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/veni_narcis.rda">veni_NARCIS.rda</a>:
+list of Veni’s obtained from NARCIS
+<ul>
+<li>name of dataset: <code>veni_narcis</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/pubs_metadf.rda">pubs_metadf.rda</a>:
+raw publications data from NARCIS
+<ul>
+<li>name of dataset: <code>pubs_metadf</code></li>
+</ul></li>
+</ul>
+<pre class="r test"><code>load(file = &quot;data/processed/phdgender.rda&quot;)
+
+load(file = &quot;data/processed/phd_supervisors.rda&quot;)
+
+load(file = &quot;./data/veni_NWO.rda&quot;)
+
+load(file = &quot;./data/veni_narcis.rda&quot;)
+
+load(file = &quot;./data/pubs_metadf.rda&quot;)</code></pre>
+</div>
+<div id="phd-variables" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> PhD variables</h1>
+<div id="sample-selection" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Sample selection</h2>
+<p>First, we only select PhDs who have started publishing, and who
+obtained their PhD between 1997 and 2019 so that we can construct a pool
+of eligible researchers.</p>
+<pre class="r test"><code># SEL1: years
+phds &lt;- phdgender[phdgender$phd_year&gt;1996 &amp; phdgender$phd_year&lt;2020,]
+
+# SEL 2: publishing scholars
+
+# add publications, only keep publications after PhD graduation date
+publishing &lt;- phds %&gt;% left_join(pubs_metadf, by=&quot;id&quot;) %&gt;% filter(date.issued &gt; phd_year) 
+
+publishing %&gt;%
+  group_by(id) %&gt;%
+  mutate(start_pub=1) %&gt;% # create a variable for those who are still matched that they started publishing
+  select(id, start_pub) %&gt;%
+  slice_head(n=1) -&gt; publishing
+
+phds &lt;- phds %&gt;% left_join(publishing, by=&quot;id&quot;) #add start_pub variable
+
+phds$start_pub &lt;- ifelse(is.na(phds$start_pub), 0, phds$start_pub)
+
+
+phds &lt;- phds[phds$start_pub==1 &amp; phds$phd_year&gt;1996 &amp; phds$phd_year&lt;2020,]</code></pre>
+<p>Selections for robustness checks</p>
+<pre class="r test"><code># R1: removing 4 universities with lower coverage phds &lt;-
+# phds_variables[phds_variables$start_pub==1 &amp; phds_variables$phd_year&gt;1996 &amp;
+# phds_variables$phd_year&lt;2020 &amp; phds_variables$uni!=&#39;RUG&#39; &amp; phds_variables$uni!=&#39;LU&#39; &amp;
+# phds_variables$uni!=&#39;TUD&#39; &amp; phds_variables$uni!=&#39;EUR&#39; ,]
+
+# R2: adding non-publishing PhDs phds &lt;- phds_variables[phds_variables$hasprofile==1 &amp;
+# phds_variables$phd_year&gt;1996 &amp; phds_variables$phd_year&lt;2020,]</code></pre>
+</div>
+<div id="adding-earlier-prepared-covariates-supervision-team-discipline"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Adding earlier
+prepared covariates (supervision team, discipline)</h2>
+<pre class="r test"><code># Add supervisory variables
+phds %&gt;%
+    left_join(phd_supervisors, by = &quot;id&quot;) -&gt; phds
+
+# removing PhDs without known supervisors
+nrow(phds)</code></pre>
+<pre class="test2"><code>#&gt; [1] 3</code></pre>
+<pre class="r test"><code>phds &lt;- phds[!is.na(phds$supervisors), ]
+nrow(phds)</code></pre>
+<pre class="test2"><code>#&gt; [1] 3</code></pre>
+<pre class="r test"><code># Factorize &#39;1+ women in supervisory team&#39; and add separate category for missing
+phds$wom_sv1 &lt;- factor(phds$wom_sv1)
+levels(phds$wom_sv1) &lt;- c(&quot;no women&quot;, &quot;1+ woman&quot;)</code></pre>
+</div>
+</div>
+<div id="preparing-veni_narcis" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Preparing
+Veni_NARCIS</h1>
+<p>These are the Veni’s we sourced directly from the NARCIS portal</p>
+<pre class="r test"><code># Getting the Veni year out
+veni_narcis$veni &lt;- str_remove_all(veni_narcis$`Subsidies/prijzen`, &quot;veni_narcis-&quot;)
+
+veni_narcis$veni &lt;- str_extract(veni_narcis$veni, &quot;Veni [:digit:]{4}&quot;)
+veni_narcis$veni &lt;- str_extract(veni_narcis$veni, &quot;[:digit:]{4}&quot;)
+
+veni_narcis$year &lt;- as.numeric(veni_narcis$veni)
+
+veni_narcis &lt;- veni_narcis[!is.na(veni_narcis$year), ]
+
+
+# adding a Veni column that is 1 for everyone so we know when merging this to other datasets that
+# all these individuals obtained a Veni
+veni_narcis$veni &lt;- rep(1, nrow(veni_narcis))
+
+
+veni_narcis &lt;- subset(veni_narcis, select = c(&quot;year&quot;, &quot;veni&quot;, &quot;person_id&quot;))</code></pre>
+</div>
+<div id="preparing-veni_nwo" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Preparing Veni_NWO</h1>
+<p>These Veni data are sourced directly from the web site of NWO.</p>
+<pre class="r test"><code># cleaning up the initials and extracting the first to match with the NARCIS data
+veni_NWO$initials &lt;- str_remove(veni_NWO$initials, &quot;^\\s?Dr\\s?&quot;)
+veni_NWO$initials &lt;- str_remove(veni_NWO$initials, &quot;^\\s?dipl\\.\\s?&quot;)
+veni_NWO$ini1 &lt;- tolower(ifelse(veni_NWO$first != &quot;&quot;, str_extract(veni_NWO$first, &quot;[:alpha:]&quot;), str_extract(veni_NWO$initials,
+    &quot;[:alpha:]&quot;)))
+
+veni_NWO %&gt;%
+    mutate(veni = 1, ln = last) %&gt;%
+    select(veni, year, ln, ini1, first, uni) -&gt; veni_NWO
+
+
+
+veni_NWO$first &lt;- tolower(veni_NWO$first)
+veni_NWO$ln &lt;- tolower(veni_NWO$ln)
+
+# removing nobiliary particles at the beginning of the name
+vande3 &lt;- c(&quot;^(V|v)an (D|d)er\\s&quot;, &quot;^(V|v)an (D|d)en\\s&quot;, &quot;^(V|v)an (D|d)e\\s&quot;, &quot;^(V|v)ande(n)?\\s&quot;,
+    &quot;^(V|v)an &#39;(T|t)\\s&quot;, &quot;^(V|v)an&#39;(T|t)\\s&quot;, &quot;^(V|v)an (T|t)\\s&quot;, &quot;^(V|v)an (H|h)et\\s&quot;, &quot;^(V|v)on (D|d)er\\s&quot;,
+    &quot;^(O|o)p den\\s&quot;, &quot;^(O|o)p &#39;t\\s&quot;, &quot;^(O|o)f ten\\s&quot;, &quot;^(A|a)an de(n)?\\s&quot;, &quot;^(D|d)e (L|l)a\\s&quot;, &quot;^(I|i)n (H|h)et\\s&quot;,
+    &quot;^(I|i)n &#39;(T|t)\\s&quot;, &quot;^(I|i)n&#39;(T|t)\\s&quot;, &quot;^(I|i)n (T|t)\\s&quot;, &quot;^(I|i)n (D|d)er\\s&quot;, &quot;^(B|b)ij (D|d)e\\s&quot;,
+    &quot;^(L|l)a\\s&quot;, &quot;^(O|o)p\\s&quot;, &quot;^(V|v)an\\s&quot;, &quot;^(V|v)on\\s&quot;, &quot;^(D|d)en\\s&quot;, &quot;^(D|d)er\\s&quot;, &quot;^(D|d)el\\s&quot;,
+    &quot;^(D|d)(e|a|u|i)\\s&quot;, &quot;^(D|d)os?\\s&quot;, &quot;^(T|t)er\\s&quot;, &quot;^(T|t)en\\s&quot;, &quot;^(T|t)e\\s&quot;, &quot;^&#39;(T|t)\\s&quot;, &quot;^(L|l)e\\s&quot;,
+    &quot;^El-&quot;, &quot;^[(A|a)(E|e)](L|l)&#39;?\\s&quot;, &quot;^(D|d)&#39;&quot;, &quot;^zu\\s&quot;, &quot;^(Z|z)ur\\s&quot;, &quot;^e\\s&quot;)
+
+veni_NWO$ln &lt;- str_remove(veni_NWO$ln, paste0(vande3, collapse = &quot;|&quot;))
+
+# removing diacritics
+veni_NWO$ln &lt;- stri_trans_general(veni_NWO$ln, id = &quot;latin-ascii&quot;)
+veni_NWO$first &lt;- stri_trans_general(veni_NWO$first, id = &quot;latin-ascii&quot;)
+
+
+
+# removing multiple last names
+veni_NWO$ln &lt;- str_extract(veni_NWO$ln, &quot;[:alpha:]+&quot;)
+
+veni_NWO$first &lt;- str_extract(veni_NWO$first, &quot;[:alpha:]+&quot;)
+
+veni_NWO$fullentry &lt;- paste0(veni_NWO$ini1, veni_NWO$first, veni_NWO$year, veni_NWO$ln)
+
+veni_NWO$duplicates &lt;- as.numeric(duplicated(veni_NWO$fullentry))
+
+veni_NWO &lt;- veni_NWO[veni_NWO$duplicates != 1, ]  # removes some duplicates
+
+
+# we rempve 2 NWO entries with no known last name, because we can impossibly match these
+# individuals
+veni_NWO &lt;- veni_NWO[!is.na(veni_NWO$ln), ]
+
+
+# we remove all Veni&#39;s from 2021 and 2022 because initial analyses showed that these were very
+# poorly matched
+veni_NWO &lt;- veni_NWO %&gt;%
+    filter(year &lt; 2021)</code></pre>
+<p>For the matching, we take the following route:</p>
+<p>*1: Matching on PRS in the NARCIS Veni data</p>
+<p>This is the most straightforward route, as the IDs in the NARCIS
+Veni’s overlap with the IDs in the PhD dataset. So there is no further
+disambiguation needed here, therefore we give it priority over method
+2.</p>
+<p>*2: Matching on first and last names in NWO Veni data</p>
+<pre class="r test"><code># Dataset 1: PRS strategy (NARCIS)
+match_df1 &lt;- veni_narcis %&gt;%
+    select(veni, year, person_id) %&gt;%
+    rename(veni1 = &quot;veni&quot;, year1 = &quot;year&quot;)
+
+# Dataset 2: First and last name (NWO)
+match_df2 &lt;- veni_NWO %&gt;%
+    filter(!is.na(first)) %&gt;%
+    filter(!is.na(ln)) %&gt;%
+    select(veni, year, first, ln) %&gt;%
+    rename(veni2 = &quot;veni&quot;, year2 = &quot;year&quot;)
+
+
+print(paste0(&quot;Number of Veni&#39;s to be matched on PRS: &quot;, nrow(match_df1)))</code></pre>
+<pre class="test2"><code>#&gt; [1] &quot;Number of Veni&#39;s to be matched on PRS: 1&quot;</code></pre>
+<pre class="r test"><code>print(paste0(&quot;Number of Veni&#39;s to be matched on first and last name from NWO: &quot;, nrow(match_df2)))</code></pre>
+<pre class="test2"><code>#&gt; [1] &quot;Number of Veni&#39;s to be matched on first and last name from NWO: 1&quot;</code></pre>
+</div>
+<div id="matching-1-narcis" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Matching 1: NARCIS</h1>
+<pre class="r test"><code>phds &lt;- phds %&gt;%
+    left_join(match_df1, by = c(id = &quot;person_id&quot;))
+
+phds$veni1 &lt;- ifelse(is.na(phds$veni1), 0, phds$veni1)
+
+# check: duplicate matches?
+nrow(phds[duplicated(phds$id), ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 0</code></pre>
+</div>
+<div id="matching-2-first-and-last-name-nwo" class="section level1"
+number="7">
+<h1><span class="header-section-number">7</span> Matching 2: First and
+Last Name (NWO)</h1>
+<pre class="r test"><code>phds &lt;- phds %&gt;%
+    left_join(match_df2, by = c(firstname = &quot;first&quot;, lastname = &quot;ln&quot;))
+
+# removing Veni&#39;s obtained before doctorate or 9+ years after
+summary(as.factor(phds$veni2))</code></pre>
+<pre class="test2"><code>#&gt;    1 NA&#39;s 
+#&gt;    1    2</code></pre>
+<pre class="r test"><code>phds$veni2 &lt;- ifelse(phds$year2 &lt; phds$phd_year, NA, phds$veni2)
+phds$veni2 &lt;- ifelse(phds$year2 &gt; phds$phd_year + 8, NA, phds$veni2)
+summary(as.factor(phds$veni2))</code></pre>
+<pre class="test2"><code>#&gt;    1 NA&#39;s 
+#&gt;    1    2</code></pre>
+<pre class="r test"><code>phds$veni2 &lt;- ifelse(is.na(phds$veni2), 0, phds$veni2)
+
+nrow(phds[duplicated(phds$id), ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 0</code></pre>
+</div>
+<div id="inspecting-duplicates" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Inspecting
+duplicates</h1>
+<p>This is not the case in this curated example, but it did occur a few
+times (&lt;5) in our data, so we show how we dealt with duplicate Veni
+matches here.</p>
+<pre class="r test"><code>duplicatedids &lt;- phds$id[which(duplicated(phds$id))]
+
+
+inspect &lt;- phds[phds$id %in% duplicatedids, ]
+
+# there is 1 duplicate, so 2 observations to expect for this duplicate, one of the matches leads to
+# the same year of veni receipt, and the other diverges. So the match where both indicate the same
+# year of Veni receipt is likely the true match
+
+inspect$choose &lt;- as.numeric(inspect$year1 == inspect$year2)
+
+inspect &lt;- inspect %&gt;%
+    filter(choose == 1)  # remove the cases where the veni years diverge
+inspect &lt;- subset(inspect, select = -choose)
+
+# remove the duplicates (all 6) from the phd data
+phds &lt;- phds %&gt;%
+    filter(!phds$id %in% duplicatedids)
+
+# add back only the correct
+phds &lt;- rbind.data.frame(phds, inspect)</code></pre>
+</div>
+<div id="combining-the-outcomes-of-the-two-methods"
+class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Combining the outcomes
+of the two methods</h1>
+<p>We assume a person has obtained a Veni if they have been matched
+using <em>at least one</em> of the methods. So we do not require all
+methods to converge, but rather add the veni’s from all sources
+together.</p>
+<pre class="r test"><code>phds$veni &lt;- pmax(phds$veni1, phds$veni2)
+
+summary(as.factor(phds$veni))</code></pre>
+<pre class="test2"><code>#&gt; 0 1 
+#&gt; 2 1</code></pre>
+<pre class="r test"><code># Comparing the Veni years
+xtabs(~phds$year1 + phds$year2)</code></pre>
+<pre class="test2"><code>#&gt;           phds$year2
+#&gt; phds$year1 2015
+#&gt;       2015    1</code></pre>
+<pre class="r test"><code># Perfect convergence, so no need to change it!
+
+
+phds$year &lt;- phds$year1
+
+phds$year &lt;- ifelse(!is.na(phds$year2), phds$year2, phds$year)
+
+
+# set the year to 2020 if people did not obtain a veni
+phds$year &lt;- ifelse(is.na(phds$year), 2020, phds$year)
+
+# Creating a dataframe of all Veni winners in our sample
+matchedvenis &lt;- phds %&gt;%
+    filter(veni == 1)</code></pre>
+</div>
+<div id="create-a-person-period-file-ppf" class="section level1"
+number="10">
+<h1><span class="header-section-number">10</span> Create a person-period
+file (PPF)</h1>
+<div id="start-with-an-empty-ppf" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> Start with an empty
+PPF</h2>
+<pre class="r test"><code>year &lt;- c(1998:2020)
+
+zeroveni &lt;- rep(0, length(year))
+
+id &lt;- unique(phds$id)
+
+nid &lt;- length(id)
+
+
+# make the empty dataset based on this
+year &lt;- rep(year, nid)
+zeroveni &lt;- rep(zeroveni, nid)
+id &lt;- rep(id, each = length(c(1998:2020)))
+df_ppf &lt;- data.frame(id, year, zeroveni)</code></pre>
+</div>
+<div id="add-the-venis" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> Add the veni’s</h2>
+<pre class="r test"><code>df_ppf %&gt;%
+    full_join(phds, by = c(&quot;id&quot;, &quot;year&quot;)) %&gt;%
+    arrange(id, year) %&gt;%
+    select(id, year, veni, gender, propmen, propwomen, propNA, wom_sv1, prof2p, teamsize, uni, phd_year) -&gt;
+    veni_ppf
+
+# ! to be added: FIELD
+
+
+# filling the other data in
+veni_ppf %&gt;%
+    group_by(id) %&gt;%
+    fill(gender, .direction = &quot;downup&quot;) %&gt;%
+    # fill(field, .direction = &#39;downup&#39;) %&gt;%
+fill(uni, .direction = &quot;downup&quot;) %&gt;%
+    fill(phd_year, .direction = &quot;downup&quot;) %&gt;%
+    fill(propmen, .direction = &quot;downup&quot;) %&gt;%
+    fill(propwomen, .direction = &quot;downup&quot;) %&gt;%
+    fill(propNA, .direction = &quot;downup&quot;) %&gt;%
+    fill(wom_sv1, .direction = &quot;downup&quot;) %&gt;%
+    fill(prof2p, .direction = &quot;downup&quot;) %&gt;%
+    fill(teamsize, .direction = &quot;downup&quot;) %&gt;%
+    ungroup() -&gt; veni_ppf
+
+veni_ppf$veni &lt;- ifelse(is.na(veni_ppf$veni), 0, veni_ppf$veni)</code></pre>
+</div>
+<div id="removing-years-not-at-risk" class="section level2"
+number="10.3">
+<h2><span class="header-section-number">10.3</span> Removing years
+not-at-risk</h2>
+<pre class="r test"><code># Removing years after having obtained a veni
+matchedvenis$maxv &lt;- matchedvenis$year
+veniyear &lt;- subset(matchedvenis, select = c(id, maxv))
+
+veniyear &lt;- veniyear[!is.na(veniyear$id), ]
+
+veni_ppf &lt;- left_join(veni_ppf, veniyear, by = &quot;id&quot;)
+veni_ppf$maxv &lt;- ifelse(is.na(veni_ppf$maxv), 2020, veni_ppf$maxv)
+
+veni_ppf &lt;- veni_ppf[veni_ppf$year &lt;= veni_ppf$maxv, ]
+
+veni_ppf &lt;- subset(veni_ppf, select = -maxv)</code></pre>
+</div>
+</div>
+<div id="creating-time-variables" class="section level1" number="11">
+<h1><span class="header-section-number">11</span> Creating time
+variables</h1>
+<pre class="r test"><code># Time = years since PhD receipt (= publication diss. in NARCIS)
+veni_ppf$time &lt;- veni_ppf$year - veni_ppf$phd_year
+
+
+# Centre PhD year variable
+veni_ppf$phd_year &lt;- veni_ppf$phd_year - min(veni_ppf$phd_year)
+
+
+veni_ppf &lt;- veni_ppf %&gt;%
+    distinct()</code></pre>
+</div>
+<div id="veni-within-regular-deadline-vs-extended-deadline"
+class="section level1" number="12">
+<h1><span class="header-section-number">12</span> Veni within regular
+deadline vs extended deadline</h1>
+<pre class="r test"><code>veni_ppf$extended &lt;- as.factor(ifelse(veni_ppf$time &lt; 4, 0, 1))
+
+levels(veni_ppf$extended) &lt;- c(&quot;before extension&quot;, &quot;after extension&quot;)</code></pre>
+</div>
+<div id="publications" class="section level1" number="13">
+<h1><span class="header-section-number">13</span> Publications</h1>
+<p>First, we combine the 4 publications datasets.</p>
+<pre class="r test"><code># publications
+load(file = &quot;./data/pubs_metadf.rda&quot;)
+pubs &lt;- pubs_metadf
+
+# Selection of publications
+pubs$type &lt;- as.factor(pubs$type)
+
+pubs &lt;- pubs[(pubs$type == &quot;Artikel&quot;) | (pubs$type == &quot;Boek&quot; | (pubs$type == &quot;Boekdeel&quot;) | (pubs$type ==
+    &quot;Conference Paper&quot;) | (pubs$type == &quot;Conference Proceedings&quot;) | (pubs$type == &quot;Conferentiebijdrage&quot;)),
+    ]
+
+summary(pubs$type)</code></pre>
+<pre class="test2"><code>#&gt;      Artikel     Boekdeel       Overig Proefschrift      Rapport         NA&#39;s 
+#&gt;           46            5            0            0            0            3</code></pre>
+<pre class="r test"><code># derive publication year from variable Data.issued
+pubs &lt;- pubs[!is.na(pubs$date.issued), ]
+
+
+pubs %&gt;%
+    mutate(year = as.character(date.issued)) %&gt;%
+    mutate(year = substr(year, 1, 4)) %&gt;%
+    mutate(year = as.numeric(year)) -&gt; pubs
+
+
+# last complete year of publications data is 2022, so remove publications from the following years
+pubs &lt;- pubs[pubs$year &lt; 2023, ]
+
+# now, we create a person-period file: one row per PhD per year
+pubs %&gt;%
+    group_by(id, year) %&gt;%
+    dplyr::summarize(npubs = n(), id = first(id)) -&gt; pubs_ppf</code></pre>
+<div id="creating-an-empty-person-period-file" class="section level2"
+number="13.1">
+<h2><span class="header-section-number">13.1</span> Creating an empty
+person-period file</h2>
+<p>We can’t reuse the old df_ppf, because its range of years is not the
+same. We want to go back in time further for publications to also
+capture publications before the PhD for PhDs in the earliest
+cohorts.</p>
+<pre class="r test"><code>year &lt;- c(1993:2022)
+
+id &lt;- unique(phds$id)
+
+nid &lt;- length(id)
+
+
+# make the empty dataset based on this
+year &lt;- rep(year, nid)
+id &lt;- rep(id, each = length(c(1993:2022)))
+df_ppf &lt;- data.frame(id, year)</code></pre>
+</div>
+<div id="publications-variable-1" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Publications
+variable 1</h2>
+<p>Total cumulative number of publications from the start of the PhD to
+‘current year’</p>
+<pre class="r test"><code>df_ppf %&gt;%
+    full_join(phds, by = c(&quot;id&quot;, &quot;year&quot;)) %&gt;%
+    arrange(id, year) %&gt;%
+    select(id, year, phd_year) -&gt; totalpubs
+
+
+totalpubs %&gt;%
+    group_by(id) %&gt;%
+    fill(phd_year, .direction = &quot;downup&quot;) %&gt;%
+    ungroup() -&gt; totalpubs
+
+
+# totalpubs &lt;- totalpubs[totalpubs$year&lt;totalpubs$phd_year+4, ]
+totalpubs &lt;- totalpubs[totalpubs$year &gt; totalpubs$phd_year - 5, ]
+
+
+
+# Adding publications
+totalpubs %&gt;%
+    left_join(pubs_ppf, by = c(&quot;id&quot;, &quot;year&quot;)) -&gt; totalpubs
+
+totalpubs$npubs &lt;- ifelse(is.na(totalpubs$npubs), 0, totalpubs$npubs)
+
+
+# Creating the cumulative no. of publications
+totalpubs %&gt;%
+    group_by(id) %&gt;%
+    mutate(npubs_cumul = cumsum(npubs)) %&gt;%
+    mutate(npubs_cumul = lag(npubs_cumul, n = 1, order_by = year), npubs_cumul = ifelse(is.na(npubs_cumul),
+        0, npubs_cumul)) -&gt; totalpubs</code></pre>
+</div>
+<div id="publications-variable-2" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Publications
+variable 2</h2>
+<p>Only the number of publications in the preceding year</p>
+<pre class="r test"><code># next, we include a variable with the number of publications in the previous year for the first
+# year, we take the value of the year itself
+totalpubs %&gt;%
+    group_by(id) %&gt;%
+    mutate(npubs_prev = lag(npubs, n = 1, order_by = year), npubs_prev = ifelse(is.na(npubs_prev), lead(npubs_prev,
+        n = 1, order_by = year), npubs_prev)) %&gt;%
+    ungroup() -&gt; totalpubs
+
+
+
+totalpubs &lt;- subset(totalpubs, select = c(&quot;id&quot;, &quot;year&quot;, &quot;npubs_cumul&quot;, &quot;npubs_prev&quot;))
+
+
+totalpubs &lt;- totalpubs %&gt;%
+    distinct()
+
+
+# Next, we log-transform both publications variables to remove outliers
+totalpubs$npubs_cumul &lt;- log(totalpubs$npubs_cumul + 1)
+totalpubs$npubs_prev &lt;- log(totalpubs$npubs_prev + 1)</code></pre>
+<pre class="r test"><code>veni_ppf %&gt;%
+    left_join(totalpubs, by = c(&quot;id&quot;, &quot;year&quot;)) -&gt; veni_ppf
+
+
+
+nrow(veni_ppf[veni_ppf$time &lt; 0 &amp; veni_ppf$veni == 1, ])  # veni before phd</code></pre>
+<pre class="test2"><code>#&gt; [1] 0</code></pre>
+<pre class="r test"><code>nrow(veni_ppf[veni_ppf$time &gt; 8 &amp; veni_ppf$veni == 1, ])  # veni more than 8 years after phd</code></pre>
+<pre class="test2"><code>#&gt; [1] 0</code></pre>
+<pre class="r test"><code>xtabs(~veni_ppf$time + veni_ppf$veni)</code></pre>
+<pre class="test2"><code>#&gt;              veni_ppf$veni
+#&gt; veni_ppf$time 0 1
+#&gt;           -21 1 0
+#&gt;           -20 1 0
+#&gt;           -19 1 0
+#&gt;           -18 1 0
+#&gt;           -17 1 0
+#&gt;           -16 1 0
+#&gt;           -15 1 0
+#&gt;           -14 2 0
+#&gt;           -13 2 0
+#&gt;           -12 2 0
+#&gt;           -11 2 0
+#&gt;           -10 2 0
+#&gt;           -9  2 0
+#&gt;           -8  2 0
+#&gt;           -7  2 0
+#&gt;           -6  2 0
+#&gt;           -5  2 0
+#&gt;           -4  2 0
+#&gt;           -3  2 0
+#&gt;           -2  3 0
+#&gt;           -1  3 0
+#&gt;           0   3 0
+#&gt;           1   3 0
+#&gt;           2   2 0
+#&gt;           3   1 1
+#&gt;           4   1 0
+#&gt;           5   1 0
+#&gt;           6   1 0
+#&gt;           7   1 0
+#&gt;           8   1 0
+#&gt;           9   1 0
+#&gt;           10  1 0
+#&gt;           11  1 0
+#&gt;           12  1 0
+#&gt;           13  1 0
+#&gt;           14  1 0
+#&gt;           15  1 0
+#&gt;           16  1 0
+#&gt;           17  1 0
+#&gt;           18  1 0
+#&gt;           19  1 0
+#&gt;           20  1 0</code></pre>
+<pre class="r test"><code># Removing years before PhD
+nrow(veni_ppf[veni_ppf$veni == 1, ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 1</code></pre>
+<pre class="r test"><code>veni_ppf &lt;- veni_ppf[veni_ppf$time &gt; -1, ]
+nrow(veni_ppf[veni_ppf$veni == 1, ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 1</code></pre>
+<pre class="r test"><code># Removing 6+ years after PhD
+nrow(veni_ppf[veni_ppf$veni == 1, ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 1</code></pre>
+<pre class="r test"><code>veni_ppf &lt;- veni_ppf[veni_ppf$time &lt; 9, ]
+nrow(veni_ppf[veni_ppf$veni == 1, ])</code></pre>
+<pre class="test2"><code>#&gt; [1] 1</code></pre>
+</div>
+</div>
+<div id="veni-within-3-years" class="section level1" number="14">
+<h1><span class="header-section-number">14</span> Veni within 3
+years</h1>
+<pre class="r test"><code>summary(as.factor(veni_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt;  0  1 
+#&gt; 14  1</code></pre>
+<pre class="r test"><code>veni_ppf %&gt;%
+    filter(time &lt; 4) -&gt; veni3_ppf
+
+summary(as.factor(veni3_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt; 0 1 
+#&gt; 9 1</code></pre>
+</div>
+<div id="veni-in-the-year-or-the-following-year" class="section level1"
+number="15">
+<h1><span class="header-section-number">15</span> Veni in the year or
+the following year</h1>
+<pre class="r test"><code>summary(as.factor(veni_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt;  0  1 
+#&gt; 14  1</code></pre>
+<pre class="r test"><code>veni_ppf %&gt;%
+    filter(time &lt; 2) -&gt; veni1_ppf
+
+summary(as.factor(veni1_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt; 0 
+#&gt; 6</code></pre>
+</div>
+<div id="veni-4-8-years-after-doctorate" class="section level1"
+number="16">
+<h1><span class="header-section-number">16</span> Veni 4-8 years after
+doctorate</h1>
+<pre class="r test"><code>summary(as.factor(veni_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt;  0  1 
+#&gt; 14  1</code></pre>
+<pre class="r test"><code>veni_ppf %&gt;%
+    filter(time &gt; 3) -&gt; veni48_ppf
+
+summary(as.factor(veni48_ppf$veni))</code></pre>
+<pre class="test2"><code>#&gt; 0 
+#&gt; 5</code></pre>
+<p># Saving</p>
+<p>These files are not saved, because the files that are created here
+(veni_ppf/veni1_ppf/veni3_ppf/veni48_ppf) are replaced in the Git with
+the real, but completely anonymised data.</p>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1lbnRvcmluZyBmb3IgZ2VuZGVyIGVxdWFsaXR5IGluIGVhcmx5LWNhcmVlciBncmFudCByZWNlaXB0OiBWZW5pIHJlY2VpcHQgdmFyaWFibGUiDQpkYXRlOiAiTGFzdCBjb21waWxlZCBvbiBgciBTeXMuRGF0ZSgpYCINCm91dHB1dDogDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgY3NzOiB0d2Vha3MuY3NzDQogICAgdG9jOiAgdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHllcw0KLS0tDQoNCg0KDQpgYGB7ciwgZ2xvYmFsc2V0dGluZ3MsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0V9DQoNCmxpYnJhcnkoa25pdHIpDQpvcHRzX2NodW5rJHNldCh0aWR5Lm9wdHM9bGlzdCh3aWR0aC5jdXRvZmY9MTAwKSx0aWR5PVRSVUUsIHdhcm5pbmcgPSBGQUxTRSwgbWVzc2FnZSA9IEZBTFNFLGNvbW1lbnQgPSAiIz4iLCBjYWNoZT1UUlVFLCBjbGFzcy5zb3VyY2U9YygidGVzdCIpLCBjbGFzcy5vdXRwdXQ9YygidGVzdDIiKSwgY2FjaGUubGF6eSA9IEZBTFNFKQ0Kb3B0aW9ucyh3aWR0aCA9IDEwMCkNCnJnbDo6c2V0dXBLbml0cigpDQoNCmNvbG9yaXplIDwtIGZ1bmN0aW9uKHgsIGNvbG9yKSB7c3ByaW50ZigiPHNwYW4gc3R5bGU9J2NvbG9yOiAlczsnPiVzPC9zcGFuPiIsIGNvbG9yLCB4KSB9DQoNCmBgYA0KDQpgYGB7ciBrbGlwcHksIGVjaG89RkFMU0UsIGluY2x1ZGU9VFJVRX0NCmtsaXBweTo6a2xpcHB5KHBvc2l0aW9uID0gYygndG9wJywgJ3JpZ2h0JykpDQoja2xpcHB5OjprbGlwcHkoY29sb3IgPSAnZGFya3JlZCcpDQoja2xpcHB5OjprbGlwcHkodG9vbHRpcF9tZXNzYWdlID0gJ0NsaWNrIHRvIGNvcHknLCB0b29sdGlwX3N1Y2Nlc3MgPSAnRG9uZScpDQpgYGANCg0KDQoNCi0tLS0NCg0KVGhpcyBsYWIgam91cm5hbCBkZW1vbnN0cmF0ZXMgaG93IHdlIGNyZWF0ZSB0aGUgZGVwZW5kZW50IHZhcmlhYmxlIGluIG91ciBhbmFseXNlcy4gDQogIA0KLS0tLQ0KDQojIEN1c3RvbSBmdW5jdGlvbnMNCg0KLSBgcGFja2FnZS5jaGVja2A6IENoZWNrIGlmIHBhY2thZ2VzIGFyZSBpbnN0YWxsZWQgKGFuZCBpbnN0YWxsIGlmIG5vdCkgaW4gUiAoW3NvdXJjZV0oaHR0cHM6Ly92YmFsaWdhLmdpdGh1Yi5pby92ZXJpZnktdGhhdC1yLXBhY2thZ2VzLWFyZS1pbnN0YWxsZWQtYW5kLWxvYWRlZC8pKS4gDQoNCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnfQ0KDQpybShsaXN0PWxzKCkpDQoNCg0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsNCiAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgaWYgKCFyZXF1aXJlKHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkpIHsNCiAgICAgIGluc3RhbGwucGFja2FnZXMoeCwgZGVwZW5kZW5jaWVzID0gVFJVRSkNCiAgICAgIGxpYnJhcnkoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQ0KICAgIH0NCiAgfSkNCn0NCg0KDQpgYGANCg0KLS0tICANCg0KIyBQYWNrYWdlcw0KDQoNCi0gYHRpZHl2ZXJzZWA6IEZvciBnZW5lcmFsIGRhdGEgbWFuaXB1bGF0aW9uDQoNCi0gYHN0cmluZ3Ivc3RyaW5naWA6IEZvciBzdHJpbmcgbWFuaXB1bGF0aW9ucw0KDQoNCmBgYHtyLCByZXN1bHRzPSdoaWRlJ30NCg0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAic3RyaW5nciIsICJzdHJpbmdpIikNCg0KZnBhY2thZ2UuY2hlY2socGFja2FnZXMpDQoNCg0KYGBgDQoNCi0tLSANCg0KDQoNCldlIHVzZSB0d28gcHJvY2Vzc2VkIGRhdGFzZXRzIGFuZCB0aHJlZSByYXcgZGF0YXNldHMNCg0KKiBbcGhkZ2VuZGVyLnJkYV0oaHR0cHM6Ly9naXRodWIuY29tL2FtbXVsZGVycy9hbWF0dGVyb2Z0aW1lL2RhdGEvcHJvY2Vzc2VkL3BoZGdlbmRlci5yZGEpOiBleGFtcGxlIGRhdGFzZXQgb2YgOCAoZmljdGlvbmFsKSBQaERzIHdpdGggYWxsIGluZGVwZW5kZW50IHZhcmlhYmxlcyBhZGRlZCBpbiB0aGUgcHJldmlvdXMgc3RlcHMNCiAgICAtIEZvciBjb25zdHJ1Y3Rpb24gb2YgdGhpcyBkYXRhc2V0IHNlZSBbSW5kZXBlbmRlbnQgdmFyaWFibGVzOiBnZW5kZXJdKGdlbmRlci5odG1sKQ0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgcGhkZ2VuZGVyYCANCg0KKiBbcGhkX3N1cGVydmlzb3JzLnJkYV0oaHR0cHM6Ly9naXRodWIuY29tL2FtbXVsZGVycy9hbWF0dGVyb2Z0aW1lL2RhdGEvcHJvY2Vzc2VkL3BoZF9zdXBlcnZpc29ycy5yZGEpOiBjbGVhbmVkIGRhdGFmcmFtZSBvZiBQaERzIHdpdGggdGhlIHN1cGVydmlzb3IgdmFyaWFibGVzDQogICAgLSBGb3IgY29uc3RydWN0aW9uIG9mIHRoaXMgZGF0YXNldCBzZWUgW0luZGVwZW5kZW50IHZhcmlhYmxlczogc3VwZXJ2aXNvciB2YXJpYWJsZXNdKHN1cGVydmlzb3JzLmh0bWwpDQogICAgLSBuYW1lIG9mIGRhdGFzZXQ6IGBwaGRfc3VwZXJ2aXNvcnNgIA0KICANCiogW3ZlbmlfTldPLnJkYV0oaHR0cHM6Ly9naXRodWIuY29tL2FtbXVsZGVycy9hbWF0dGVyb2Z0aW1lL2RhdGEvdmVuaV9OV08ucmRhKTogbGlzdCBvZiBWZW5pJ3MsIHdlYiBzY3JhcGVkIGZyb20gW05XT10oaHR0cHM6Ly93d3cubndvLm5sL2VuL3Jlc2VhcmNocHJvZ3JhbW1lcy9ud28tdGFsZW50LXByb2dyYW1tZS9wcm9qZWN0cy12ZW5pL3ZlbmktMjAyMiM6fjp0ZXh0PU5XTyUyMGhhcyUyMGF3YXJkZWQlMjBWZW5pJTIwZnVuZGluZyxvdmVyJTIwdGhlJTIwbmV4dCUyMHRocmVlJTIweWVhcnMuKQ0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgdmVuaV9OV09gIA0KICAgIA0KKiBbdmVuaV9OQVJDSVMucmRhXShodHRwczovL2dpdGh1Yi5jb20vYW1tdWxkZXJzL2FtYXR0ZXJvZnRpbWUvZGF0YS92ZW5pX25hcmNpcy5yZGEpOiBsaXN0IG9mIFZlbmkncyBvYnRhaW5lZCBmcm9tIE5BUkNJUyANCiAgICAtIG5hbWUgb2YgZGF0YXNldDogYHZlbmlfbmFyY2lzYA0KICAgIA0KKiBbcHVic19tZXRhZGYucmRhXShodHRwczovL2dpdGh1Yi5jb20vYW1tdWxkZXJzL2FtYXR0ZXJvZnRpbWUvZGF0YS9wdWJzX21ldGFkZi5yZGEpOiByYXcgcHVibGljYXRpb25zIGRhdGEgZnJvbSBOQVJDSVMNCiAgICAtIG5hbWUgb2YgZGF0YXNldDogYHB1YnNfbWV0YWRmYA0KDQoNCg0KYGBge3IgZmlsZXMsIGV2YWw9VFJVRX0NCg0KbG9hZChmaWxlPSJkYXRhL3Byb2Nlc3NlZC9waGRnZW5kZXIucmRhIikNCg0KbG9hZChmaWxlID0gImRhdGEvcHJvY2Vzc2VkL3BoZF9zdXBlcnZpc29ycy5yZGEiKQ0KDQpsb2FkKGZpbGUgPSAiLi9kYXRhL3ZlbmlfTldPLnJkYSIpDQoNCmxvYWQoZmlsZSA9ICIuL2RhdGEvdmVuaV9uYXJjaXMucmRhIikNCg0KbG9hZChmaWxlID0gIi4vZGF0YS9wdWJzX21ldGFkZi5yZGEiKQ0KDQoNCmBgYA0KDQoNCg0KDQojIFBoRCB2YXJpYWJsZXMNCg0KDQojIyBTYW1wbGUgc2VsZWN0aW9uDQoNCkZpcnN0LCB3ZSBvbmx5IHNlbGVjdCBQaERzIHdobyBoYXZlIHN0YXJ0ZWQgcHVibGlzaGluZywgYW5kIHdobyBvYnRhaW5lZCB0aGVpciBQaEQgYmV0d2VlbiAxOTk3IGFuZCAyMDE5IHNvIHRoYXQgd2UgY2FuIGNvbnN0cnVjdCBhIHBvb2wgb2YgZWxpZ2libGUgcmVzZWFyY2hlcnMuIA0KDQoNCmBgYHtyfQ0KDQojIFNFTDE6IHllYXJzDQpwaGRzIDwtIHBoZGdlbmRlcltwaGRnZW5kZXIkcGhkX3llYXI+MTk5NiAmIHBoZGdlbmRlciRwaGRfeWVhcjwyMDIwLF0NCg0KIyBTRUwgMjogcHVibGlzaGluZyBzY2hvbGFycw0KDQojIGFkZCBwdWJsaWNhdGlvbnMsIG9ubHkga2VlcCBwdWJsaWNhdGlvbnMgYWZ0ZXIgUGhEIGdyYWR1YXRpb24gZGF0ZQ0KcHVibGlzaGluZyA8LSBwaGRzICU+JSBsZWZ0X2pvaW4ocHVic19tZXRhZGYsIGJ5PSJpZCIpICU+JSBmaWx0ZXIoZGF0ZS5pc3N1ZWQgPiBwaGRfeWVhcikgDQoNCnB1Ymxpc2hpbmcgJT4lDQogIGdyb3VwX2J5KGlkKSAlPiUNCiAgbXV0YXRlKHN0YXJ0X3B1Yj0xKSAlPiUgIyBjcmVhdGUgYSB2YXJpYWJsZSBmb3IgdGhvc2Ugd2hvIGFyZSBzdGlsbCBtYXRjaGVkIHRoYXQgdGhleSBzdGFydGVkIHB1Ymxpc2hpbmcNCiAgc2VsZWN0KGlkLCBzdGFydF9wdWIpICU+JQ0KICBzbGljZV9oZWFkKG49MSkgLT4gcHVibGlzaGluZw0KDQpwaGRzIDwtIHBoZHMgJT4lIGxlZnRfam9pbihwdWJsaXNoaW5nLCBieT0iaWQiKSAjYWRkIHN0YXJ0X3B1YiB2YXJpYWJsZQ0KDQpwaGRzJHN0YXJ0X3B1YiA8LSBpZmVsc2UoaXMubmEocGhkcyRzdGFydF9wdWIpLCAwLCBwaGRzJHN0YXJ0X3B1YikNCg0KDQpwaGRzIDwtIHBoZHNbcGhkcyRzdGFydF9wdWI9PTEgJiBwaGRzJHBoZF95ZWFyPjE5OTYgJiBwaGRzJHBoZF95ZWFyPDIwMjAsXQ0KDQpgYGANCg0KU2VsZWN0aW9ucyBmb3Igcm9idXN0bmVzcyBjaGVja3MNCmBgYHtyfQ0KDQojIFIxOiByZW1vdmluZyA0IHVuaXZlcnNpdGllcyB3aXRoIGxvd2VyIGNvdmVyYWdlDQojcGhkcyA8LSBwaGRzX3ZhcmlhYmxlc1twaGRzX3ZhcmlhYmxlcyRzdGFydF9wdWI9PTEgJiBwaGRzX3ZhcmlhYmxlcyRwaGRfeWVhcj4xOTk2ICYgcGhkc192YXJpYWJsZXMkcGhkX3llYXI8MjAyMCAmIHBoZHNfdmFyaWFibGVzJHVuaSE9IlJVRyIgICYgcGhkc192YXJpYWJsZXMkdW5pIT0iTFUiICAmIHBoZHNfdmFyaWFibGVzJHVuaSE9IlRVRCIgICYgcGhkc192YXJpYWJsZXMkdW5pIT0iRVVSIiAsXQ0KDQojIFIyOiBhZGRpbmcgbm9uLXB1Ymxpc2hpbmcgUGhEcyANCiNwaGRzIDwtIHBoZHNfdmFyaWFibGVzW3BoZHNfdmFyaWFibGVzJGhhc3Byb2ZpbGU9PTEgJiBwaGRzX3ZhcmlhYmxlcyRwaGRfeWVhcj4xOTk2ICYgcGhkc192YXJpYWJsZXMkcGhkX3llYXI8MjAyMCxdDQoNCmBgYA0KDQoNCg0KIyMgQWRkaW5nIGVhcmxpZXIgcHJlcGFyZWQgY292YXJpYXRlcyAoc3VwZXJ2aXNpb24gdGVhbSwgZGlzY2lwbGluZSkNCg0KDQpgYGB7cn0NCg0KIyBBZGQgc3VwZXJ2aXNvcnkgdmFyaWFibGVzDQpwaGRzICU+JSANCiAgbGVmdF9qb2luKHBoZF9zdXBlcnZpc29ycywgYnk9ImlkIikgLT4gcGhkcw0KDQojIHJlbW92aW5nIFBoRHMgd2l0aG91dCBrbm93biBzdXBlcnZpc29ycw0KbnJvdyhwaGRzKQ0KcGhkcyA8LSBwaGRzWyFpcy5uYShwaGRzJHN1cGVydmlzb3JzKSxdDQpucm93KHBoZHMpDQoNCiMgRmFjdG9yaXplICIxKyB3b21lbiBpbiBzdXBlcnZpc29yeSB0ZWFtIiBhbmQgYWRkIHNlcGFyYXRlIGNhdGVnb3J5IGZvciBtaXNzaW5nDQpwaGRzJHdvbV9zdjEgPC0gZmFjdG9yKHBoZHMkd29tX3N2MSkNCmxldmVscyhwaGRzJHdvbV9zdjEpIDwtIGMoIm5vIHdvbWVuIiwgIjErIHdvbWFuIikNCg0KDQpgYGANCg0KDQojIFByZXBhcmluZyBWZW5pX05BUkNJUw0KDQpUaGVzZSBhcmUgdGhlIFZlbmkncyB3ZSBzb3VyY2VkIGRpcmVjdGx5IGZyb20gdGhlIE5BUkNJUyBwb3J0YWwNCg0KYGBge3J9DQoNCiMgR2V0dGluZyB0aGUgVmVuaSB5ZWFyIG91dA0KdmVuaV9uYXJjaXMkdmVuaSA8LSBzdHJfcmVtb3ZlX2FsbCh2ZW5pX25hcmNpcyRgU3Vic2lkaWVzL3ByaWp6ZW5gLCAidmVuaV9uYXJjaXMtIikNCg0KdmVuaV9uYXJjaXMkdmVuaSA8LSBzdHJfZXh0cmFjdCh2ZW5pX25hcmNpcyR2ZW5pLCAiVmVuaSBbOmRpZ2l0Ol17NH0iKQ0KdmVuaV9uYXJjaXMkdmVuaSA8LSBzdHJfZXh0cmFjdCh2ZW5pX25hcmNpcyR2ZW5pLCAiWzpkaWdpdDpdezR9IikNCg0KdmVuaV9uYXJjaXMkeWVhciA8LSBhcy5udW1lcmljKHZlbmlfbmFyY2lzJHZlbmkpDQoNCnZlbmlfbmFyY2lzIDwtIHZlbmlfbmFyY2lzWyFpcy5uYSh2ZW5pX25hcmNpcyR5ZWFyKSxdDQoNCg0KIyBhZGRpbmcgYSBWZW5pIGNvbHVtbiB0aGF0IGlzIDEgZm9yIGV2ZXJ5b25lIHNvIHdlIGtub3cgd2hlbiBtZXJnaW5nIHRoaXMgdG8gb3RoZXIgZGF0YXNldHMgdGhhdCBhbGwgdGhlc2UgaW5kaXZpZHVhbHMgb2J0YWluZWQgYSBWZW5pDQp2ZW5pX25hcmNpcyR2ZW5pIDwtIHJlcCgxLCBucm93KHZlbmlfbmFyY2lzKSkNCg0KDQp2ZW5pX25hcmNpcyA8LSBzdWJzZXQodmVuaV9uYXJjaXMsIHNlbGVjdD1jKCJ5ZWFyIiwgInZlbmkiLCAicGVyc29uX2lkIikpDQoNCg0KYGBgDQoNCg0KDQojIFByZXBhcmluZyBWZW5pX05XTw0KDQpUaGVzZSBWZW5pIGRhdGEgYXJlIHNvdXJjZWQgZGlyZWN0bHkgZnJvbSB0aGUgd2ViIHNpdGUgb2YgTldPLiANCg0KYGBge3J9DQoNCg0KIyBjbGVhbmluZyB1cCB0aGUgaW5pdGlhbHMgYW5kIGV4dHJhY3RpbmcgdGhlIGZpcnN0IHRvIG1hdGNoIHdpdGggdGhlIE5BUkNJUyBkYXRhDQp2ZW5pX05XTyRpbml0aWFscyA8LSBzdHJfcmVtb3ZlKHZlbmlfTldPJGluaXRpYWxzLCAiXlxccz9Eclxccz8iKQ0KdmVuaV9OV08kaW5pdGlhbHMgPC0gc3RyX3JlbW92ZSh2ZW5pX05XTyRpbml0aWFscywgIl5cXHM/ZGlwbFxcLlxccz8iKQ0KdmVuaV9OV08kaW5pMSA8LSB0b2xvd2VyKGlmZWxzZSh2ZW5pX05XTyRmaXJzdCE9IiIsIHN0cl9leHRyYWN0KHZlbmlfTldPJGZpcnN0LCAiWzphbHBoYTpdIiksIHN0cl9leHRyYWN0KHZlbmlfTldPJGluaXRpYWxzLCAiWzphbHBoYTpdIikpKQ0KDQp2ZW5pX05XTyAlPiUNCiAgbXV0YXRlKHZlbmkgPSAxLA0KICAgICAgICAgbG4gPSBsYXN0KSAlPiUNCiAgc2VsZWN0KHZlbmksIHllYXIsIGxuLCBpbmkxLCBmaXJzdCwgdW5pKSAtPiB2ZW5pX05XTw0KDQoNCg0KdmVuaV9OV08kZmlyc3QgPC0gdG9sb3dlcih2ZW5pX05XTyRmaXJzdCkNCnZlbmlfTldPJGxuIDwtIHRvbG93ZXIodmVuaV9OV08kbG4pDQoNCiMgcmVtb3Zpbmcgbm9iaWxpYXJ5IHBhcnRpY2xlcyBhdCB0aGUgYmVnaW5uaW5nIG9mIHRoZSBuYW1lDQp2YW5kZTMgPC0gYygiXihWfHYpYW4gKER8ZCllclxccyIsICAiXihWfHYpYW4gKER8ZCllblxccyIsICAiXihWfHYpYW4gKER8ZCllXFxzIiwgICJeKFZ8dilhbmRlKG4pP1xccyIsICAiXihWfHYpYW4gJyhUfHQpXFxzIiwgICJeKFZ8dilhbicoVHx0KVxccyIsICAiXihWfHYpYW4gKFR8dClcXHMiLCAgIl4oVnx2KWFuIChIfGgpZXRcXHMiLCAgIl4oVnx2KW9uIChEfGQpZXJcXHMiLCAgIl4oT3xvKXAgZGVuXFxzIiwgICJeKE98bylwICd0XFxzIiwgICJeKE98bylmIHRlblxccyIsICAiXihBfGEpYW4gZGUobik/XFxzIiwgICJeKER8ZCllIChMfGwpYVxccyIsICAiXihJfGkpbiAoSHxoKWV0XFxzIiwgICJeKEl8aSluICcoVHx0KVxccyIsICAiXihJfGkpbicoVHx0KVxccyIsICAiXihJfGkpbiAoVHx0KVxccyIsICAiXihJfGkpbiAoRHxkKWVyXFxzIiwgICJeKEJ8YilpaiAoRHxkKWVcXHMiLCAgIl4oTHxsKWFcXHMiLCAiXihPfG8pcFxccyIgLCJeKFZ8dilhblxccyIsICJeKFZ8dilvblxccyIsICJeKER8ZCllblxccyIsICJeKER8ZCllclxccyIsICJeKER8ZCllbFxccyIsICJeKER8ZCkoZXxhfHV8aSlcXHMiLCAiXihEfGQpb3M/XFxzIiwgIl4oVHx0KWVyXFxzIiAsICJeKFR8dCllblxccyIsICJeKFR8dCllXFxzIiwgIl4nKFR8dClcXHMiLCAiXihMfGwpZVxccyIsICJeRWwtIiwgIl5bKEF8YSkoRXxlKV0oTHxsKSc/XFxzIiwgIl4oRHxkKSciLCAiXnp1XFxzIiwgIl4oWnx6KXVyXFxzIiwgIl5lXFxzIikNCg0KdmVuaV9OV08kbG4gPC0gc3RyX3JlbW92ZSh2ZW5pX05XTyRsbiwgcGFzdGUwKHZhbmRlMywgY29sbGFwc2U9InwiKSkNCg0KIyByZW1vdmluZyBkaWFjcml0aWNzDQp2ZW5pX05XTyRsbiA8LSBzdHJpX3RyYW5zX2dlbmVyYWwodmVuaV9OV08kbG4sIGlkPSJsYXRpbi1hc2NpaSIpDQp2ZW5pX05XTyRmaXJzdCA8LSBzdHJpX3RyYW5zX2dlbmVyYWwodmVuaV9OV08kZmlyc3QsIGlkPSJsYXRpbi1hc2NpaSIpDQoNCg0KDQojIHJlbW92aW5nIG11bHRpcGxlIGxhc3QgbmFtZXMNCnZlbmlfTldPJGxuIDwtIHN0cl9leHRyYWN0KHZlbmlfTldPJGxuLCAiWzphbHBoYTpdKyIpDQoNCnZlbmlfTldPJGZpcnN0IDwtIHN0cl9leHRyYWN0KHZlbmlfTldPJGZpcnN0LCAiWzphbHBoYTpdKyIpDQoNCnZlbmlfTldPJGZ1bGxlbnRyeSA8LSBwYXN0ZTAodmVuaV9OV08kaW5pMSwgdmVuaV9OV08kZmlyc3QsIHZlbmlfTldPJHllYXIsIHZlbmlfTldPJGxuKQ0KDQp2ZW5pX05XTyRkdXBsaWNhdGVzIDwtIGFzLm51bWVyaWMoZHVwbGljYXRlZCh2ZW5pX05XTyRmdWxsZW50cnkpKQ0KDQp2ZW5pX05XTyA8LSB2ZW5pX05XT1t2ZW5pX05XTyRkdXBsaWNhdGVzIT0xLF0gIyByZW1vdmVzIHNvbWUgZHVwbGljYXRlcw0KDQoNCiMgd2UgcmVtcHZlIDIgTldPIGVudHJpZXMgd2l0aCBubyBrbm93biBsYXN0IG5hbWUsIGJlY2F1c2Ugd2UgY2FuIGltcG9zc2libHkgbWF0Y2ggdGhlc2UgaW5kaXZpZHVhbHMNCnZlbmlfTldPIDwtIHZlbmlfTldPWyFpcy5uYSh2ZW5pX05XTyRsbiksXQ0KDQoNCiMgd2UgcmVtb3ZlIGFsbCBWZW5pJ3MgZnJvbSAyMDIxIGFuZCAyMDIyIGJlY2F1c2UgaW5pdGlhbCBhbmFseXNlcyBzaG93ZWQgdGhhdCB0aGVzZSB3ZXJlIHZlcnkgcG9vcmx5IG1hdGNoZWQNCnZlbmlfTldPIDwtIHZlbmlfTldPICU+JSBmaWx0ZXIoeWVhcjwyMDIxKQ0KDQpgYGANCg0KDQoNCkZvciB0aGUgbWF0Y2hpbmcsIHdlIHRha2UgdGhlIGZvbGxvd2luZyByb3V0ZToNCg0KKjE6IE1hdGNoaW5nIG9uIFBSUyBpbiB0aGUgTkFSQ0lTIFZlbmkgZGF0YQ0KDQpUaGlzIGlzIHRoZSBtb3N0IHN0cmFpZ2h0Zm9yd2FyZCByb3V0ZSwgYXMgdGhlIElEcyBpbiB0aGUgTkFSQ0lTIFZlbmkncyBvdmVybGFwIHdpdGggdGhlIElEcyBpbiB0aGUgUGhEIGRhdGFzZXQuIFNvIHRoZXJlIGlzIG5vIGZ1cnRoZXIgZGlzYW1iaWd1YXRpb24gbmVlZGVkIGhlcmUsIHRoZXJlZm9yZSB3ZSBnaXZlIGl0IHByaW9yaXR5IG92ZXIgbWV0aG9kIDIuIA0KDQoqMjogTWF0Y2hpbmcgb24gZmlyc3QgYW5kIGxhc3QgbmFtZXMgaW4gTldPIFZlbmkgZGF0YQ0KDQoNCmBgYHtyfQ0KDQoNCiMgRGF0YXNldCAxOiBQUlMgc3RyYXRlZ3kgKE5BUkNJUykNCm1hdGNoX2RmMSA8LSB2ZW5pX25hcmNpcyAlPiUgc2VsZWN0KHZlbmksIHllYXIsIHBlcnNvbl9pZCkgJT4lIHJlbmFtZSh2ZW5pMSA9ICJ2ZW5pIiwgeWVhcjEgPSAieWVhciIpDQoNCiMgRGF0YXNldCAyOiBGaXJzdCBhbmQgbGFzdCBuYW1lIChOV08pDQptYXRjaF9kZjIgPC0gdmVuaV9OV08gJT4lIGZpbHRlcighaXMubmEoZmlyc3QpKSAlPiUgZmlsdGVyKCFpcy5uYShsbikpICU+JSBzZWxlY3QodmVuaSwgeWVhciwgZmlyc3QsIGxuKSAlPiUgcmVuYW1lKHZlbmkyID0gInZlbmkiLCB5ZWFyMiA9ICJ5ZWFyIikNCg0KDQpwcmludChwYXN0ZTAoIk51bWJlciBvZiBWZW5pJ3MgdG8gYmUgbWF0Y2hlZCBvbiBQUlM6ICIsIG5yb3cobWF0Y2hfZGYxKSkpDQoNCnByaW50KHBhc3RlMCgiTnVtYmVyIG9mIFZlbmkncyB0byBiZSBtYXRjaGVkIG9uIGZpcnN0IGFuZCBsYXN0IG5hbWUgZnJvbSBOV086ICIsIG5yb3cobWF0Y2hfZGYyKSkpDQoNCg0KYGBgDQoNCg0KDQoNCiMgTWF0Y2hpbmcgMTogTkFSQ0lTDQoNCmBgYHtyfQ0KDQpwaGRzIDwtIHBoZHMgJT4lIGxlZnRfam9pbihtYXRjaF9kZjEsIGJ5PWMoImlkIj0icGVyc29uX2lkIikpDQoNCnBoZHMkdmVuaTEgPC0gaWZlbHNlKGlzLm5hKHBoZHMkdmVuaTEpLCAwLCBwaGRzJHZlbmkxKQ0KDQojIGNoZWNrOiBkdXBsaWNhdGUgbWF0Y2hlcz8NCm5yb3cocGhkc1tkdXBsaWNhdGVkKHBoZHMkaWQpLF0pDQoNCmBgYA0KDQoNCg0KIyBNYXRjaGluZyAyOiBGaXJzdCBhbmQgTGFzdCBOYW1lIChOV08pDQoNCmBgYHtyfQ0KDQpwaGRzIDwtIHBoZHMgJT4lIGxlZnRfam9pbihtYXRjaF9kZjIsIGJ5PWMoImZpcnN0bmFtZSI9ImZpcnN0IiwgImxhc3RuYW1lIj0ibG4iKSkNCg0KIyByZW1vdmluZyBWZW5pJ3Mgb2J0YWluZWQgYmVmb3JlIGRvY3RvcmF0ZSBvciA5KyB5ZWFycyBhZnRlcg0Kc3VtbWFyeShhcy5mYWN0b3IocGhkcyR2ZW5pMikpDQpwaGRzJHZlbmkyIDwtIGlmZWxzZShwaGRzJHllYXIyPHBoZHMkcGhkX3llYXIsIE5BLCBwaGRzJHZlbmkyKQ0KcGhkcyR2ZW5pMiA8LSBpZmVsc2UocGhkcyR5ZWFyMj5waGRzJHBoZF95ZWFyKzgsIE5BLCBwaGRzJHZlbmkyKQ0Kc3VtbWFyeShhcy5mYWN0b3IocGhkcyR2ZW5pMikpDQoNCg0KcGhkcyR2ZW5pMiA8LSBpZmVsc2UoaXMubmEocGhkcyR2ZW5pMiksIDAsIHBoZHMkdmVuaTIpDQoNCm5yb3cocGhkc1tkdXBsaWNhdGVkKHBoZHMkaWQpLF0pDQoNCg0KYGBgDQoNCg0KDQoNCiMgSW5zcGVjdGluZyBkdXBsaWNhdGVzDQoNClRoaXMgaXMgbm90IHRoZSBjYXNlIGluIHRoaXMgY3VyYXRlZCBleGFtcGxlLCBidXQgaXQgZGlkIG9jY3VyIGEgZmV3IHRpbWVzICg8NSkgaW4gb3VyIGRhdGEsIHNvIHdlIHNob3cgaG93IHdlIGRlYWx0IHdpdGggZHVwbGljYXRlIFZlbmkgbWF0Y2hlcyBoZXJlLiANCg0KYGBge3IsIGV2YWw9RkFMU0V9DQoNCmR1cGxpY2F0ZWRpZHMgPC0gcGhkcyRpZFt3aGljaChkdXBsaWNhdGVkKHBoZHMkaWQpKV0NCg0KDQppbnNwZWN0IDwtIHBoZHNbcGhkcyRpZCVpbiVkdXBsaWNhdGVkaWRzLF0NCg0KIyB0aGVyZSBpcyAxIGR1cGxpY2F0ZSwgc28gMiBvYnNlcnZhdGlvbnMgdG8gZXhwZWN0DQojIGZvciB0aGlzIGR1cGxpY2F0ZSwgb25lIG9mIHRoZSBtYXRjaGVzIGxlYWRzIHRvIHRoZSBzYW1lIHllYXIgb2YgdmVuaSByZWNlaXB0LCBhbmQgdGhlIG90aGVyIGRpdmVyZ2VzLiBTbyB0aGUgbWF0Y2ggd2hlcmUgYm90aCBpbmRpY2F0ZSB0aGUgc2FtZSB5ZWFyIG9mIFZlbmkgcmVjZWlwdCBpcyBsaWtlbHkgdGhlIHRydWUgbWF0Y2gNCg0KaW5zcGVjdCRjaG9vc2UgPC0gYXMubnVtZXJpYyhpbnNwZWN0JHllYXIxPT1pbnNwZWN0JHllYXIyKQ0KDQppbnNwZWN0IDwtIGluc3BlY3QgJT4lIGZpbHRlcihjaG9vc2U9PTEpICMgcmVtb3ZlIHRoZSBjYXNlcyB3aGVyZSB0aGUgdmVuaSB5ZWFycyBkaXZlcmdlDQppbnNwZWN0IDwtIHN1YnNldChpbnNwZWN0LCBzZWxlY3Q9LWNob29zZSkNCg0KIyByZW1vdmUgdGhlIGR1cGxpY2F0ZXMgKGFsbCA2KSBmcm9tIHRoZSBwaGQgZGF0YQ0KcGhkcyA8LSBwaGRzICU+JSBmaWx0ZXIoIXBoZHMkaWQlaW4lZHVwbGljYXRlZGlkcykNCg0KIyBhZGQgYmFjayBvbmx5IHRoZSBjb3JyZWN0IA0KcGhkcyA8LSByYmluZC5kYXRhLmZyYW1lKHBoZHMsIGluc3BlY3QpDQoNCg0KDQpgYGANCg0KDQoNCiMgQ29tYmluaW5nIHRoZSBvdXRjb21lcyBvZiB0aGUgdHdvIG1ldGhvZHMNCg0KV2UgYXNzdW1lIGEgcGVyc29uIGhhcyBvYnRhaW5lZCBhIFZlbmkgaWYgdGhleSBoYXZlIGJlZW4gbWF0Y2hlZCB1c2luZyAqYXQgbGVhc3Qgb25lKiAgb2YgdGhlIG1ldGhvZHMuIFNvIHdlIGRvIG5vdCByZXF1aXJlIGFsbCBtZXRob2RzIHRvIGNvbnZlcmdlLCBidXQgcmF0aGVyIGFkZCB0aGUgdmVuaSdzIGZyb20gYWxsIHNvdXJjZXMgdG9nZXRoZXIuIA0KDQpgYGB7cn0NCg0KcGhkcyR2ZW5pIDwtIHBtYXgocGhkcyR2ZW5pMSwgcGhkcyR2ZW5pMikNCg0Kc3VtbWFyeShhcy5mYWN0b3IocGhkcyR2ZW5pKSkNCg0KIyBDb21wYXJpbmcgdGhlIFZlbmkgeWVhcnMNCnh0YWJzKH5waGRzJHllYXIxICsgcGhkcyR5ZWFyMikNCiMgUGVyZmVjdCBjb252ZXJnZW5jZSwgc28gbm8gbmVlZCB0byBjaGFuZ2UgaXQhIA0KDQoNCnBoZHMkeWVhciA8LSBwaGRzJHllYXIxDQoNCnBoZHMkeWVhciA8LSBpZmVsc2UoIWlzLm5hKHBoZHMkeWVhcjIpLCBwaGRzJHllYXIyLCBwaGRzJHllYXIpDQoNCg0KIyBzZXQgdGhlIHllYXIgdG8gMjAyMCBpZiBwZW9wbGUgZGlkIG5vdCBvYnRhaW4gYSB2ZW5pDQpwaGRzJHllYXIgPC0gaWZlbHNlKGlzLm5hKHBoZHMkeWVhciksIDIwMjAsIHBoZHMkeWVhcikNCg0KIyBDcmVhdGluZyBhIGRhdGFmcmFtZSBvZiBhbGwgVmVuaSB3aW5uZXJzIGluIG91ciBzYW1wbGUNCm1hdGNoZWR2ZW5pcyA8LSBwaGRzICU+JSBmaWx0ZXIodmVuaT09MSkNCg0KDQpgYGANCg0KDQoNCg0KIyBDcmVhdGUgYSBwZXJzb24tcGVyaW9kIGZpbGUgKFBQRikNCg0KIyMgU3RhcnQgd2l0aCBhbiBlbXB0eSBQUEYNCg0KYGBge3J9DQoNCnllYXIgPC0gYygxOTk4OjIwMjApDQoNCnplcm92ZW5pIDwtIHJlcCgwLCBsZW5ndGgoeWVhcikpDQoNCmlkIDwtIHVuaXF1ZShwaGRzJGlkKQ0KDQpuaWQgPC0gbGVuZ3RoKGlkKQ0KDQoNCiMgbWFrZSB0aGUgZW1wdHkgZGF0YXNldCBiYXNlZCBvbiB0aGlzDQp5ZWFyIDwtIHJlcCh5ZWFyLCBuaWQpDQp6ZXJvdmVuaSA8LSByZXAoemVyb3ZlbmksIG5pZCkNCmlkIDwtIHJlcChpZCwgZWFjaD1sZW5ndGgoYygxOTk4OjIwMjApKSkNCmRmX3BwZiA8LSBkYXRhLmZyYW1lKGlkLCB5ZWFyLCB6ZXJvdmVuaSkNCg0KYGBgDQoNCg0KIyMgQWRkIHRoZSB2ZW5pJ3MNCg0KYGBge3J9DQoNCmRmX3BwZiAlPiUNCiAgZnVsbF9qb2luKHBoZHMsIGJ5PWMoImlkIiwgInllYXIiKSkgJT4lDQogIGFycmFuZ2UoaWQsIHllYXIpICU+JQ0KICBzZWxlY3QoaWQsIHllYXIsIHZlbmksIGdlbmRlciwgcHJvcG1lbiwgcHJvcHdvbWVuLCBwcm9wTkEsIHdvbV9zdjEsIHByb2YycCwgdGVhbXNpemUsIHVuaSwgcGhkX3llYXIpIC0+IHZlbmlfcHBmDQoNCiMgISB0byBiZSBhZGRlZDogRklFTEQNCg0KDQojIGZpbGxpbmcgdGhlIG90aGVyIGRhdGEgaW4NCnZlbmlfcHBmICU+JQ0KICBncm91cF9ieShpZCkgJT4lDQogIGZpbGwoZ2VuZGVyLCAuZGlyZWN0aW9uID0gImRvd251cCIpICU+JQ0KIyAgZmlsbChmaWVsZCwgLmRpcmVjdGlvbiA9ICJkb3dudXAiKSAlPiUNCiAgZmlsbCh1bmksIC5kaXJlY3Rpb24gPSAiZG93bnVwIikgJT4lDQogIGZpbGwocGhkX3llYXIsIC5kaXJlY3Rpb24gPSAiZG93bnVwIikgJT4lDQogIGZpbGwocHJvcG1lbiwgLmRpcmVjdGlvbiA9ICJkb3dudXAiKSAlPiUNCiAgZmlsbChwcm9wd29tZW4sIC5kaXJlY3Rpb24gPSAiZG93bnVwIikgJT4lDQogIGZpbGwocHJvcE5BLCAuZGlyZWN0aW9uID0gImRvd251cCIpICU+JQ0KICBmaWxsKHdvbV9zdjEsIC5kaXJlY3Rpb24gPSAiZG93bnVwIikgJT4lDQogIGZpbGwocHJvZjJwLCAuZGlyZWN0aW9uID0gImRvd251cCIpICU+JQ0KICBmaWxsKHRlYW1zaXplLCAuZGlyZWN0aW9uID0gImRvd251cCIpICU+JQ0KICB1bmdyb3VwICgpIC0+IHZlbmlfcHBmDQoNCnZlbmlfcHBmJHZlbmkgPC0gaWZlbHNlKGlzLm5hKHZlbmlfcHBmJHZlbmkpLCAwLCB2ZW5pX3BwZiR2ZW5pKQ0KDQoNCmBgYA0KDQoNCiMjIFJlbW92aW5nIHllYXJzIG5vdC1hdC1yaXNrDQoNCmBgYHtyfQ0KDQojIFJlbW92aW5nIHllYXJzIGFmdGVyIGhhdmluZyBvYnRhaW5lZCBhIHZlbmkNCm1hdGNoZWR2ZW5pcyRtYXh2IDwtIG1hdGNoZWR2ZW5pcyR5ZWFyDQp2ZW5peWVhciA8LSBzdWJzZXQobWF0Y2hlZHZlbmlzLCBzZWxlY3Q9YyhpZCwgbWF4dikpDQoNCnZlbml5ZWFyIDwtIHZlbml5ZWFyWyFpcy5uYSh2ZW5peWVhciRpZCksXQ0KDQp2ZW5pX3BwZiA8LSBsZWZ0X2pvaW4odmVuaV9wcGYsIHZlbml5ZWFyLCBieT0iaWQiKQ0KdmVuaV9wcGYkbWF4diA8LSBpZmVsc2UoaXMubmEodmVuaV9wcGYkbWF4diksIDIwMjAsIHZlbmlfcHBmJG1heHYpDQoNCnZlbmlfcHBmIDwtIHZlbmlfcHBmW3ZlbmlfcHBmJHllYXI8PXZlbmlfcHBmJG1heHYsXQ0KDQp2ZW5pX3BwZiA8LSBzdWJzZXQodmVuaV9wcGYsIHNlbGVjdD0tbWF4dikNCg0KYGBgDQoNCg0KIyBDcmVhdGluZyB0aW1lIHZhcmlhYmxlcw0KDQpgYGB7cn0NCg0KIyBUaW1lID0geWVhcnMgc2luY2UgUGhEIHJlY2VpcHQgKD0gcHVibGljYXRpb24gZGlzcy4gaW4gTkFSQ0lTKQ0KdmVuaV9wcGYkdGltZSA8LSB2ZW5pX3BwZiR5ZWFyIC0gdmVuaV9wcGYkcGhkX3llYXINCg0KDQojIENlbnRyZSBQaEQgeWVhciB2YXJpYWJsZQ0KdmVuaV9wcGYkcGhkX3llYXIgPC0gdmVuaV9wcGYkcGhkX3llYXIgLSBtaW4odmVuaV9wcGYkcGhkX3llYXIpDQoNCg0KdmVuaV9wcGYgPC0gdmVuaV9wcGYgJT4lIGRpc3RpbmN0KCkNCg0KYGBgDQoNCg0KIyBWZW5pIHdpdGhpbiByZWd1bGFyIGRlYWRsaW5lIHZzIGV4dGVuZGVkIGRlYWRsaW5lDQoNCmBgYHtyfQ0KDQp2ZW5pX3BwZiRleHRlbmRlZCA8LSBhcy5mYWN0b3IoaWZlbHNlKHZlbmlfcHBmJHRpbWU8NCwgMCwgMSkpDQoNCmxldmVscyh2ZW5pX3BwZiRleHRlbmRlZCkgPC0gYygiYmVmb3JlIGV4dGVuc2lvbiIsICJhZnRlciBleHRlbnNpb24iKQ0KDQpgYGANCg0KDQoNCg0KIyBQdWJsaWNhdGlvbnMNCg0KRmlyc3QsIHdlIGNvbWJpbmUgdGhlIDQgcHVibGljYXRpb25zIGRhdGFzZXRzLiANCg0KYGBge3IgY29tYmluaW5nIHB1YnN9DQoNCg0KIyBwdWJsaWNhdGlvbnMNCmxvYWQoZmlsZSA9ICIuL2RhdGEvcHVic19tZXRhZGYucmRhIikNCnB1YnMgPC0gcHVic19tZXRhZGYNCg0KIyBTZWxlY3Rpb24gb2YgcHVibGljYXRpb25zDQpwdWJzJHR5cGUgPC0gYXMuZmFjdG9yKHB1YnMkdHlwZSkNCg0KcHVicyA8LSBwdWJzWyhwdWJzJHR5cGU9PSJBcnRpa2VsIikgfCAocHVicyR0eXBlPT0iQm9layIgfCAocHVicyR0eXBlPT0iQm9la2RlZWwiKSB8IChwdWJzJHR5cGU9PSJDb25mZXJlbmNlIFBhcGVyIikgfCAocHVicyR0eXBlPT0iQ29uZmVyZW5jZSBQcm9jZWVkaW5ncyIpIHwgKHB1YnMkdHlwZT09IkNvbmZlcmVudGllYmlqZHJhZ2UiKSksIF0NCg0Kc3VtbWFyeShwdWJzJHR5cGUpDQoNCiMgZGVyaXZlIHB1YmxpY2F0aW9uIHllYXIgZnJvbSB2YXJpYWJsZSBEYXRhLmlzc3VlZA0KcHVicyA8LSBwdWJzWyFpcy5uYShwdWJzJGRhdGUuaXNzdWVkKSxdDQoNCg0KcHVicyAlPiUgDQogIG11dGF0ZSh5ZWFyID0gYXMuY2hhcmFjdGVyKGRhdGUuaXNzdWVkKSkgJT4lDQogIG11dGF0ZSh5ZWFyID0gc3Vic3RyKHllYXIsIDEsNCkpICU+JQ0KICBtdXRhdGUoeWVhciA9IGFzLm51bWVyaWMoeWVhcikpIC0+IHB1YnMNCg0KDQojIGxhc3QgY29tcGxldGUgeWVhciBvZiBwdWJsaWNhdGlvbnMgZGF0YSBpcyAyMDIyLCBzbyByZW1vdmUgcHVibGljYXRpb25zIGZyb20gdGhlIGZvbGxvd2luZyB5ZWFycw0KcHVicyA8LSBwdWJzW3B1YnMkeWVhcjwyMDIzLF0NCg0KIyBub3csIHdlIGNyZWF0ZSBhIHBlcnNvbi1wZXJpb2QgZmlsZTogb25lIHJvdyBwZXIgUGhEIHBlciB5ZWFyDQpwdWJzICU+JSANCiAgZ3JvdXBfYnkoaWQsIHllYXIpICU+JQ0KICBkcGx5cjo6c3VtbWFyaXplKG5wdWJzID0gbigpLA0KICAgICAgICAgICAgaWQgPSBmaXJzdChpZCkpIC0+IHB1YnNfcHBmDQoNCg0KDQoNCmBgYA0KDQoNCg0KDQojIyBDcmVhdGluZyBhbiBlbXB0eSBwZXJzb24tcGVyaW9kIGZpbGUNCg0KV2UgY2FuJ3QgcmV1c2UgdGhlIG9sZCBkZl9wcGYsIGJlY2F1c2UgaXRzIHJhbmdlIG9mIHllYXJzIGlzIG5vdCB0aGUgc2FtZS4gV2Ugd2FudCB0byBnbyBiYWNrIGluIHRpbWUgZnVydGhlciBmb3IgcHVibGljYXRpb25zIHRvIGFsc28gY2FwdHVyZSBwdWJsaWNhdGlvbnMgYmVmb3JlIHRoZSBQaEQgZm9yIFBoRHMgaW4gdGhlIGVhcmxpZXN0IGNvaG9ydHMuIA0KDQpgYGB7cn0NCg0KeWVhciA8LSBjKDE5OTM6MjAyMikNCg0KaWQgPC0gdW5pcXVlKHBoZHMkaWQpDQoNCm5pZCA8LSBsZW5ndGgoaWQpDQoNCg0KIyBtYWtlIHRoZSBlbXB0eSBkYXRhc2V0IGJhc2VkIG9uIHRoaXMNCnllYXIgPC0gcmVwKHllYXIsIG5pZCkNCmlkIDwtIHJlcChpZCwgZWFjaD1sZW5ndGgoYygxOTkzOjIwMjIpKSkNCmRmX3BwZiA8LSBkYXRhLmZyYW1lKGlkLCB5ZWFyKQ0KDQoNCmBgYA0KDQoNCg0KDQojIyBQdWJsaWNhdGlvbnMgdmFyaWFibGUgMQ0KDQpUb3RhbCBjdW11bGF0aXZlIG51bWJlciBvZiBwdWJsaWNhdGlvbnMgZnJvbSB0aGUgc3RhcnQgb2YgdGhlIFBoRCB0byAnY3VycmVudCB5ZWFyJw0KDQpgYGB7cn0NCg0KZGZfcHBmICU+JQ0KICBmdWxsX2pvaW4ocGhkcywgYnk9YygiaWQiLCAieWVhciIpKSAlPiUNCiAgYXJyYW5nZShpZCwgeWVhcikgJT4lDQogIHNlbGVjdChpZCwgeWVhciwgcGhkX3llYXIpIC0+IHRvdGFscHVicw0KDQoNCnRvdGFscHVicyAlPiUNCiAgZ3JvdXBfYnkoaWQpICU+JQ0KICBmaWxsKHBoZF95ZWFyLCAuZGlyZWN0aW9uID0gImRvd251cCIpICU+JQ0KICB1bmdyb3VwICgpIC0+IHRvdGFscHVicw0KDQoNCiN0b3RhbHB1YnMgPC0gdG90YWxwdWJzW3RvdGFscHVicyR5ZWFyPHRvdGFscHVicyRwaGRfeWVhcis0LCBdDQp0b3RhbHB1YnMgPC0gdG90YWxwdWJzW3RvdGFscHVicyR5ZWFyPnRvdGFscHVicyRwaGRfeWVhci01LCBdDQoNCg0KDQojIEFkZGluZyBwdWJsaWNhdGlvbnMNCnRvdGFscHVicyAlPiUNCiAgbGVmdF9qb2luKHB1YnNfcHBmLCBieT1jKCJpZCIsICJ5ZWFyIikpIC0+IHRvdGFscHVicw0KDQp0b3RhbHB1YnMkbnB1YnMgPC0gaWZlbHNlKGlzLm5hKHRvdGFscHVicyRucHVicyksIDAsIHRvdGFscHVicyRucHVicykNCg0KDQojIENyZWF0aW5nIHRoZSBjdW11bGF0aXZlIG5vLiBvZiBwdWJsaWNhdGlvbnMNCnRvdGFscHVicyAlPiUNCiAgZ3JvdXBfYnkoaWQpICU+JQ0KICBtdXRhdGUobnB1YnNfY3VtdWwgPSBjdW1zdW0obnB1YnMpKSAlPiUNCiAgbXV0YXRlKG5wdWJzX2N1bXVsID0gbGFnKG5wdWJzX2N1bXVsLCBuPTEsIG9yZGVyX2J5PXllYXIpLA0KICAgICAgICAgbnB1YnNfY3VtdWwgPSBpZmVsc2UoaXMubmEobnB1YnNfY3VtdWwpLCAwLCBucHVic19jdW11bCkpIC0+IHRvdGFscHVicw0KDQoNCmBgYA0KDQoNCg0KIyMgUHVibGljYXRpb25zIHZhcmlhYmxlIDINCg0KT25seSB0aGUgbnVtYmVyIG9mIHB1YmxpY2F0aW9ucyBpbiB0aGUgcHJlY2VkaW5nIHllYXINCg0KYGBge3J9DQoNCiMgbmV4dCwgd2UgaW5jbHVkZSBhIHZhcmlhYmxlIHdpdGggdGhlIG51bWJlciBvZiBwdWJsaWNhdGlvbnMgaW4gdGhlIHByZXZpb3VzIHllYXINCiMgZm9yIHRoZSBmaXJzdCB5ZWFyLCB3ZSB0YWtlIHRoZSB2YWx1ZSBvZiB0aGUgeWVhciBpdHNlbGYNCnRvdGFscHVicyAlPiUNCiAgZ3JvdXBfYnkoaWQpICU+JQ0KICBtdXRhdGUobnB1YnNfcHJldiA9IGxhZyhucHVicywgbj0xLCBvcmRlcl9ieSA9IHllYXIpLA0KICAgICAgICAgbnB1YnNfcHJldiA9IGlmZWxzZShpcy5uYShucHVic19wcmV2KSwgbGVhZChucHVic19wcmV2LCBuPTEsIG9yZGVyX2J5ID0geWVhciksIG5wdWJzX3ByZXYpKSAlPiUNCiAgdW5ncm91cCgpIC0+IHRvdGFscHVicw0KDQoNCg0KdG90YWxwdWJzIDwtIHN1YnNldCh0b3RhbHB1YnMsIHNlbGVjdD1jKCJpZCIsICJ5ZWFyIiwgIm5wdWJzX2N1bXVsIiwgIm5wdWJzX3ByZXYiKSkNCg0KDQp0b3RhbHB1YnMgPC0gdG90YWxwdWJzICU+JSBkaXN0aW5jdCgpDQoNCg0KIyBOZXh0LCB3ZSBsb2ctdHJhbnNmb3JtIGJvdGggcHVibGljYXRpb25zIHZhcmlhYmxlcyB0byByZW1vdmUgb3V0bGllcnMNCnRvdGFscHVicyRucHVic19jdW11bCA8LSBsb2codG90YWxwdWJzJG5wdWJzX2N1bXVsICsgMSkNCnRvdGFscHVicyRucHVic19wcmV2IDwtIGxvZyh0b3RhbHB1YnMkbnB1YnNfcHJldiArIDEpDQogIA0KDQpgYGANCg0KDQoNCg0KYGBge3J9DQoNCnZlbmlfcHBmICU+JQ0KICBsZWZ0X2pvaW4odG90YWxwdWJzLCBieT1jKCJpZCIsICJ5ZWFyIikpIC0+IHZlbmlfcHBmDQoNCg0KDQpucm93KHZlbmlfcHBmW3ZlbmlfcHBmJHRpbWU8MCAmIHZlbmlfcHBmJHZlbmk9PTEsXSkgIyB2ZW5pIGJlZm9yZSBwaGQNCg0KbnJvdyh2ZW5pX3BwZlt2ZW5pX3BwZiR0aW1lPjggJiB2ZW5pX3BwZiR2ZW5pPT0xLF0pICMgdmVuaSBtb3JlIHRoYW4gOCB5ZWFycyBhZnRlciBwaGQNCg0KeHRhYnMofnZlbmlfcHBmJHRpbWUrdmVuaV9wcGYkdmVuaSkNCg0KDQojIFJlbW92aW5nIHllYXJzIGJlZm9yZSBQaEQNCm5yb3codmVuaV9wcGZbdmVuaV9wcGYkdmVuaT09MSxdKSANCnZlbmlfcHBmIDwtIHZlbmlfcHBmW3ZlbmlfcHBmJHRpbWU+LTEsXQ0KbnJvdyh2ZW5pX3BwZlt2ZW5pX3BwZiR2ZW5pPT0xLF0pIA0KDQojIFJlbW92aW5nIDYrIHllYXJzIGFmdGVyIFBoRA0KbnJvdyh2ZW5pX3BwZlt2ZW5pX3BwZiR2ZW5pPT0xLF0pIA0KdmVuaV9wcGYgPC0gdmVuaV9wcGZbdmVuaV9wcGYkdGltZTw5LF0NCm5yb3codmVuaV9wcGZbdmVuaV9wcGYkdmVuaT09MSxdKSANCmBgYA0KDQoNCg0KDQojIFZlbmkgd2l0aGluIDMgeWVhcnMNCg0KYGBge3J9DQoNCnN1bW1hcnkoYXMuZmFjdG9yKHZlbmlfcHBmJHZlbmkpKQ0KdmVuaV9wcGYgJT4lIGZpbHRlcih0aW1lPDQpIC0+IHZlbmkzX3BwZg0KDQpzdW1tYXJ5KGFzLmZhY3Rvcih2ZW5pM19wcGYkdmVuaSkpDQoNCg0KYGBgDQoNCg0KIyBWZW5pIGluIHRoZSB5ZWFyIG9yIHRoZSBmb2xsb3dpbmcgeWVhcg0KDQpgYGB7cn0NCg0Kc3VtbWFyeShhcy5mYWN0b3IodmVuaV9wcGYkdmVuaSkpDQp2ZW5pX3BwZiAlPiUgZmlsdGVyKHRpbWU8MikgLT4gdmVuaTFfcHBmDQoNCnN1bW1hcnkoYXMuZmFjdG9yKHZlbmkxX3BwZiR2ZW5pKSkNCg0KDQpgYGANCg0KIyBWZW5pIDQtOCB5ZWFycyBhZnRlciBkb2N0b3JhdGUNCg0KYGBge3J9DQoNCnN1bW1hcnkoYXMuZmFjdG9yKHZlbmlfcHBmJHZlbmkpKQ0KdmVuaV9wcGYgJT4lIGZpbHRlcih0aW1lPjMpIC0+IHZlbmk0OF9wcGYNCg0Kc3VtbWFyeShhcy5mYWN0b3IodmVuaTQ4X3BwZiR2ZW5pKSkNCg0KDQpgYGANCg0KDQoNCiAjIFNhdmluZw0KDQpUaGVzZSBmaWxlcyBhcmUgbm90IHNhdmVkLCBiZWNhdXNlIHRoZSBmaWxlcyB0aGF0IGFyZSBjcmVhdGVkIGhlcmUgKHZlbmlfcHBmL3ZlbmkxX3BwZi92ZW5pM19wcGYvdmVuaTQ4X3BwZikgYXJlIHJlcGxhY2VkIGluIHRoZSBHaXQgd2l0aCB0aGUgcmVhbCwgYnV0IGNvbXBsZXRlbHkgYW5vbnltaXNlZCBkYXRhLiANCg0K</div>
+<style>
+  .center {
+    text-align: center;
+    color: red;
+  }
+</style>
+  
+  <hr>
+  <br>
+  <p class="center">Copyright &copy; 2024 </p>
+    
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("dataprep-veni.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

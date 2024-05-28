@@ -1,0 +1,727 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: Veni receipt variable"
+date: "Last compiled on `r Sys.Date()`"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+---
+
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE}
+
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"), cache.lazy = FALSE)
+options(width = 100)
+rgl::setupKnitr()
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+#klippy::klippy(color = 'darkred')
+#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
+```
+
+
+
+----
+
+This lab journal demonstrates how we create the dependent variable in our analyses. 
+  
+----
+
+# Custom functions
+
+- `package.check`: Check if packages are installed (and install if not) in R ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)). 
+
+
+```{r, results='hide'}
+
+rm(list=ls())
+
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+
+```
+
+---  
+
+# Packages
+
+
+- `tidyverse`: For general data manipulation
+
+- `stringr/stringi`: For string manipulations
+
+
+```{r, results='hide'}
+
+packages = c("tidyverse", "stringr", "stringi")
+
+fpackage.check(packages)
+
+
+```
+
+--- 
+
+
+
+We use two processed datasets and three raw datasets
+
+* [phdgender.rda](https://github.com/ammulders/amatteroftime/data/processed/phdgender.rda): example dataset of 8 (fictional) PhDs with all independent variables added in the previous steps
+    - For construction of this dataset see [Independent variables: gender](gender.html)
+    - name of dataset: `phdgender` 
+
+* [phd_supervisors.rda](https://github.com/ammulders/amatteroftime/data/processed/phd_supervisors.rda): cleaned dataframe of PhDs with the supervisor variables
+    - For construction of this dataset see [Independent variables: supervisor variables](supervisors.html)
+    - name of dataset: `phd_supervisors` 
+  
+* [veni_NWO.rda](https://github.com/ammulders/amatteroftime/data/veni_NWO.rda): list of Veni's, web scraped from [NWO](https://www.nwo.nl/en/researchprogrammes/nwo-talent-programme/projects-veni/veni-2022#:~:text=NWO%20has%20awarded%20Veni%20funding,over%20the%20next%20three%20years.)
+    - name of dataset: `veni_NWO` 
+    
+* [veni_NARCIS.rda](https://github.com/ammulders/amatteroftime/data/veni_narcis.rda): list of Veni's obtained from NARCIS 
+    - name of dataset: `veni_narcis`
+    
+* [pubs_metadf.rda](https://github.com/ammulders/amatteroftime/data/pubs_metadf.rda): raw publications data from NARCIS
+    - name of dataset: `pubs_metadf`
+
+
+
+```{r files, eval=TRUE}
+
+load(file="data/processed/phdgender.rda")
+
+load(file = "data/processed/phd_supervisors.rda")
+
+load(file = "./data/veni_NWO.rda")
+
+load(file = "./data/veni_narcis.rda")
+
+load(file = "./data/pubs_metadf.rda")
+
+
+```
+
+
+
+
+# PhD variables
+
+
+## Sample selection
+
+First, we only select PhDs who have started publishing, and who obtained their PhD between 1997 and 2019 so that we can construct a pool of eligible researchers. 
+
+
+```{r}
+
+# SEL1: years
+phds <- phdgender[phdgender$phd_year>1996 & phdgender$phd_year<2020,]
+
+# SEL 2: publishing scholars
+
+# add publications, only keep publications after PhD graduation date
+publishing <- phds %>% left_join(pubs_metadf, by="id") %>% filter(date.issued > phd_year) 
+
+publishing %>%
+  group_by(id) %>%
+  mutate(start_pub=1) %>% # create a variable for those who are still matched that they started publishing
+  select(id, start_pub) %>%
+  slice_head(n=1) -> publishing
+
+phds <- phds %>% left_join(publishing, by="id") #add start_pub variable
+
+phds$start_pub <- ifelse(is.na(phds$start_pub), 0, phds$start_pub)
+
+
+phds <- phds[phds$start_pub==1 & phds$phd_year>1996 & phds$phd_year<2020,]
+
+```
+
+Selections for robustness checks
+```{r}
+
+# R1: removing 4 universities with lower coverage
+#phds <- phds_variables[phds_variables$start_pub==1 & phds_variables$phd_year>1996 & phds_variables$phd_year<2020 & phds_variables$uni!="RUG"  & phds_variables$uni!="LU"  & phds_variables$uni!="TUD"  & phds_variables$uni!="EUR" ,]
+
+# R2: adding non-publishing PhDs 
+#phds <- phds_variables[phds_variables$hasprofile==1 & phds_variables$phd_year>1996 & phds_variables$phd_year<2020,]
+
+```
+
+
+
+## Adding earlier prepared covariates (supervision team, discipline)
+
+
+```{r}
+
+# Add supervisory variables
+phds %>% 
+  left_join(phd_supervisors, by="id") -> phds
+
+# removing PhDs without known supervisors
+nrow(phds)
+phds <- phds[!is.na(phds$supervisors),]
+nrow(phds)
+
+# Factorize "1+ women in supervisory team" and add separate category for missing
+phds$wom_sv1 <- factor(phds$wom_sv1)
+levels(phds$wom_sv1) <- c("no women", "1+ woman")
+
+
+```
+
+
+# Preparing Veni_NARCIS
+
+These are the Veni's we sourced directly from the NARCIS portal
+
+```{r}
+
+# Getting the Veni year out
+veni_narcis$veni <- str_remove_all(veni_narcis$`Subsidies/prijzen`, "veni_narcis-")
+
+veni_narcis$veni <- str_extract(veni_narcis$veni, "Veni [:digit:]{4}")
+veni_narcis$veni <- str_extract(veni_narcis$veni, "[:digit:]{4}")
+
+veni_narcis$year <- as.numeric(veni_narcis$veni)
+
+veni_narcis <- veni_narcis[!is.na(veni_narcis$year),]
+
+
+# adding a Veni column that is 1 for everyone so we know when merging this to other datasets that all these individuals obtained a Veni
+veni_narcis$veni <- rep(1, nrow(veni_narcis))
+
+
+veni_narcis <- subset(veni_narcis, select=c("year", "veni", "person_id"))
+
+
+```
+
+
+
+# Preparing Veni_NWO
+
+These Veni data are sourced directly from the web site of NWO. 
+
+```{r}
+
+
+# cleaning up the initials and extracting the first to match with the NARCIS data
+veni_NWO$initials <- str_remove(veni_NWO$initials, "^\\s?Dr\\s?")
+veni_NWO$initials <- str_remove(veni_NWO$initials, "^\\s?dipl\\.\\s?")
+veni_NWO$ini1 <- tolower(ifelse(veni_NWO$first!="", str_extract(veni_NWO$first, "[:alpha:]"), str_extract(veni_NWO$initials, "[:alpha:]")))
+
+veni_NWO %>%
+  mutate(veni = 1,
+         ln = last) %>%
+  select(veni, year, ln, ini1, first, uni) -> veni_NWO
+
+
+
+veni_NWO$first <- tolower(veni_NWO$first)
+veni_NWO$ln <- tolower(veni_NWO$ln)
+
+# removing nobiliary particles at the beginning of the name
+vande3 <- c("^(V|v)an (D|d)er\\s",  "^(V|v)an (D|d)en\\s",  "^(V|v)an (D|d)e\\s",  "^(V|v)ande(n)?\\s",  "^(V|v)an '(T|t)\\s",  "^(V|v)an'(T|t)\\s",  "^(V|v)an (T|t)\\s",  "^(V|v)an (H|h)et\\s",  "^(V|v)on (D|d)er\\s",  "^(O|o)p den\\s",  "^(O|o)p 't\\s",  "^(O|o)f ten\\s",  "^(A|a)an de(n)?\\s",  "^(D|d)e (L|l)a\\s",  "^(I|i)n (H|h)et\\s",  "^(I|i)n '(T|t)\\s",  "^(I|i)n'(T|t)\\s",  "^(I|i)n (T|t)\\s",  "^(I|i)n (D|d)er\\s",  "^(B|b)ij (D|d)e\\s",  "^(L|l)a\\s", "^(O|o)p\\s" ,"^(V|v)an\\s", "^(V|v)on\\s", "^(D|d)en\\s", "^(D|d)er\\s", "^(D|d)el\\s", "^(D|d)(e|a|u|i)\\s", "^(D|d)os?\\s", "^(T|t)er\\s" , "^(T|t)en\\s", "^(T|t)e\\s", "^'(T|t)\\s", "^(L|l)e\\s", "^El-", "^[(A|a)(E|e)](L|l)'?\\s", "^(D|d)'", "^zu\\s", "^(Z|z)ur\\s", "^e\\s")
+
+veni_NWO$ln <- str_remove(veni_NWO$ln, paste0(vande3, collapse="|"))
+
+# removing diacritics
+veni_NWO$ln <- stri_trans_general(veni_NWO$ln, id="latin-ascii")
+veni_NWO$first <- stri_trans_general(veni_NWO$first, id="latin-ascii")
+
+
+
+# removing multiple last names
+veni_NWO$ln <- str_extract(veni_NWO$ln, "[:alpha:]+")
+
+veni_NWO$first <- str_extract(veni_NWO$first, "[:alpha:]+")
+
+veni_NWO$fullentry <- paste0(veni_NWO$ini1, veni_NWO$first, veni_NWO$year, veni_NWO$ln)
+
+veni_NWO$duplicates <- as.numeric(duplicated(veni_NWO$fullentry))
+
+veni_NWO <- veni_NWO[veni_NWO$duplicates!=1,] # removes some duplicates
+
+
+# we rempve 2 NWO entries with no known last name, because we can impossibly match these individuals
+veni_NWO <- veni_NWO[!is.na(veni_NWO$ln),]
+
+
+# we remove all Veni's from 2021 and 2022 because initial analyses showed that these were very poorly matched
+veni_NWO <- veni_NWO %>% filter(year<2021)
+
+```
+
+
+
+For the matching, we take the following route:
+
+*1: Matching on PRS in the NARCIS Veni data
+
+This is the most straightforward route, as the IDs in the NARCIS Veni's overlap with the IDs in the PhD dataset. So there is no further disambiguation needed here, therefore we give it priority over method 2. 
+
+*2: Matching on first and last names in NWO Veni data
+
+
+```{r}
+
+
+# Dataset 1: PRS strategy (NARCIS)
+match_df1 <- veni_narcis %>% select(veni, year, person_id) %>% rename(veni1 = "veni", year1 = "year")
+
+# Dataset 2: First and last name (NWO)
+match_df2 <- veni_NWO %>% filter(!is.na(first)) %>% filter(!is.na(ln)) %>% select(veni, year, first, ln) %>% rename(veni2 = "veni", year2 = "year")
+
+
+print(paste0("Number of Veni's to be matched on PRS: ", nrow(match_df1)))
+
+print(paste0("Number of Veni's to be matched on first and last name from NWO: ", nrow(match_df2)))
+
+
+```
+
+
+
+
+# Matching 1: NARCIS
+
+```{r}
+
+phds <- phds %>% left_join(match_df1, by=c("id"="person_id"))
+
+phds$veni1 <- ifelse(is.na(phds$veni1), 0, phds$veni1)
+
+# check: duplicate matches?
+nrow(phds[duplicated(phds$id),])
+
+```
+
+
+
+# Matching 2: First and Last Name (NWO)
+
+```{r}
+
+phds <- phds %>% left_join(match_df2, by=c("firstname"="first", "lastname"="ln"))
+
+# removing Veni's obtained before doctorate or 9+ years after
+summary(as.factor(phds$veni2))
+phds$veni2 <- ifelse(phds$year2<phds$phd_year, NA, phds$veni2)
+phds$veni2 <- ifelse(phds$year2>phds$phd_year+8, NA, phds$veni2)
+summary(as.factor(phds$veni2))
+
+
+phds$veni2 <- ifelse(is.na(phds$veni2), 0, phds$veni2)
+
+nrow(phds[duplicated(phds$id),])
+
+
+```
+
+
+
+
+# Inspecting duplicates
+
+This is not the case in this curated example, but it did occur a few times (<5) in our data, so we show how we dealt with duplicate Veni matches here. 
+
+```{r, eval=FALSE}
+
+duplicatedids <- phds$id[which(duplicated(phds$id))]
+
+
+inspect <- phds[phds$id%in%duplicatedids,]
+
+# there is 1 duplicate, so 2 observations to expect
+# for this duplicate, one of the matches leads to the same year of veni receipt, and the other diverges. So the match where both indicate the same year of Veni receipt is likely the true match
+
+inspect$choose <- as.numeric(inspect$year1==inspect$year2)
+
+inspect <- inspect %>% filter(choose==1) # remove the cases where the veni years diverge
+inspect <- subset(inspect, select=-choose)
+
+# remove the duplicates (all 6) from the phd data
+phds <- phds %>% filter(!phds$id%in%duplicatedids)
+
+# add back only the correct 
+phds <- rbind.data.frame(phds, inspect)
+
+
+
+```
+
+
+
+# Combining the outcomes of the two methods
+
+We assume a person has obtained a Veni if they have been matched using *at least one*  of the methods. So we do not require all methods to converge, but rather add the veni's from all sources together. 
+
+```{r}
+
+phds$veni <- pmax(phds$veni1, phds$veni2)
+
+summary(as.factor(phds$veni))
+
+# Comparing the Veni years
+xtabs(~phds$year1 + phds$year2)
+# Perfect convergence, so no need to change it! 
+
+
+phds$year <- phds$year1
+
+phds$year <- ifelse(!is.na(phds$year2), phds$year2, phds$year)
+
+
+# set the year to 2020 if people did not obtain a veni
+phds$year <- ifelse(is.na(phds$year), 2020, phds$year)
+
+# Creating a dataframe of all Veni winners in our sample
+matchedvenis <- phds %>% filter(veni==1)
+
+
+```
+
+
+
+
+# Create a person-period file (PPF)
+
+## Start with an empty PPF
+
+```{r}
+
+year <- c(1998:2020)
+
+zeroveni <- rep(0, length(year))
+
+id <- unique(phds$id)
+
+nid <- length(id)
+
+
+# make the empty dataset based on this
+year <- rep(year, nid)
+zeroveni <- rep(zeroveni, nid)
+id <- rep(id, each=length(c(1998:2020)))
+df_ppf <- data.frame(id, year, zeroveni)
+
+```
+
+
+## Add the veni's
+
+```{r}
+
+df_ppf %>%
+  full_join(phds, by=c("id", "year")) %>%
+  arrange(id, year) %>%
+  select(id, year, veni, gender, propmen, propwomen, propNA, wom_sv1, prof2p, teamsize, uni, phd_year) -> veni_ppf
+
+# ! to be added: FIELD
+
+
+# filling the other data in
+veni_ppf %>%
+  group_by(id) %>%
+  fill(gender, .direction = "downup") %>%
+#  fill(field, .direction = "downup") %>%
+  fill(uni, .direction = "downup") %>%
+  fill(phd_year, .direction = "downup") %>%
+  fill(propmen, .direction = "downup") %>%
+  fill(propwomen, .direction = "downup") %>%
+  fill(propNA, .direction = "downup") %>%
+  fill(wom_sv1, .direction = "downup") %>%
+  fill(prof2p, .direction = "downup") %>%
+  fill(teamsize, .direction = "downup") %>%
+  ungroup () -> veni_ppf
+
+veni_ppf$veni <- ifelse(is.na(veni_ppf$veni), 0, veni_ppf$veni)
+
+
+```
+
+
+## Removing years not-at-risk
+
+```{r}
+
+# Removing years after having obtained a veni
+matchedvenis$maxv <- matchedvenis$year
+veniyear <- subset(matchedvenis, select=c(id, maxv))
+
+veniyear <- veniyear[!is.na(veniyear$id),]
+
+veni_ppf <- left_join(veni_ppf, veniyear, by="id")
+veni_ppf$maxv <- ifelse(is.na(veni_ppf$maxv), 2020, veni_ppf$maxv)
+
+veni_ppf <- veni_ppf[veni_ppf$year<=veni_ppf$maxv,]
+
+veni_ppf <- subset(veni_ppf, select=-maxv)
+
+```
+
+
+# Creating time variables
+
+```{r}
+
+# Time = years since PhD receipt (= publication diss. in NARCIS)
+veni_ppf$time <- veni_ppf$year - veni_ppf$phd_year
+
+
+# Centre PhD year variable
+veni_ppf$phd_year <- veni_ppf$phd_year - min(veni_ppf$phd_year)
+
+
+veni_ppf <- veni_ppf %>% distinct()
+
+```
+
+
+# Veni within regular deadline vs extended deadline
+
+```{r}
+
+veni_ppf$extended <- as.factor(ifelse(veni_ppf$time<4, 0, 1))
+
+levels(veni_ppf$extended) <- c("before extension", "after extension")
+
+```
+
+
+
+
+# Publications
+
+First, we combine the 4 publications datasets. 
+
+```{r combining pubs}
+
+
+# publications
+load(file = "./data/pubs_metadf.rda")
+pubs <- pubs_metadf
+
+# Selection of publications
+pubs$type <- as.factor(pubs$type)
+
+pubs <- pubs[(pubs$type=="Artikel") | (pubs$type=="Boek" | (pubs$type=="Boekdeel") | (pubs$type=="Conference Paper") | (pubs$type=="Conference Proceedings") | (pubs$type=="Conferentiebijdrage")), ]
+
+summary(pubs$type)
+
+# derive publication year from variable Data.issued
+pubs <- pubs[!is.na(pubs$date.issued),]
+
+
+pubs %>% 
+  mutate(year = as.character(date.issued)) %>%
+  mutate(year = substr(year, 1,4)) %>%
+  mutate(year = as.numeric(year)) -> pubs
+
+
+# last complete year of publications data is 2022, so remove publications from the following years
+pubs <- pubs[pubs$year<2023,]
+
+# now, we create a person-period file: one row per PhD per year
+pubs %>% 
+  group_by(id, year) %>%
+  dplyr::summarize(npubs = n(),
+            id = first(id)) -> pubs_ppf
+
+
+
+
+```
+
+
+
+
+## Creating an empty person-period file
+
+We can't reuse the old df_ppf, because its range of years is not the same. We want to go back in time further for publications to also capture publications before the PhD for PhDs in the earliest cohorts. 
+
+```{r}
+
+year <- c(1993:2022)
+
+id <- unique(phds$id)
+
+nid <- length(id)
+
+
+# make the empty dataset based on this
+year <- rep(year, nid)
+id <- rep(id, each=length(c(1993:2022)))
+df_ppf <- data.frame(id, year)
+
+
+```
+
+
+
+
+## Publications variable 1
+
+Total cumulative number of publications from the start of the PhD to 'current year'
+
+```{r}
+
+df_ppf %>%
+  full_join(phds, by=c("id", "year")) %>%
+  arrange(id, year) %>%
+  select(id, year, phd_year) -> totalpubs
+
+
+totalpubs %>%
+  group_by(id) %>%
+  fill(phd_year, .direction = "downup") %>%
+  ungroup () -> totalpubs
+
+
+#totalpubs <- totalpubs[totalpubs$year<totalpubs$phd_year+4, ]
+totalpubs <- totalpubs[totalpubs$year>totalpubs$phd_year-5, ]
+
+
+
+# Adding publications
+totalpubs %>%
+  left_join(pubs_ppf, by=c("id", "year")) -> totalpubs
+
+totalpubs$npubs <- ifelse(is.na(totalpubs$npubs), 0, totalpubs$npubs)
+
+
+# Creating the cumulative no. of publications
+totalpubs %>%
+  group_by(id) %>%
+  mutate(npubs_cumul = cumsum(npubs)) %>%
+  mutate(npubs_cumul = lag(npubs_cumul, n=1, order_by=year),
+         npubs_cumul = ifelse(is.na(npubs_cumul), 0, npubs_cumul)) -> totalpubs
+
+
+```
+
+
+
+## Publications variable 2
+
+Only the number of publications in the preceding year
+
+```{r}
+
+# next, we include a variable with the number of publications in the previous year
+# for the first year, we take the value of the year itself
+totalpubs %>%
+  group_by(id) %>%
+  mutate(npubs_prev = lag(npubs, n=1, order_by = year),
+         npubs_prev = ifelse(is.na(npubs_prev), lead(npubs_prev, n=1, order_by = year), npubs_prev)) %>%
+  ungroup() -> totalpubs
+
+
+
+totalpubs <- subset(totalpubs, select=c("id", "year", "npubs_cumul", "npubs_prev"))
+
+
+totalpubs <- totalpubs %>% distinct()
+
+
+# Next, we log-transform both publications variables to remove outliers
+totalpubs$npubs_cumul <- log(totalpubs$npubs_cumul + 1)
+totalpubs$npubs_prev <- log(totalpubs$npubs_prev + 1)
+  
+
+```
+
+
+
+
+```{r}
+
+veni_ppf %>%
+  left_join(totalpubs, by=c("id", "year")) -> veni_ppf
+
+
+
+nrow(veni_ppf[veni_ppf$time<0 & veni_ppf$veni==1,]) # veni before phd
+
+nrow(veni_ppf[veni_ppf$time>8 & veni_ppf$veni==1,]) # veni more than 8 years after phd
+
+xtabs(~veni_ppf$time+veni_ppf$veni)
+
+
+# Removing years before PhD
+nrow(veni_ppf[veni_ppf$veni==1,]) 
+veni_ppf <- veni_ppf[veni_ppf$time>-1,]
+nrow(veni_ppf[veni_ppf$veni==1,]) 
+
+# Removing 6+ years after PhD
+nrow(veni_ppf[veni_ppf$veni==1,]) 
+veni_ppf <- veni_ppf[veni_ppf$time<9,]
+nrow(veni_ppf[veni_ppf$veni==1,]) 
+```
+
+
+
+
+# Veni within 3 years
+
+```{r}
+
+summary(as.factor(veni_ppf$veni))
+veni_ppf %>% filter(time<4) -> veni3_ppf
+
+summary(as.factor(veni3_ppf$veni))
+
+
+```
+
+
+# Veni in the year or the following year
+
+```{r}
+
+summary(as.factor(veni_ppf$veni))
+veni_ppf %>% filter(time<2) -> veni1_ppf
+
+summary(as.factor(veni1_ppf$veni))
+
+
+```
+
+# Veni 4-8 years after doctorate
+
+```{r}
+
+summary(as.factor(veni_ppf$veni))
+veni_ppf %>% filter(time>3) -> veni48_ppf
+
+summary(as.factor(veni48_ppf$veni))
+
+
+```
+
+
+
+ # Saving
+
+These files are not saved, because the files that are created here (veni_ppf/veni1_ppf/veni3_ppf/veni48_ppf) are replaced in the Git with the real, but completely anonymised data. 
+

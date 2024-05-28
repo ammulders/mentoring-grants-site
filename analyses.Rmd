@@ -1,0 +1,1364 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: main analyses"
+date: "Last compiled on `r Sys.Date()`"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+    
+---
+
+This lab journal demonstrates how we execute the main analyses discussed in the results section. 
+  
+----
+
+# Custom functions
+
+- `package.check`: Check if packages are installed (and install if not) in R ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)). 
+
+
+```{r, results='hide'}
+
+rm(list=ls())
+
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+
+
+fsave <- function(x, file, location="./data/processed/") {
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1,8)  
+  totalname <- paste(location, datename, file, sep="")
+  save(x, file = totalname)  
+}
+
+
+
+```
+
+---  
+
+# Packages
+
+
+- `tidyverse`: For general data manipulation
+
+- `boot`: To create bootstrapped standard errors, following the procedure delineated [here](https://www.jochemtolsma.nl/tutorials/me/)
+
+
+```{r, results='hide'}
+
+packages = c("tidyverse", "boot")
+
+fpackage.check(packages)
+
+
+```
+
+--- 
+
+
+# Input
+
+We use one processed dataset
+
+* [veni_ppf](data/processed/veni_ppf.rda): Processed dataset containing all independent variables and the dependent variable
+    - name of dataset: `veni_ppf` 
+
+
+
+```{r files, eval=TRUE}
+
+load(file = "data/processed/veni_ppf.rda")
+
+```
+
+  
+---  
+
+
+
+# Analyses
+
+```{r}
+
+summary(veni_ppf$gender_2, useNA="always")
+
+veni_ppf %>%
+  filter(year>2002) %>%
+  group_by(time, gender_2) %>%
+  summarise(event = sum(veni),
+            total = n()) %>%
+  mutate(hazard = event/total) %>%
+  ggplot(aes(x=time, y = log(-log(1-hazard)), group = gender_2, color=gender_2)) +
+  geom_point() +
+  geom_smooth()
+
+veni_ppf %>%
+  filter(year>2002) %>%
+  group_by(time, gender_2) %>%
+  summarise(event = sum(veni),
+            total = n()) %>%
+  mutate(hazard = event/total) %>%
+  ggplot(aes(x=time, y = hazard, group = gender_2, color=gender_2)) +
+  geom_point() +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(limits=c(0, 0.04))
+
+
+```
+
+
+
+# M1: Only gender and time
+
+```{r}
+
+
+#veni_ppf[veni_ppf$uni!="WUR",] -> veni_ppf
+#veni_ppf[veni_ppf$uni!="EUR",]-> veni_ppf
+
+
+
+M1 <- glm(formula = veni ~ as.factor(extended) + as.factor(gender_2) + phd_year,
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M1)
+
+
+```
+
+
+
+# M2: gender_2 * time
+
+```{r}
+
+
+M2 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year,
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M2)
+
+
+```
+
+Predicted probability Veni receipt extension period
+
+```{r}
+
+men_ext <- wom_ext <- veni_ppf
+wom_ext$gender_2 <- "women" 
+men_ext$gender_2 <- "men" 
+    
+wom_ext$gender_2 <- factor(wom_ext$gender_2, levels=levels(veni_ppf$gender_2))
+men_ext$gender_2 <- factor(men_ext$gender_2, levels=levels(veni_ppf$gender_2))
+
+wom_ext$phd_year <- 14
+men_ext$phd_year <- 14
+
+wom_ext$extended <- "after extension" 
+men_ext$extended <- "after extension" 
+    
+wom_ext$extended <- factor(wom_ext$extended, levels=levels(veni_ppf$extended))
+men_ext$extended <- factor(men_ext$extended, levels=levels(veni_ppf$extended))
+
+predict(M2, newdata=wom_ext, type="response")[1]
+predict(M2, newdata=men_ext, type="response")[1]
+
+```
+
+
+
+
+
+# M3: addition all control variables
+
+```{r}
+
+M3 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni,
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M3)
+
+```
+
+
+# M4: mediation teamsize and number of professors
+
+```{r}
+
+M4 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p),
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M4)
+
+```
+
+
+
+
+# M5: all mediations
+
+```{r}
+
+M5 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p) + as.factor(wom_sv1),
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M5)
+
+```
+
+
+
+
+
+# M6 (supervision team * gender)
+
+```{r}
+
+M6 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p) + as.factor(wom_sv1)*as.factor(gender_2),
+          family = binomial(link="cloglog"),
+          data = veni_ppf)
+
+
+summary(M6)
+
+```
+
+
+
+
+
+# Average marginal effects (AMEs)
+
+## M1 
+
+```{r, eval=FALSE}
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~ as.factor(extended) + as.factor(gender_2) + phd_year, family = binomial(link="cloglog"), data = df)
+  
+  suppressWarnings({
+    
+    # GENDER (H1)  
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    #calculate the predicted probabilities for gender
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+    
+    # AME
+    AME_gender <- mean(pw - pm, na.rm=TRUE)
+    
+    
+    # EXTENDED
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+    # AME
+    AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+    
+    # PHD COHORT MAIN
+    s <- 1 # defining a small increment of time
+    
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    # AME
+    AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+  })
+  
+  c(AME_gender, AME_ext, AME_cohort)
+   #save results
+}
+
+b1 <- boot(veni_ppf, bootFunc, R = 1000, parallel="snow", ncpus=10)
+
+
+fsave(b1, file = "boot1.rda", location = "./results/")
+
+
+
+```
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319boot1.rda")
+b1 <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- b1$t0
+bias <- colMeans(b1$t) - b1$t0
+se <- apply(b1$t, 2, sd)
+
+boot.df1 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df1) <- c("AME_gender", "AME_ext", "AME_cohort")
+
+boot.df1$t <- (boot.df1$original / boot.df1$se)
+
+round(boot.df1, 5)
+
+
+```
+
+
+## M2 
+
+Gender 
+Gender * extension
+
+
+```{r, eval=FALSE}
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~  as.factor(extended) * as.factor(gender_2) + phd_year, family = binomial(link="cloglog"), data = df)
+  
+    suppressWarnings({
+  
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    #calculate the predicted probabilities for gender
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+    
+    # average marginal effects
+    AME_gender <- mean(pw - pm, na.rm=TRUE)
+   
+    # extension interactions
+    dfwomene1 <- dfwomene0 <- dfmene1 <- dfmene0 <- df
+    
+    dfwomene1$gender_2 <- dfwomene0$gender_2 <- "women"
+    dfmene1$gender_2 <- dfmene0$gender_2 <- "men"
+    dfwomene1$gender_2 <- factor(dfwomene1$gender_2, levels=levels(df$gender_2))
+    dfwomene0$gender_2 <- factor(dfwomene0$gender_2, levels=levels(df$gender_2))
+    dfmene1$gender_2 <- factor(dfmene1$gender_2, levels=levels(df$gender_2))
+    dfmene0$gender_2 <- factor(dfmene0$gender_2, levels=levels(df$gender_2))
+    
+    dfwomene1$extended <- dfmene1$extended <- "after extension"
+    dfwomene0$extended <- dfmene0$extended <- "before extension"
+    
+    pwp <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene1)))
+    pwm <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene0)))
+    pmp <- as.numeric(unlist(predict(M, type="response", newdata=dfmene1)))
+    pmm <- as.numeric(unlist(predict(M, type="response", newdata=dfmene0)))
+    
+    # extension main effect
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+
+    
+    # cohort main effect
+    s <- 1
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    
+    
+# average marginal effects
+AME_genderext <- mean((pwp - pmp) - (pwm - pmm), na.rm=TRUE)
+
+AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+
+  })
+  
+  c(AME_gender, AME_ext, AME_genderext, AME_cohort)
+   #save results
+  
+}
+
+b2 <- boot(veni_ppf, bootFunc, R = 1000, parallel="snow", ncpus=10)
+
+
+fsave(b2, file = "boot2.rda", location = "./results/")
+
+```
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319boot2.rda")
+b2 <- x
+rm(x)
+
+```
+
+
+```{r}
+
+original <- b2$t0
+bias <- colMeans(b2$t) - b2$t0
+se <- apply(b2$t, 2, sd)
+
+boot.df2 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df2) <- c("AME_gender", "AME_ext", "AME_genderext","AME_cohort")
+
+boot.df2$t <- (boot.df2$original / boot.df2$se)
+
+round(boot.df2, 5)
+
+
+```
+
+
+## M3
+
+```{r,eval=FALSE}
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~  as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni, family = binomial(link="cloglog"), data = df)
+  
+  suppressWarnings({
+  
+    # gender 
+    
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+   
+    # extension interactions
+    dfwomene1 <- dfwomene0 <- dfmene1 <- dfmene0 <- df
+    
+    dfwomene1$gender_2 <- dfwomene0$gender_2 <- "women"
+    dfmene1$gender_2 <- dfmene0$gender_2 <- "men"
+    dfwomene1$gender_2 <- factor(dfwomene1$gender_2, levels=levels(df$gender_2))
+    dfwomene0$gender_2 <- factor(dfwomene0$gender_2, levels=levels(df$gender_2))
+    dfmene1$gender_2 <- factor(dfmene1$gender_2, levels=levels(df$gender_2))
+    dfmene0$gender_2 <- factor(dfmene0$gender_2, levels=levels(df$gender_2))
+    
+    dfwomene1$extended <- dfmene1$extended <- "after extension"
+    dfwomene0$extended <- dfmene0$extended <- "before extension"
+    dfwomene1$extended <- factor(dfwomene1$extended, levels=levels(df$extended))
+    dfwomene0$extended <- factor(dfwomene0$extended, levels=levels(df$extended))
+    dfmene1$extended <- factor(dfmene1$extended, levels=levels(df$extended))
+    dfmene0$extended <- factor(dfmene0$extended, levels=levels(df$extended))
+    
+    
+    pwp <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene1)))
+    pwm <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene0)))
+    pmp <- as.numeric(unlist(predict(M, type="response", newdata=dfmene1)))
+    pmm <- as.numeric(unlist(predict(M, type="response", newdata=dfmene0)))
+    
+    # extension main effect
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+
+    # cohort main effect
+    s <- 1
+    
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    
+    # cumulative pubs
+    dfpcp <- dfpcm <- df
+    dfpcp$npubs_cumul <- df$npubs_cumul + s
+    dfpcm$npubs_cumul <- df$npubs_cumul - s
+    
+    pcp <- as.numeric(unlist(predict(M, type="response", newdata=dfpcp)))
+    pcm <- as.numeric(unlist(predict(M, type="response", newdata=dfpcm)))
+    
+    
+    # pubs previous year
+    dfppp <- dfppm <- df
+    dfppp$npubs_prev <- df$npubs_prev + s
+    dfppm$npubs_prev <- df$npubs_prev - s
+    
+    ppp <- as.numeric(unlist(predict(M, type="response", newdata=dfppp)))
+    ppm <- as.numeric(unlist(predict(M, type="response", newdata=dfppm)))
+    
+ 
+# marginal effects
+
+AME_gender <- mean(pw - pm, na.rm=TRUE)
+    
+AME_genderext <- mean((pwp - pmp) - (pwm - pmm), na.rm=TRUE)
+
+AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+AME_cumulpubs <- mean((pcp - pcm) / (2*s), na.rm=TRUE)
+
+AME_prevpubs <- mean((ppp - ppm) / (2*s), na.rm=TRUE)
+
+  })
+  
+  c(AME_gender, AME_ext, AME_genderext, AME_cohort, AME_cumulpubs, AME_prevpubs)
+   #save results
+  
+}
+
+b3 <- boot(veni_ppf, bootFunc, R = 1000, parallel="snow", ncpus=10)
+
+
+fsave(b3, file = "boot3a.rda", location = "./results/")
+
+
+```
+
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319boot3a.rda")
+b3 <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- b3$t0
+bias <- colMeans(b3$t) - b3$t0
+se <- apply(b3$t, 2, sd)
+
+boot.df3 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df3) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs")
+
+boot.df3$t <- (boot.df3$original / boot.df3$se)
+
+round(boot.df3, 5)
+
+```
+
+
+
+## M4
+
+```{r, eval=FALSE}
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p), family = binomial(link="cloglog"), data = df)
+  
+      suppressWarnings({
+  
+    # gender 
+    
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+   
+    # extension interactions
+    dfwomene1 <- dfwomene0 <- dfmene1 <- dfmene0 <- df
+    
+    dfwomene1$gender_2 <- dfwomene0$gender_2 <- "women"
+    dfmene1$gender_2 <- dfmene0$gender_2 <- "men"
+    dfwomene1$gender_2 <- factor(dfwomene1$gender_2, levels=levels(df$gender_2))
+    dfwomene0$gender_2 <- factor(dfwomene0$gender_2, levels=levels(df$gender_2))
+    dfmene1$gender_2 <- factor(dfmene1$gender_2, levels=levels(df$gender_2))
+    dfmene0$gender_2 <- factor(dfmene0$gender_2, levels=levels(df$gender_2))
+    
+    dfwomene1$extended <- dfmene1$extended <- "after extension"
+    dfwomene0$extended <- dfmene0$extended <- "before extension"
+    dfwomene1$extended <- factor(dfwomene1$extended, levels=levels(df$extended))
+    dfwomene0$extended <- factor(dfwomene0$extended, levels=levels(df$extended))
+    dfmene1$extended <- factor(dfmene1$extended, levels=levels(df$extended))
+    dfmene0$extended <- factor(dfmene0$extended, levels=levels(df$extended))
+    
+    
+    pwp <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene1)))
+    pwm <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene0)))
+    pmp <- as.numeric(unlist(predict(M, type="response", newdata=dfmene1)))
+    pmm <- as.numeric(unlist(predict(M, type="response", newdata=dfmene0)))
+    
+    # extension main effect
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+
+    
+    # cohort main effect
+    s <- 1
+    
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    
+    # cumulative pubs
+    dfpcp <- dfpcm <- df
+    dfpcp$npubs_cumul <- df$npubs_cumul + s
+    dfpcm$npubs_cumul <- df$npubs_cumul - s
+    
+    pcp <- as.numeric(unlist(predict(M, type="response", newdata=dfpcp)))
+    pcm <- as.numeric(unlist(predict(M, type="response", newdata=dfpcm)))
+    
+    
+    # pubs previous year
+    dfppp <- dfppm <- df
+    dfppp$npubs_prev <- df$npubs_prev + s
+    dfppm$npubs_prev <- df$npubs_prev - s
+    
+    ppp <- as.numeric(unlist(predict(M, type="response", newdata=dfppp)))
+    ppm <- as.numeric(unlist(predict(M, type="response", newdata=dfppm)))
+    
+    # network size
+    dfnsp <- dfnsm <- df
+    dfnsp$teamsize <- dfnsp$teamsize + s
+    dfnsm$teamsize <- dfnsm$teamsize - s
+    
+    pnsp <- as.numeric(unlist(predict(M, type="response", newdata=dfnsp)))
+    pnsm <- as.numeric(unlist(predict(M, type="response", newdata=dfnsm)))
+    
+    # professors 
+    dfprof <- dfnoprof <- df
+    dfprof$prof2p <- 1 
+    dfnoprof$prof2p <- 0
+    
+    #dfprof$prof2p <- factor(dfprof$prof2p, levels=levels(df$prof2p))
+    #dfnoprof$prof2p <- factor(dfnoprof$prof2p, levels=levels(df$prof2p))
+  
+    prof <- as.numeric(unlist(predict(M, type="response", newdata=dfprof)))
+    noprof <- as.numeric(unlist(predict(M, type="response", newdata=dfnoprof)))
+    
+
+# marginal effects
+
+AME_gender <- mean(pw - pm, na.rm=TRUE)
+    
+AME_genderext <- mean((pwp - pmp) - (pwm - pmm), na.rm=TRUE)
+
+AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+AME_cumulpubs <- mean((pcp - pcm) / (2*s), na.rm=TRUE)
+
+AME_prevpubs <- mean((ppp - ppm) / (2*s), na.rm=TRUE)
+
+AME_netsize <- mean((pnsp-pnsm) / (2*s), na.rm=TRUE)
+
+AME_prof <- mean(prof - noprof, na.rm=TRUE)
+
+  })
+  
+  c(AME_gender, AME_ext, AME_genderext, AME_cohort, AME_cumulpubs, AME_prevpubs,  AME_netsize, AME_prof)
+   #save results
+  
+}
+
+b4 <- boot(veni_ppf, bootFunc, R = 999, parallel="snow", ncpus=10)
+
+
+fsave(b4, file = "boot3b.rda", location = "./results/")
+
+
+```
+
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319boot3b.rda")
+b4 <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- b4$t0
+bias <- colMeans(b4$t) - b4$t0
+se <- apply(b4$t, 2, sd)
+
+boot.df4 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df4) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof")
+
+boot.df4$t <- (boot.df4$original / boot.df4$se)
+
+round(boot.df4, 5)
+
+```
+
+## M5
+
+```{r,eval=FALSE}
+
+start_time <- Sys.time()
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p) + as.factor(wom_sv1), family = binomial(link="cloglog"), data = df)
+  
+  suppressWarnings({
+  
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    #calculate the predicted probabilities for gender
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+    
+   # extension interactions
+    dfwomene1 <- dfwomene0 <- dfmene1 <- dfmene0 <- df
+    
+    dfwomene1$gender_2 <- dfwomene0$gender_2 <- "women"
+    dfmene1$gender_2 <- dfmene0$gender_2 <- "men"
+    dfwomene1$gender_2 <- factor(dfwomene1$gender_2, levels=levels(df$gender_2))
+    dfwomene0$gender_2 <- factor(dfwomene0$gender_2, levels=levels(df$gender_2))
+    dfmene1$gender_2 <- factor(dfmene1$gender_2, levels=levels(df$gender_2))
+    dfmene0$gender_2 <- factor(dfmene0$gender_2, levels=levels(df$gender_2))
+    
+    dfwomene1$extended <- dfmene1$extended <- "after extension"
+    dfwomene0$extended <- dfmene0$extended <- "before extension"
+    dfwomene1$extended <- factor(dfwomene1$extended, levels=levels(df$extended))
+    dfwomene0$extended <- factor(dfwomene0$extended, levels=levels(df$extended))
+    dfmene1$extended <- factor(dfmene1$extended, levels=levels(df$extended))
+    dfmene0$extended <- factor(dfmene0$extended, levels=levels(df$extended))
+    
+    
+    pwp <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene1)))
+    pwm <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene0)))
+    pmp <- as.numeric(unlist(predict(M, type="response", newdata=dfmene1)))
+    pmm <- as.numeric(unlist(predict(M, type="response", newdata=dfmene0)))
+    
+    # extension main effect
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+
+    
+    # cohort main effect
+    s <- 1
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    
+    # cumulative pubs
+    dfpcp <- dfpcm <- df
+    dfpcp$npubs_cumul <- df$npubs_cumul + s
+    dfpcm$npubs_cumul <- df$npubs_cumul - s
+    
+    pcp <- as.numeric(unlist(predict(M, type="response", newdata=dfpcp)))
+    pcm <- as.numeric(unlist(predict(M, type="response", newdata=dfpcm)))
+    
+    
+    # pubs previous year
+    dfppp <- dfppm <- df
+    dfppp$npubs_prev <- df$npubs_prev + s
+    dfppm$npubs_prev <- df$npubs_prev - s
+    
+    ppp <- as.numeric(unlist(predict(M, type="response", newdata=dfppp)))
+    ppm <- as.numeric(unlist(predict(M, type="response", newdata=dfppm)))
+    
+    
+    # network size
+    dfnsp <- dfnsm <- df
+    dfnsp$teamsize <- dfnsp$teamsize + s
+    dfnsm$teamsize <- dfnsm$teamsize - s
+    
+    pnsp <- as.numeric(unlist(predict(M, type="response", newdata=dfnsp)))
+    pnsm <- as.numeric(unlist(predict(M, type="response", newdata=dfnsm)))
+    
+    # professors 
+    dfprof <- dfnoprof <- df
+    dfprof$prof2p <- 1 
+    dfnoprof$prof2p <- 0
+    
+    #dfprof$prof2p <- factor(dfprof$prof2p, levels=levels(df$prof2p))
+    #dfnoprof$prof2p <- factor(dfnoprof$prof2p, levels=levels(df$prof2p))
+  
+    prof <- as.numeric(unlist(predict(M, type="response", newdata=dfprof)))
+    noprof <- as.numeric(unlist(predict(M, type="response", newdata=dfnoprof)))
+    
+    # women supervisors
+    dfws <- dfms <- df
+    dfws$wom_sv1 <- "1+ woman"
+    dfms$wom_sv1 <- "no women"
+    
+    dfws$wom_sv1 <- factor(dfws$wom_sv1, levels=levels(df$wom_sv1))
+    dfms$wom_sv1 <- factor(dfms$wom_sv1, levels=levels(df$wom_sv1))
+  
+    ws <- as.numeric(unlist(predict(M, type="response", newdata=dfws)))
+    ms <- as.numeric(unlist(predict(M, type="response", newdata=dfms)))
+    
+    
+# marginal effects
+
+AME_gender <- mean(pw - pm, na.rm=TRUE)
+    
+AME_genderext <- mean((pwp - pmp) - (pwm - pmm), na.rm=TRUE)
+
+AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+AME_cumulpubs <- mean((pcp - pcm) / (2*s), na.rm=TRUE)
+
+AME_prevpubs <- mean((ppp - ppm) / (2*s), na.rm=TRUE)
+    
+AME_netsize <- mean((pnsp-pnsm) / (2*s), na.rm=TRUE)
+
+AME_prof <- mean(prof - noprof, na.rm=TRUE)
+
+AME_womsv <- mean(ws - ms, na.rm=TRUE)
+
+  })
+  
+  c(AME_gender, AME_ext, AME_genderext, AME_cohort, AME_cumulpubs, AME_prevpubs, AME_netsize, AME_prof, AME_womsv)
+   #save results
+  
+}
+
+b5 <- boot(veni_ppf, bootFunc, R = 1000, parallel="snow", ncpus=10)
+
+
+fsave(b5, file = "boot3c.rda", location = "./results/")
+
+
+end_time <- Sys.time()
+
+
+
+end_time - start_time 
+
+```
+
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319boot3c.rda")
+b5 <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- b5$t0
+bias <- colMeans(b5$t) - b5$t0
+se <- apply(b5$t, 2, sd)
+
+boot.df5 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df5) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv")
+
+boot.df5$t <- (boot.df5$original / boot.df5$se)
+
+round(boot.df5, 5)
+
+```
+
+## M6
+
+```{r,eval=FALSE}
+
+start_time <- Sys.time()
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p) + gender_2*as.factor(wom_sv1), family = binomial(link="cloglog"), data = df)
+  
+  suppressWarnings({
+  
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))
+    
+    #calculate the predicted probabilities for gender
+    pw <- as.numeric(unlist(predict(M, type="response", newdata=dfwomen)))
+    pm <- as.numeric(unlist(predict(M, type="response", newdata=dfmen)))
+    
+    # extension interactions
+    dfwomene1 <- dfwomene0 <- dfmene1 <- dfmene0 <- df
+    
+    dfwomene1$gender_2 <- dfwomene0$gender_2 <- "women"
+    dfmene1$gender_2 <- dfmene0$gender_2 <- "men"
+    dfwomene1$gender_2 <- factor(dfwomene1$gender_2, levels=levels(df$gender_2))
+    dfwomene0$gender_2 <- factor(dfwomene0$gender_2, levels=levels(df$gender_2))
+    dfmene1$gender_2 <- factor(dfmene1$gender_2, levels=levels(df$gender_2))
+    dfmene0$gender_2 <- factor(dfmene0$gender_2, levels=levels(df$gender_2))
+    
+    dfwomene1$extended <- dfmene1$extended <- "after extension"
+    dfwomene0$extended <- dfmene0$extended <- "before extension"
+    dfwomene1$extended <- factor(dfwomene1$extended, levels=levels(df$extended))
+    dfwomene0$extended <- factor(dfwomene0$extended, levels=levels(df$extended))
+    dfmene1$extended <- factor(dfmene1$extended, levels=levels(df$extended))
+    dfmene0$extended <- factor(dfmene0$extended, levels=levels(df$extended))
+    
+    
+    pwp <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene1)))
+    pwm <- as.numeric(unlist(predict(M, type="response", newdata=dfwomene0)))
+    pmp <- as.numeric(unlist(predict(M, type="response", newdata=dfmene1)))
+    pmm <- as.numeric(unlist(predict(M, type="response", newdata=dfmene0)))
+    
+    # extension main effect
+    dfext1 <- dfext0 <- df
+    dfext1$extended <- "after extension"
+    dfext0$extended <- "before extension"
+    
+    dfext1$extended <- factor(dfext1$extended, levels=levels(df$extended))
+    dfext0$extended <- factor(dfext0$extended, levels=levels(df$extended))
+    
+    
+    ptp <- as.numeric(unlist(predict(M, type="response", newdata=dfext1)))
+    ptm <- as.numeric(unlist(predict(M, type="response", newdata=dfext0)))
+
+    
+    # cohort main effect
+    s <- 1
+    dfcohp <- dfcohm <- df
+    dfcohp$phd_year <- df$phd_year + s
+    dfcohm$phd_year <- df$phd_year - s
+    
+    pcohp <- as.numeric(unlist(predict(M, type="response", newdata=dfcohp)))
+    pcohm <- as.numeric(unlist(predict(M, type="response", newdata=dfcohm)))
+    
+    # cumulative pubs
+    dfpcp <- dfpcm <- df
+    dfpcp$npubs_cumul <- df$npubs_cumul + s
+    dfpcm$npubs_cumul <- df$npubs_cumul - s
+    
+    pcp <- as.numeric(unlist(predict(M, type="response", newdata=dfpcp)))
+    pcm <- as.numeric(unlist(predict(M, type="response", newdata=dfpcm)))
+    
+    
+    # pubs previous year
+    dfppp <- dfppm <- df
+    dfppp$npubs_prev <- df$npubs_prev + s
+    dfppm$npubs_prev <- df$npubs_prev - s
+    
+    ppp <- as.numeric(unlist(predict(M, type="response", newdata=dfppp)))
+    ppm <- as.numeric(unlist(predict(M, type="response", newdata=dfppm)))
+    
+    
+    # network size
+    dfnsp <- dfnsm <- df
+    dfnsp$teamsize <- dfnsp$teamsize + s
+    dfnsm$teamsize <- dfnsm$teamsize - s
+    
+    pnsp <- as.numeric(unlist(predict(M, type="response", newdata=dfnsp)))
+    pnsm <- as.numeric(unlist(predict(M, type="response", newdata=dfnsm)))
+    
+    # professors 
+    dfprof <- dfnoprof <- df
+    dfprof$prof2p <- 1 
+    dfnoprof$prof2p <- 0
+    
+    #dfprof$prof2p <- factor(dfprof$prof2p, levels=levels(df$prof2p))
+    #dfnoprof$prof2p <- factor(dfnoprof$prof2p, levels=levels(df$prof2p))
+  
+    prof <- as.numeric(unlist(predict(M, type="response", newdata=dfprof)))
+    noprof <- as.numeric(unlist(predict(M, type="response", newdata=dfnoprof)))
+    
+    # women supervisors
+    dfws <- dfms <- df
+    dfws$wom_sv1 <- "1+ woman"
+    dfms$wom_sv1 <- "no women"
+    
+    dfws$wom_sv1 <- factor(dfws$wom_sv1, levels=levels(df$wom_sv1))
+    dfms$wom_sv1 <- factor(dfms$wom_sv1, levels=levels(df$wom_sv1))
+  
+    ws <- as.numeric(unlist(predict(M, type="response", newdata=dfws)))
+    ms <- as.numeric(unlist(predict(M, type="response", newdata=dfms)))
+    
+    
+    # women supervisors * gender_2
+    dfwnows <- dfwws <- dfmnows <- dfmws <- df
+
+    dfwnows$gender_2 <- dfwws$gender_2 <- "women"
+    dfmnows$gender_2 <- dfmws$gender_2 <- "men"
+    dfwnows$gender_2 <- factor(dfwnows$gender_2, levels=levels(df$gender_2))
+    dfwws$gender_2 <- factor(dfwws$gender_2, levels=levels(df$gender_2))
+    dfmnows$gender_2 <- factor(dfmnows$gender_2, levels=levels(df$gender_2))
+    dfmws$gender_2 <- factor(dfmws$gender_2, levels=levels(df$gender_2))
+    
+    
+    dfwws$wom_sv1 <- dfmws$wom_sv1 <- "1+ woman"
+    dfwnows$wom_sv1 <- dfmnows$wom_sv1 <- "no women"
+    dfwws$wom_sv1 <- factor(dfwws$wom_sv1, levels=levels(df$wom_sv1))
+    dfwnows$wom_sv1 <- factor(dfwnows$wom_sv1, levels=levels(df$wom_sv1))
+    dfmnows$wom_sv1 <- factor(dfmnows$wom_sv1, levels=levels(df$wom_sv1))
+    dfmws$wom_sv1 <- factor(dfmws$wom_sv1, levels=levels(df$wom_sv1))
+    
+    
+    womnows <- as.numeric(unlist(predict(M, type="response", newdata=dfwnows)))
+    womws <- as.numeric(unlist(predict(M, type="response", newdata=dfwws)))
+    mennows <- as.numeric(unlist(predict(M, type="response", newdata=dfmnows)))
+    menws <- as.numeric(unlist(predict(M, type="response", newdata=dfmws)))
+    
+    
+
+# marginal effects
+
+AME_gender <- mean(pw - pm, na.rm=TRUE)
+    
+AME_genderext <- mean((pwp - pmp) - (pwm - pmm), na.rm=TRUE)
+
+AME_ext <- mean(ptp-ptm, na.rm=TRUE)
+
+AME_cohort <- mean((pcohp-pcohm) / (2*s), na.rm=TRUE)
+
+AME_cumulpubs <- mean((pcp - pcm) / (2*s), na.rm=TRUE)
+
+AME_prevpubs <- mean((ppp - ppm) / (2*s), na.rm=TRUE)
+    
+AME_netsize <- mean((pnsp-pnsm) / (2*s), na.rm=TRUE)
+
+AME_prof <- mean(prof - noprof, na.rm=TRUE)
+
+AME_womsv <- mean(ws - ms, na.rm=TRUE)
+
+AME_genderwomsv <- mean((womws - menws) - (womnows - mennows), na.rm=TRUE)
+
+
+  })
+  
+  c(AME_gender, AME_ext, AME_genderext, AME_cohort, AME_cumulpubs, AME_prevpubs, AME_netsize, AME_prof, AME_womsv, AME_genderwomsv)
+   #save results
+  
+}
+
+b6 <- boot(veni_ppf, bootFunc, R = 1000, parallel="snow", ncpus=10)
+
+
+fsave(b6, file = "boot4.rda", location = "./results/")
+
+
+end_time <- Sys.time()
+
+
+
+end_time - start_time 
+
+```
+
+
+```{r, echo=FALSE}
+
+load("./results/20240527boot4.rda")
+b6 <- x
+rm(x)
+
+```
+
+
+```{r}
+
+original <- b6$t0
+bias <- colMeans(b6$t) - b6$t0
+se <- apply(b6$t, 2, sd)
+
+boot.df6 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df6) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv", "AME_genderwomsv")
+
+boot.df6$t <- (boot.df6$original / boot.df6$se)
+
+round(boot.df6, 5)
+
+```
+
+
+
+
+# Mediation analyses
+
+```{r,eval=FALSE}
+
+# defining some of the key values of the bootstrapping function
+nIter <- 1000
+nCore <- parallel::detectCores() - 2
+
+
+bootFunc <- function(data, i) {
+  df <- data[i,] #bootstrap datasets
+  
+  M1 <- glm(formula = veni ~ as.factor(extended) + as.factor(gender_2) + phd_year, family = binomial(link="cloglog"), data = df)
+
+  
+  M2 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year,
+          family = binomial(link="cloglog"), data = df)
+  
+  M3 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni,
+          family = binomial(link="cloglog"), data = df)
+  
+  M4_size <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize,
+          family = binomial(link="cloglog"), data = df)
+  
+  M4_prof <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + as.factor(prof2p),
+          family = binomial(link="cloglog"), data = df)
+  
+  M4 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p),
+          family = binomial(link="cloglog"), data = df)
+  
+  M5 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + teamsize + as.factor(prof2p) + as.factor(wom_sv1), family = binomial(link="cloglog"), data = df)
+
+  M6 <- glm(formula = veni ~ as.factor(extended) * as.factor(gender_2) + phd_year + npubs_cumul + npubs_prev + field + uni + gender_2*as.factor(wom_sv1), family = binomial(link="cloglog"), data = df)
+
+    suppressWarnings({
+  
+    # CREATING THE DATASETS
+    s <- 1
+      
+    #gender
+    dfmen <- dfwomen <- df
+    dfwomen$gender_2 <- "women" # one dataset of all women
+    dfmen$gender_2 <- "men" # one dataset of all men
+    
+    dfwomen$gender_2 <- factor(dfwomen$gender_2, levels=levels(df$gender_2))
+    dfmen$gender_2 <- factor(dfmen$gender_2, levels=levels(df$gender_2))  
+    
+
+      
+    # MODEL 1  
+    
+    #calculate the predicted probabilities for gender
+    pw1 <- as.numeric(unlist(predict(M1, type="response", newdata=dfwomen)))
+    pm1 <- as.numeric(unlist(predict(M1, type="response", newdata=dfmen)))
+    
+    # average marginal effects
+    AME_gender_m1 <- mean(pw1 - pm1, na.rm=TRUE)
+    
+    
+    # MODEL 2
+    
+    #calculate the predicted probabilities for gender
+    pw2 <- as.numeric(unlist(predict(M2, type="response", newdata=dfwomen)))
+    pm2 <- as.numeric(unlist(predict(M2, type="response", newdata=dfmen)))
+    
+    # average marginal effects
+    AME_gender_m2 <- mean(pw2 - pm2, na.rm=TRUE)
+    
+  
+    # MODEL 3
+    
+    #calculate the predicted probabilities for gender
+    pw3 <- as.numeric(unlist(predict(M3, type="response", newdata=dfwomen)))
+    pm3 <- as.numeric(unlist(predict(M3, type="response", newdata=dfmen)))
+    # average marginal effects
+    AME_gender_m3 <- mean(pw3 - pm3, na.rm=TRUE)
+    
+    
+    
+    # MODEL 4
+    
+    ### ONLY SIZE
+    #calculate the predicted probabilities for gender
+    pw4_size <- as.numeric(unlist(predict(M4_size, type="response", newdata=dfwomen)))
+    pm4_size <- as.numeric(unlist(predict(M4_size, type="response", newdata=dfmen)))
+   
+    # average marginal effects
+    AME_gender_m4_size <- mean(pw4_size - pm4_size, na.rm=TRUE)
+    
+  
+    
+    ### ONLY PROF
+    #calculate the predicted probabilities for gender
+    pw4_prof <- as.numeric(unlist(predict(M4_prof, type="response", newdata=dfwomen)))
+    pm4_prof <- as.numeric(unlist(predict(M4_prof, type="response", newdata=dfmen)))
+   
+    # average marginal effects
+    AME_gender_m4_prof <- mean(pw4_prof - pm4_prof, na.rm=TRUE)
+    
+    
+    
+    ### BOTH SIZE + PROF
+    
+    #calculate the predicted probabilities for gender
+    pw4 <- as.numeric(unlist(predict(M4, type="response", newdata=dfwomen)))
+    pm4 <- as.numeric(unlist(predict(M4, type="response", newdata=dfmen)))
+   
+    # average marginal effects
+    AME_gender_m4 <- mean(pw4 - pm4, na.rm=TRUE)
+    
+    
+    
+    # MODEL 5
+    
+    #calculate the predicted probabilities for gender
+    pw5 <- as.numeric(unlist(predict(M5, type="response", newdata=dfwomen)))
+    pm5 <- as.numeric(unlist(predict(M5, type="response", newdata=dfmen)))
+   
+    # average marginal effects
+    AME_gender_m5 <- mean(pw5 - pm5, na.rm=TRUE)
+    
+    
+    # MODEL 6
+    
+    #calculate the predicted probabilities for gender
+    pw6 <- as.numeric(unlist(predict(M6, type="response", newdata=dfwomen)))
+    pm6 <- as.numeric(unlist(predict(M6, type="response", newdata=dfmen)))
+    
+    # average marginal effects
+    AME_gender_m6 <- mean(pw6 - pm6, na.rm=TRUE)
+    
+  
+    
+    # MEDIATION
+    AME_gender_d4size <- mean((pw4_size - pm4_size) - (pw3 - pm3), na.rm=TRUE)
+    
+    AME_gender_d4prof <- mean((pw4_prof - pm4_prof) - (pw3 - pm3), na.rm=TRUE)
+    
+    AME_gender_d12 <- mean((pw2 - pm2) - (pw1 - pm1), na.rm=TRUE)
+    
+    AME_gender_d23 <- mean((pw3 - pm3) - (pw2 - pm2), na.rm=TRUE)
+    
+    AME_gender_d34 <- mean((pw4 - pm4) - (pw3 - pm3), na.rm=TRUE)
+    
+    AME_gender_d45 <- mean((pw5 - pm5) - (pw4 - pm4), na.rm=TRUE)
+
+    AME_gender_d56 <- mean((pw6 - pm6) - (pw5 - pm5), na.rm=TRUE)
+
+    
+      })
+  
+  c(AME_gender_m1, AME_gender_m2, AME_gender_m3, AME_gender_m4_size, AME_gender_m4_prof, AME_gender_m4, AME_gender_m5, AME_gender_m6, AME_gender_d12, AME_gender_d23, AME_gender_d4size, AME_gender_d4prof, AME_gender_d34, AME_gender_d45, AME_gender_d56)
+   #save results
+}
+
+mediations <- boot(data=veni_ppf, bootFunc, R = nIter, parallel="snow", ncpus=nCore)
+
+
+fsave(mediations, file = "mediations.rda", location = "./results/")
+
+
+```
+
+
+```{r, echo=FALSE}
+
+load("./results/20240319mediations.rda")
+mediations <- x
+rm(x)
+
+```
+
+
+```{r}
+
+original <- mediations$t0
+bias <- colMeans(mediations$t) - mediations$t0
+se <- apply(mediations$t, 2, sd)
+
+boot.dfmed <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.dfmed) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3", "AME_gender_m4_size", "AME_gender_m4_prof", "AME_gender_m4", "AME_gender_m5", "AME_gender_m6", "AME_gender_d12", "AME_gender_d23", "AME_gender_d4size", "AME_gender_d4prof", "AME_gender_d34", "AME_gender_d45", "AME_gender_d56")
+
+boot.dfmed$t <- (boot.dfmed$original / boot.dfmed$se)
+
+round(boot.dfmed, 5)
+
+```
+
+
+
+

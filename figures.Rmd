@@ -1,0 +1,522 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: figures"
+date: "Last compiled on `r Sys.Date()`"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+    
+---
+
+This lab journal demonstrates how we create the figures featured in the paper. 
+  
+----
+
+# Custom functions
+
+- `package.check`: Check if packages are installed (and install if not) in R ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)). 
+
+
+```{r, results='hide'}
+
+rm(list=ls())
+
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+
+
+fsave <- function(x, file, location="./data/processed/") {
+  datename <- substr(gsub("[:-]", "", Sys.time()), 1,8)  
+  totalname <- paste(location, datename, file, sep="")
+  save(x, file = totalname)  
+}
+
+
+
+```
+
+---  
+
+# Packages
+
+
+- `tidyverse`: For general data manipulation
+
+- `boot`: To create bootstrapped standard errors, following the procedure delineated [here](https://www.jochemtolsma.nl/tutorials/me/)
+
+- `ggtext`: to edit formatting of text in ggplot figures
+
+
+```{r, results='hide'}
+
+packages = c("tidyverse", "boot", "ggtext")
+
+fpackage.check(packages)
+
+```
+
+--- 
+
+
+# Input
+
+We use several results objects:
+
+* [veni_ppf](data/processed/veni_ppf.rda): Processed dataset containing all independent variables and the dependent variable
+    - name of dataset: `veni_ppf`
+    - used here to show Veni hazard rates per year after obtaining doctorate
+
+* [20240319boot1-3c.rda](data/results/): results of our main analyses with bootstrapped standard errors
+
+* [20240527boot4.rda](data/results/): results of our main analyses with bootstrapped standard errors
+
+* [20240322robustness3a-d.rda](data/results/robustness/): results of our models split out by cohort
+
+
+
+```{r files, eval=TRUE}
+
+
+load("./data/processed/veni_ppf.rda")
+
+
+load("./results/20240319boot1.rda")
+b1 <- x
+rm(x)
+
+load("./results/20240319boot2.rda")
+b2 <- x
+rm(x)
+
+load("./results/20240319boot3a.rda")
+b3 <- x
+rm(x)
+
+load("./results/20240319boot3b.rda")
+b4 <- x
+rm(x)
+
+load("./results/20240319boot3c.rda")
+b5 <- x
+rm(x)
+
+load("./results/20240527boot4.rda")
+b6 <- x
+rm(x)
+
+
+load(file = "./results/robustness/20240322robustness3a.rda")
+coh1 <- x
+rm(x)
+
+load(file = "./results/robustness/20240322robustness3b.rda")
+coh2 <- x
+rm(x)
+
+load(file = "./results/robustness/20240322robustness3c.rda")
+coh3 <- x
+rm(x)
+
+load(file = "./results/robustness/20240322robustness3d.rda")
+coh4 <- x
+rm(x)
+
+
+```
+
+
+
+
+## Figure 1: Veni hazard rate by time and gender
+
+
+```{r}
+
+menc <- "#D1C166"
+womenc <- "#48a363"
+
+veni_ppf %>%
+  filter(year>2002) %>%
+  group_by(time, gender_2) %>%
+  summarise(event = sum(veni),
+            total = n()) %>%
+  mutate(hazard = event/total) %>%
+  ggplot(aes(x=time, y = hazard, group = gender_2, color=gender_2)) +
+  geom_point() +
+  labs(x = "Time in years since doctorate receipt", y="Hazard") +
+  geom_line() + 
+  scale_color_manual(values=c(menc, womenc), name="Gender") +
+  theme(axis.title=element_text(face="bold"), 
+        legend.title=element_text(face="bold"),
+        panel.grid.major.x = element_blank(), 
+        panel.background = element_rect(fill="white"),
+        panel.grid.major.y = element_line(color="#C9c9c9", linewidth=0.2),
+        panel.grid.minor=element_blank())
+  
+
+```
+
+
+
+```{r}
+
+ggsave("./output/plot1.jpg", height=8, width=12, dpi=2000)
+
+
+```
+
+
+
+## Figure 2: Model coefficients
+
+
+Loading in the model output and creating dataframes for each model
+
+
+```{r}
+
+original <- b1$t0
+bias <- colMeans(b1$t) - b1$t0
+se <- apply(b1$t, 2, sd)
+
+boot.df1 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df1) <- c("AME_gender", "AME_ext", "AME_cohort")
+
+boot.df1$t <- (boot.df1$original / boot.df1$se)
+
+round(boot.df1, 5)
+
+
+```
+
+
+```{r}
+
+original <- b2$t0
+bias <- colMeans(b2$t) - b2$t0
+se <- apply(b2$t, 2, sd)
+
+boot.df2 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df2) <- c("AME_gender", "AME_ext", "AME_genderext","AME_cohort")
+
+boot.df2$t <- (boot.df2$original / boot.df2$se)
+
+round(boot.df2, 5)
+
+
+```
+
+
+```{r}
+
+original <- b3$t0
+bias <- colMeans(b3$t) - b3$t0
+se <- apply(b3$t, 2, sd)
+
+boot.df3 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df3) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs")
+
+boot.df3$t <- (boot.df3$original / boot.df3$se)
+
+round(boot.df3, 5)
+
+```
+
+
+
+```{r}
+
+original <- b4$t0
+bias <- colMeans(b4$t) - b4$t0
+se <- apply(b4$t, 2, sd)
+
+boot.df4 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df4) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof")
+
+boot.df4$t <- (boot.df4$original / boot.df4$se)
+
+round(boot.df4, 5)
+
+```
+
+
+```{r}
+
+original <- b5$t0
+bias <- colMeans(b5$t) - b5$t0
+se <- apply(b5$t, 2, sd)
+
+boot.df5 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df5) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv")
+
+boot.df5$t <- (boot.df5$original / boot.df5$se)
+
+round(boot.df5, 5)
+
+```
+
+
+```{r}
+
+original <- b6$t0
+bias <- colMeans(b6$t) - b6$t0
+se <- apply(b6$t, 2, sd)
+
+boot.df6 <- data.frame(original=original, bias=bias, se=se)
+row.names(boot.df6) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv", "AME_genderwomsv")
+
+boot.df6$t <- (boot.df6$original / boot.df6$se)
+
+round(boot.df6, 5)
+
+```
+
+
+```{r}
+
+tot <- "#414141"
+menc <- "#D1C166"
+womenc <- "#48a363"
+
+```
+
+
+Extracting relevant coefficients and creating a combined dataframe containing the results of all models
+```{r}
+
+
+boot.df1 %>%
+  mutate(ame = original, 
+         model = "M1") %>%
+  select(ame, se, model) -> ames1
+  
+boot.df2 %>%
+  mutate(ame = original, 
+         model = "M2") %>%
+  select(ame, se, model) -> ames2
+
+
+boot.df3 %>%
+  mutate(ame = original, 
+         model = "M3") %>%
+  select(ame, se, model) -> ames3
+
+
+boot.df4 %>%
+  mutate(ame = original, 
+         model = "M4") %>%
+  select(ame, se, model) -> ames4
+
+
+
+boot.df5 %>%
+  mutate(ame = original, 
+         model = "M5") %>%
+  select(ame, se, model) -> ames5
+
+
+boot.df6 %>%
+  mutate(ame = original, 
+         model = "M6") %>%
+  select(ame, se, model) -> ames6
+
+
+AMEs <- do.call("rbind", list(ames1, ames2, ames3, ames4, ames5, ames6))
+
+AMEs$cov2 <- str_extract(rownames(AMEs), "AME_[:alpha:]+")
+
+AMEs$covariate <- ""
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_gender", "Woman **(H1)**", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_ext", "Extension period", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_cohort", "PhD cohort", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderext", "Woman * extension period **(H2)**", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_cumulpubs", "Publications: cumulative", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_prevpubs", "Publications: previous year", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_netsize", "Supervision team: size **(H3a)**", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_prof", "Supervision team: 2+ professors **(H3b)**", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_womsv", "Supervision team: 1+ woman **(H4a)**", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_gendersize", "Woman * team size", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderprof", "Woman * 2+ professors", AMEs$covariate)
+AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderwomsv", "Woman * 1+ woman **(H4b)**", AMEs$covariate)
+
+AMEs$covariate <- factor(AMEs$covariate, levels=c("Woman **(H1)**", "Extension period", "PhD cohort", "Woman * extension period **(H2)**", "Supervision team: size **(H3a)**", "Supervision team: 2+ professors **(H3b)**", "Supervision team: 1+ woman **(H4a)**", "Woman * team size", "Woman * 2+ professors", "Woman * 1+ woman **(H4b)**", "Publications: cumulative", "Publications: previous year"))
+
+AMEs$model <- factor(AMEs$model, levels=c("M1", "M2", "M3", "M4", "M5", "M6"))
+#AMEs$model <- factor(AMEs$model, levels=c("M6", "M5", "M4", "M3", "M2", "M1"))
+
+AMEs <- AMEs %>% arrange(covariate, model)
+
+```
+
+
+
+
+
+```{r}
+
+ggplot(AMEs, aes(y=ame, x=covariate)) +
+  geom_hline(yintercept=0, color="brown4", linewidth=.5) +
+  geom_point() +
+  facet_wrap(model ~ ., nrow=3, ncol=2, scales = "free") + 
+  geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
+  scale_y_continuous(limits = c(-0.015, 0.005), breaks=seq(-0.015, 0.005, by = 0.005)) +
+  labs(y="AME") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_markdown(angle=30, hjust=1, vjust=1),
+        legend.position = "none",
+        strip.text.x = element_markdown(angle=0, size=9, face="bold"),
+        strip.background = element_blank(),
+        panel.background = element_rect(fill="white"),
+        panel.spacing = unit(0.1, 'points'),
+        panel.grid.major.y = element_line(color="#C9c9c9", linewidth=0.2, linetype=3),
+        panel.grid.minor=element_blank(),
+        panel.grid.major.x=element_blank())
+
+```
+
+```{r}
+
+ggsave("./output/plot2.jpg", height=8, width=12, dpi=2400)
+
+
+```
+
+
+
+## Figure 3: Cohort splits
+
+```{r}
+
+original <- coh1$t0
+bias <- colMeans(coh1$t) - coh1$t0
+se <- apply(coh1$t, 2, sd)
+
+df.robust3a <- data.frame(original=original, bias=bias, se=se)
+
+
+
+row.names(df.robust3a) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+
+df.robust3a$t <- (df.robust3a$original / df.robust3a$se)
+
+round(df.robust3a, 5)
+
+df.robust3a <- df.robust3a[3,]
+
+df.robust3a %>%
+  mutate(ame = original, 
+         cohort = "Cohort 1") %>%
+  select(ame, se, cohort) -> ames1
+
+
+original <- coh2$t0
+bias <- colMeans(coh2$t) - coh2$t0
+se <- apply(coh2$t, 2, sd)
+
+df.robust3b <- data.frame(original=original, bias=bias, se=se)
+
+
+row.names(df.robust3b) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+
+df.robust3b$t <- (df.robust3b$original / df.robust3b$se)
+
+round(df.robust3b, 5)  
+
+df.robust3b <- df.robust3b[3,]
+
+df.robust3b %>%
+  mutate(ame = original, 
+         cohort = "Cohort 2") %>%
+  select(ame, se, cohort) -> ames2
+
+original <- coh3$t0
+bias <- colMeans(coh3$t) - coh3$t0
+se <- apply(coh3$t, 2, sd)
+
+df.robust3c <- data.frame(original=original, bias=bias, se=se)
+
+
+row.names(df.robust3c) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+
+df.robust3c$t <- (df.robust3c$original / df.robust3c$se)
+
+round(df.robust3c, 5)
+
+df.robust3c <- df.robust3c[3,]
+
+df.robust3c %>%
+  mutate(ame = original, 
+         cohort = "Cohort 3") %>%
+  select(ame, se, cohort) -> ames3
+
+
+original <- coh4$t0
+bias <- colMeans(coh4$t) - coh4$t0
+se <- apply(coh4$t, 2, sd)
+
+df.robust3d <- data.frame(original=original, bias=bias, se=se)
+
+
+row.names(df.robust3d) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+
+df.robust3d$t <- (df.robust3d$original / df.robust3d$se)
+
+round(df.robust3d, 5)
+
+df.robust3d <- df.robust3d[3,]
+
+df.robust3d %>%
+  mutate(ame = original, 
+         cohort = "Cohort 4") %>%
+  select(ame, se, cohort) -> ames4
+
+
+AMEs <- do.call("rbind", list(ames1, ames2, ames3, ames4))
+
+AMEs$covariate <- c("Woman (coh. 1997-2006)", "Woman (coh. 2007-2010)", "Woman (coh. 2011-2013)", "Woman (coh. 2014-2019)")
+
+
+```
+
+
+
+```{r}
+
+ggplot(AMEs, aes(y=ame, x=covariate)) +
+  geom_hline(yintercept=0, color="brown4", linewidth=.5) +
+  geom_point() +
+  geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
+  scale_y_continuous(limits = c(-0.006, 0.007), breaks=seq(-0.005, 0.010, by = 0.005)) +
+  labs(y="AME") +
+  theme(axis.title.x = element_blank(),
+        axis.text.x = element_markdown(angle=20, hjust=1, vjust=1),
+        legend.position = "none",
+        strip.text.x = element_markdown(angle=0, size=9, face="bold"),
+        strip.background = element_blank(),
+        panel.background = element_rect(fill="white"),
+        panel.spacing = unit(0.1, 'points'),
+        panel.grid.major.y = element_line(color="#C9c9c9", linewidth=0.2, linetype=3),
+        panel.grid.minor=element_blank(),
+        panel.grid.major.x=element_blank())
+
+```
+
+```{r}
+
+ggsave("./output/plot3.jpg", height=8, width=12, dpi=2400)
+
+```
+
+

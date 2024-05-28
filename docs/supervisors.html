@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Mentoring for gender equality in early-career grant receipt: supervisor variables</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="tweaks.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Independent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="names.html">Names</a>
+    </li>
+    <li>
+      <a href="gender.html">Gender</a>
+    </li>
+    <li>
+      <a href="supervisors.html">Supervisor variables</a>
+    </li>
+    <li>
+      <a href="discipline.html">Discipline</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Dependent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dataprep-veni.html">Veni receipt</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analyses.html">Main analysis Veni receipt</a>
+    </li>
+    <li>
+      <a href="robustness.html">Supplementary analyses</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="figures.html">Figures</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Mentoring for gender equality in
+early-career grant receipt: supervisor variables</h1>
+<h4 class="date">Last compiled on 2024-05-28</h4>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<hr />
+<p>This lab journal shows how we construct the variables for resources
+present in the supervision team.</p>
+<hr />
+<div id="custom-functions" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Custom functions</h1>
+<ul>
+<li><code>package.check</code>: Check if packages are installed (and
+install if not) in R (<a
+href="https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/">source</a>).</li>
+</ul>
+<pre class="r test"><code>rm(list=ls())
+
+
+fpackage.check &lt;- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}</code></pre>
+<hr />
+</div>
+<div id="packages" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Packages</h1>
+<ul>
+<li><p><code>tidyverse</code>: For general data manipulaion</p></li>
+<li><p><code>stringr</code>: For string manipulations</p></li>
+<li><p><code>stringi</code>: For string manipulations</p></li>
+</ul>
+<pre class="r test"><code>packages = c(&quot;tidyverse&quot;, &quot;stringr&quot;, &quot;stringi&quot;)
+
+fpackage.check(packages)</code></pre>
+<hr />
+</div>
+<div id="input" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Input</h1>
+<p>We use four processed datasets and one raw dataset</p>
+<ul>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/phdgender.rda">phdgender</a>:
+example dataset of 8 (fictional) PhDs with first and last names and
+gender
+<ul>
+<li>For construction of this dataset see <a
+href="gender.html">Independent variables: gender</a></li>
+<li>name of dataset: <code>phdgender</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/professors/profs.rda">profs</a>:
+a (fictional) list of professors, the structure of which is a copy of
+the original lists obtained from NARCIS
+<ul>
+<li>name of dataset: <code>profs</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/ln_origin.rda">ln_origin</a>:
+ethnicity information associated with the last names in our data
+<ul>
+<li>Ethnicity is not a main covariate in this paper, so we do not have a
+separate page detailing how we construct it here, but our method can be
+found <a
+href="https://ammulders.github.io/amatteroftime/ethnicity.html">here</a></li>
+<li>name of dataset: <code>ln_origin</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/gender.rda">gender</a>:
+web scraped gender data for the 8 first names in the example data, from
+Meertens Voornamenbank
+<ul>
+<li>name of dataset: <code>gender</code></li>
+</ul></li>
+<li><a
+href="https://github.com/ammulders/amatteroftime/data/processed/genderizer.rda">genderizer</a>:
+web scraped gender data for the first names in the example data, from
+GenderizeR global, Morocco, Turkey and Netherlands
+<ul>
+<li>name of dataset: <code>genderizer</code></li>
+</ul></li>
+</ul>
+<pre class="r test"><code>load(file = &quot;data/processed/phdgender.rda&quot;)
+
+load(file = &quot;data/professors/profs.rda&quot;)
+
+load(file = &quot;./data/processed/ln_origin.rda&quot;)
+
+load(file = &quot;data/processed/gender.rda&quot;)
+
+load(file = &quot;data/processed/genderizer.rda&quot;)</code></pre>
+<hr />
+</div>
+<div id="combining-the-two-supervisor-columns-in-phd_metadf-to-one"
+class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Combining the two
+supervisor columns in phd_metadf to one</h1>
+</div>
+<div id="transforming-the-data-so-that-we-have-one-supervisor-per-row"
+class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Transforming the data
+so that we have one supervisor per row</h1>
+<pre class="r test"><code># create one object for each supervisor
+
+# supervisor 1 and 2
+phdgender$supervisor1 &lt;- str_remove(phdgender$supervisors, &quot;;.*&quot;) # delete everything after the first ;
+phdgender$supervisor2 &lt;- str_remove_all(phdgender$supervisors, phdgender$supervisor1) # remove supervisor1 from the supervisor object to get supervisors 2-k
+phdgender$supervisor2 &lt;- str_remove_all(phdgender$supervisor2, &quot;^(\\s)?;\\s&quot;) # remove ; at the beginning of this object
+phdgender$supervisor2 &lt;- ifelse(phdgender$supervisor2==&quot;&quot; | phdgender$supervisor2==&quot; &quot;, NA, phdgender$supervisor2)
+
+# supervisor 3
+phdgender$supervisor3 &lt;- str_extract(phdgender$supervisor2, &quot;;.*$&quot;) # get supervisor 3 by extracting everything after ; in supervisor 2
+phdgender$supervisor2 &lt;- ifelse(!is.na(phdgender$supervisor3), str_remove(phdgender$supervisor2, phdgender$supervisor3), phdgender$supervisor2) 
+# remove supervisor 3 from the supervisor 2 object, but only if there is a third supervisor present
+phdgender$supervisor3 &lt;- str_extract(phdgender$supervisor3, &quot;[:upper:].*&quot;) # remove ; at the beginning of this object
+
+# supervisor 4
+phdgender$supervisor4 &lt;- str_extract(phdgender$supervisor3, &quot;;.*$&quot;) # same procedure as for supervisor 3 from now on
+phdgender$supervisor3 &lt;- ifelse(!is.na(phdgender$supervisor4), str_remove(phdgender$supervisor3, phdgender$supervisor4), phdgender$supervisor3) 
+phdgender$supervisor4 &lt;- str_extract(phdgender$supervisor4, &quot;[:upper:].*&quot;)
+
+# supervisor 5
+phdgender$supervisor5 &lt;- str_extract(phdgender$supervisor4, &quot;;.*$&quot;) 
+phdgender$supervisor4 &lt;- ifelse(!is.na(phdgender$supervisor5), str_remove(phdgender$supervisor4, phdgender$supervisor5), phdgender$supervisor4) 
+phdgender$supervisor5 &lt;- str_extract(phdgender$supervisor5, &quot;[:upper:].*&quot;) 
+
+# supervisor 6
+phdgender$supervisor6 &lt;- str_extract(phdgender$supervisor5, &quot;;.*$&quot;) 
+phdgender$supervisor5 &lt;- ifelse(!is.na(phdgender$supervisor6),str_remove(phdgender$supervisor5, phdgender$supervisor6), phdgender$supervisor5) 
+phdgender$supervisor6 &lt;- str_extract(phdgender$supervisor6, &quot;[:upper:].*&quot;) 
+
+# supervisor 7
+phdgender$supervisor7 &lt;- str_extract(phdgender$supervisor6, &quot;;.*$&quot;) 
+phdgender$supervisor6 &lt;- ifelse(!is.na(phdgender$supervisor7),str_remove(phdgender$supervisor6, phdgender$supervisor7), phdgender$supervisor6) 
+phdgender$supervisor7 &lt;- str_extract(phdgender$supervisor7, &quot;[:upper:].*&quot;) 
+
+# supervisor 8
+phdgender$supervisor8 &lt;- str_extract(phdgender$supervisor7, &quot;;.*$&quot;) 
+phdgender$supervisor7 &lt;- ifelse(!is.na(phdgender$supervisor8),str_remove(phdgender$supervisor7, phdgender$supervisor8), phdgender$supervisor7) 
+phdgender$supervisor8 &lt;- str_extract(phdgender$supervisor8, &quot;[:upper:].*&quot;) 
+
+# supervisor 9
+phdgender$supervisor9 &lt;- str_extract(phdgender$supervisor8, &quot;;.*$&quot;) 
+phdgender$supervisor8 &lt;- ifelse(!is.na(phdgender$supervisor9),str_remove(phdgender$supervisor8, phdgender$supervisor9), phdgender$supervisor8) 
+phdgender$supervisor9 &lt;- str_extract(phdgender$supervisor9, &quot;[:upper:].*&quot;) 
+
+# supervisor 10
+phdgender$supervisor10 &lt;- str_extract(phdgender$supervisor9, &quot;;.*$&quot;) 
+phdgender$supervisor9 &lt;- ifelse(!is.na(phdgender$supervisor10), str_remove(phdgender$supervisor9, phdgender$supervisor10), phdgender$supervisor9) 
+phdgender$supervisor10 &lt;- str_extract(phdgender$supervisor10, &quot;[:upper:].*&quot;) 
+
+# supervisor 11
+phdgender$supervisor11 &lt;- str_extract(phdgender$supervisor10, &quot;;.*$&quot;) 
+phdgender$supervisor10 &lt;- ifelse(!is.na(phdgender$supervisor11),str_remove(phdgender$supervisor10, phdgender$supervisor11), phdgender$supervisor10) 
+phdgender$supervisor11 &lt;- str_extract(phdgender$supervisor11, &quot;[:upper:].*&quot;) 
+
+# trim whitespaces
+phdgender$supervisor1 &lt;- trimws(phdgender$supervisor1)
+phdgender$supervisor2 &lt;- trimws(phdgender$supervisor2)
+phdgender$supervisor3 &lt;- trimws(phdgender$supervisor3)
+phdgender$supervisor4 &lt;- trimws(phdgender$supervisor4)
+phdgender$supervisor5 &lt;- trimws(phdgender$supervisor5)
+phdgender$supervisor6 &lt;- trimws(phdgender$supervisor6)
+phdgender$supervisor7 &lt;- trimws(phdgender$supervisor7)
+phdgender$supervisor8 &lt;- trimws(phdgender$supervisor8)
+phdgender$supervisor9 &lt;- trimws(phdgender$supervisor9)
+phdgender$supervisor10 &lt;- trimws(phdgender$supervisor10)
+phdgender$supervisor11 &lt;- trimws(phdgender$supervisor11)
+
+
+phdgender &lt;- pivot_longer(phdgender, cols=c(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisor6, supervisor7, supervisor8, supervisor9, supervisor10, supervisor11), names_to=&quot;sv_n&quot;, values_to=&quot;supervisor&quot;)
+
+
+# adding a phd-supervisor ID variable
+phdgender$id_phd_sv &lt;- paste0(phdgender$id, &quot;-&quot;, str_extract(phdgender$sv_n, &quot;[:digit:]+&quot;))
+
+# removing empty lines
+phdgender &lt;- phdgender[!is.na(phdgender$supervisor), ]</code></pre>
+</div>
+<div
+id="gathering-supervisors-first-and-last-names-into-separate-columns"
+class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Gathering supervisors’
+first and last names into separate columns</h1>
+<pre class="r test"><code># defining nobiliary particles so that these can be removed
+vande0 &lt;- c(&quot;(V|v)an (D|d)er&quot;, &quot;(V|v)an (D|d)en&quot;, &quot;(V|v)an (D|d)e&quot;, &quot;(V|v)ande(n)?&quot;, &quot;(V|v)an &#39;(T|t)&quot;, &quot;(V|v)an&#39;(T|t)&quot;, &quot;(V|v)an (H|h)et&quot;, &quot;(V|v)on (D|d)er&quot;, &quot;(O|o)p den&quot;, &quot;(O|o)p &#39;t&quot;, &quot;(O|o)f ten&quot;, &quot;(A|a)an de(n)?&quot;, &quot;(D|d)e (L|l)a&quot;, &quot;(I|i)n (H|h)et&quot;, &quot;(I|i)n &#39;(T|t)&quot;, &quot;(I|i)n&#39;(T|t)&quot;, &quot;(I|i)n (D|d)er&quot;, &quot;(B|b)ij (D|d)e&quot;) # nobiliary particles anywhere in string
+
+vande1 &lt;- c(&quot;^(L|l)a\\s&quot;, &quot;^(O|o)p\\s&quot; ,&quot;^(V|v)an\\s&quot;, &quot;^(V|v)on\\s&quot;, &quot;^(D|d)en\\s&quot;, &quot;^(D|d)er\\s&quot;, &quot;^(D|d)el\\s&quot;, &quot;^(D|d)(e|a|u|i)\\s&quot;, &quot;^(D|d)os?\\s&quot;, &quot;^(T|t)er\\s&quot; , &quot;^(T|t)en\\s&quot;, &quot;^(T|t)e\\s&quot;, &quot;^&#39;(T|t)\\s&quot;, &quot;^(L|l)e\\s&quot;, &quot;^El-&quot;, &quot;^[(A|a)(E|e)](L|l)&#39;?\\s&quot;, &quot;^(D|d)&#39;&quot;, &quot;^zu\\s&quot;, &quot;^(Z|z)ur\\s&quot;, &quot;^e\\s&quot;) # starts with np
+
+vande2 &lt;- c(&quot;\\s(L|l)a$&quot;, &quot;\\s(O|o)p$&quot; ,&quot;\\s(V|v)an$&quot;, &quot;\\s(V|v)on$&quot;, &quot;\\s(D|d)en$&quot;, &quot;\\s(D|d)er$&quot;, &quot;\\s(D|d)el$&quot;, &quot;\\s(D|d)(e|a|u|i)$&quot;, &quot;\\s(D|d)os?$&quot;, &quot;\\s(T|t)er$&quot;, &quot;\\s(T|t)en$&quot;, &quot;\\s(T|t)e$&quot;, &quot;\\s&#39;(T|t)$&quot;, &quot;\\s(L|l)e$&quot;, &quot;\\s[(A|a)(E|e)](L|l)&#39;?$&quot;, &quot;\\s(D|d)&#39;$&quot;, &quot;\\szu$&quot;, &quot;\\s(Z|z)ur$&quot;) # ends with np
+
+vande3 &lt;- c(&quot;\\s(L|l)a\\s&quot;, &quot;\\s(O|o)p\\s&quot; ,&quot;\\s(V|v)an\\s&quot;, &quot;\\s(V|v)on\\s&quot;, &quot;\\s(D|d)en\\s&quot;, &quot;\\s(D|d)er\\s&quot;, &quot;\\s(D|d)el\\s&quot;, &quot;\\s(D|d)(e|a|u|i)\\s&quot;, &quot;\\s(D|d)os?\\s&quot;, &quot;\\s(T|t)er\\s&quot;, &quot;\\s(T|t)en\\s&quot;, &quot;\\s(T|t)e\\s&quot;, &quot;\\s&#39;(T|t)\\s&quot;, &quot;\\s(L|l)e\\s&quot;, &quot;\\s(E|A)l-&quot;, &quot;\\s[(A|a)(E|e)](L|l)&#39;?\\s&quot;, &quot;\\s(D|d)&#39;&quot;, &quot;\\szu\\s&quot;, &quot;\\s(Z|z)ur\\s&quot;, &quot;\\s(Y|y)\\s&quot;, &quot;\\s(E|e)\\s&quot;) # np in the middle
+
+vande4 &lt;- c(&quot;^(L|l)a$&quot;, &quot;^(O|o)p$&quot; , &quot;^(V|v)an$&quot;, &quot;^(V|v)on$&quot;, &quot;^(D|d)en$&quot;, &quot;^(D|d)er$&quot;, &quot;^(D|d)el$&quot;, &quot;^(D|d)(e|a|u|i)$&quot;, &quot;^(D|d)os?$&quot;, &quot;^Vande[$//s]&quot;, &quot;^(T|t)er$&quot;,  &quot;^(T|t)en$&quot;, &quot;^(T|t)e$&quot;, &quot;^&#39;(T|t)$&quot;, &quot;^(L|l)e$&quot;, &quot;^[(A|a)(E|e)](L|l)&#39;?$&quot;, &quot;^(D|d)&#39;$&quot;, &quot;^zu$&quot;, &quot;^(Z|z)ur$&quot;) # entire string is a np
+
+
+
+
+# first name of supervisor
+phdgender$sv_fn &lt;- str_remove(phdgender$supervisor, &quot;^.*,&quot;) # name after comma
+phdgender$sv_fn &lt;- ifelse(as.numeric(str_detect(phdgender$sv_fn, &quot;(?&lt;=\\().*(?=\\))&quot;))==1, str_extract(phdgender$sv_fn,  &quot;(?&lt;=\\().*(?=\\))&quot;), phdgender$sv_fn)  # name in brackets
+phdgender$sv_fn &lt;- trimws(phdgender$sv_fn, which=&quot;both&quot;)
+
+# Extract nobiliary particles
+phdgender$sv_np &lt;- str_extract(phdgender$sv_fn, paste0(c(vande0, vande1, vande2), collapse=&quot;|&quot;))
+phdgender$sv_np &lt;- tolower(phdgender$sv_np)
+
+# Remove nobiliary particles from the firstname
+phdgender$sv_fn &lt;- str_remove_all(phdgender$sv_fn, paste0(vande0, collapse=&quot;|&quot;)) # remove nobiliary particles
+phdgender$sv_fn &lt;- str_remove_all(phdgender$sv_fn, paste0(vande1, collapse=&quot;|&quot;)) # remove nobiliary particles
+phdgender$sv_fn &lt;- str_remove_all(phdgender$sv_fn, paste0(vande2, collapse=&quot;|&quot;)) # remove nobiliary particles
+phdgender$sv_fn &lt;- str_remove_all(phdgender$sv_fn, paste0(vande3, collapse=&quot;|&quot;)) # remove nobiliary particles
+
+phdgender$sv_fn &lt;- ifelse(phdgender$sv_fn == &quot;&quot;, NA, phdgender$sv_fn) # set to NA if missing
+
+
+# extract initials based on full first names
+phdgender$sv_ini &lt;- str_extract_all(phdgender$sv_fn, &quot;[:upper:]&quot;)
+# combine multiple initials in c() object into a single string
+phdgender$sv_ini &lt;- gsub(&quot;c\\(\&quot;&quot;, &quot;&quot;, phdgender$sv_ini)
+phdgender$sv_ini &lt;- gsub(&quot;\&quot;, \&quot;&quot;, &quot;.&quot;, phdgender$sv_ini)
+phdgender$sv_ini &lt;- gsub(&quot;\&quot;\\)&quot;, &quot;.&quot;, phdgender$sv_ini)
+# add full stop at the end of single-letter initials
+phdgender$sv_ini &lt;- trimws(phdgender$sv_ini)
+phdgender$sv_ini &lt;- ifelse(as.numeric(str_detect(phdgender$sv_ini, &quot;^[:upper:]$&quot;))==1, paste0(phdgender$sv_ini, &quot;.&quot;), phdgender$sv_ini)
+
+
+# next, we remove initials from the supervisors&#39; names
+initialpattern &lt;- paste(c(&quot;^([:upper:]\\.?\\-\\.?)+&quot;,                 # A- or A-. or A.-
+                          &quot;(T|t|C|c|P|p)h\\.\\s?&quot;,                    # Th. Ph. Ch. 
+                          &quot;^([:upper:]\\.)+[:upper:](\\s)?$&quot;,         # A.A.A
+                          &quot;([:upper:]\\.+)+&quot;, &quot;([:lower:]\\.){2,}&quot;,   # A.  or a.
+                          &quot;^\\s?([:alpha:]\\s)+&quot;,                     # A or a surrounded by whitespace
+                          &quot;^\\s?[:alpha:]\\.?\\s?$&quot;,                  # entire string consists of a single letter
+                          &quot;^\\s?[:upper:]{2,4}\\s?$&quot;),                # entire string consists of 2-4 capital letters
+                        collapse = &quot;|&quot;)
+
+# removing lowercase v.d. at the beginning of first name, since this tends to signal &quot;van de&quot; in Dutch
+phdgender$sv_fn &lt;- gsub(&quot;^v.d.\\s&quot;, &quot;&quot;, phdgender$sv_fn)
+phdgender$sv_fn &lt;- gsub(&quot;^v\\s&quot;, &quot;&quot;, phdgender$sv_fn)
+
+# removing initials from first name object
+phdgender$sv_fn &lt;- str_remove_all(phdgender$sv_fn, initialpattern)
+
+
+# some cleaning: lowercase names and extracting only the first-mentioned last name
+phdgender$sv_fn &lt;- trimws(phdgender$sv_fn)
+phdgender$sv_fn &lt;- tolower(phdgender$sv_fn) # lowercase
+phdgender$sv_fn &lt;- stri_trans_general(phdgender$sv_fn, id=&quot;latin-ascii&quot;)
+
+phdgender$sv_fn &lt;- str_extract(phdgender$sv_fn, &quot;[a-z]+\\-*[a-z]*&quot;)
+
+# last names of supervisor 
+phdgender$sv_ln &lt;- str_remove(phdgender$supervisor, &quot;,.*$&quot;)
+phdgender$sv_ln &lt;- str_remove(phdgender$sv_ln, paste0(vande0, collapse=&quot;|&quot;)) # remove nobiliary particles
+phdgender$sv_ln &lt;- str_remove(phdgender$sv_ln, paste0(vande1, collapse=&quot;|&quot;)) # remove nobiliary particles
+
+phdgender$sv_ln &lt;- tolower(phdgender$sv_ln) # lowercase
+phdgender$sv_ln &lt;- stri_trans_general(phdgender$sv_ln, id=&quot;latin-ascii&quot;)
+
+phdgender$sv_ln &lt;- str_extract(phdgender$sv_ln, &quot;[a-z]+&quot;) # first-mentioned last name</code></pre>
+</div>
+<div id="create-a-matchable-dataframe-of-supervisors"
+class="section level1" number="7">
+<h1><span class="header-section-number">7</span> Create a matchable
+dataframe of supervisors</h1>
+<pre class="r test"><code>supervisors &lt;- subset(phdgender, select=c(id, id_phd_sv, phd_year, supervisors, sv_fn, sv_ini, sv_ln, sv_n))
+
+supervisors %&gt;%
+  rename(id_phd = id,
+         phd_year_phd = phd_year) -&gt; supervisors
+
+
+# fill first names for supervisors in case the name format varies per PhD (e.g. some have only initials, some have name and initials) 
+supervisors %&gt;%
+  group_by(sv_ln, sv_ini) %&gt;%
+  fill(sv_fn, .direction=&quot;downup&quot;) -&gt; supervisors</code></pre>
+</div>
+<div id="adding-professor-titles" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> Adding professor
+titles</h1>
+<pre class="r test"><code>full &lt;- profs[profs$title==&quot;full&quot;,]
+
+
+full &lt;- subset(full, select=c(&quot;id_pr&quot;, &quot;firstname_pr&quot;, &quot;ini&quot;, &quot;lastname&quot;, &quot;fullname_pr&quot;, &quot;np_pr&quot;, &quot;firstyear&quot;))
+
+# We first match supervisors to the professor database based on firstname 
+full_firstname &lt;- full[!is.na(full$firstname_pr),]
+
+
+supervisors &lt;- left_join(supervisors, full_firstname, by=c(&quot;sv_ln&quot;=&quot;lastname&quot;, &quot;sv_fn&quot;=&quot;firstname_pr&quot;))
+# creates about 2k duplicates, upon inspection, these seem to be the same people
+
+# remove duplicates
+supervisors %&gt;%
+  group_by(id_phd_sv) %&gt;%
+  slice_head() %&gt;%
+  ungroup -&gt; supervisors
+
+
+# Then, we match supervisors to the professor database based on initials
+# But only the part that is not yet matched 
+
+supervisors_match &lt;- supervisors[!is.na(supervisors$firstyear),] # 58K supervisors are matched
+
+supervisors_nomatch &lt;- supervisors[is.na(supervisors$firstyear),] # not yet matched supervisors 
+supervisors_nomatch &lt;- subset(supervisors_nomatch, select=c(&quot;id_phd&quot;, &quot;id_phd_sv&quot;, &quot;phd_year_phd&quot;, &quot;supervisors&quot;, &quot;sv_fn&quot;, &quot;sv_ini&quot;, &quot;sv_ln&quot;, &quot;sv_n&quot; ))
+
+supervisors_nomatch &lt;- left_join(supervisors_nomatch, full, by=c(&quot;sv_ln&quot;=&quot;lastname&quot;, &quot;sv_ini&quot;=&quot;ini&quot;))
+
+# removing duplicates again
+
+supervisors_nomatch %&gt;%
+  group_by(id_phd_sv) %&gt;%
+  fill(firstname_pr, .direction=&quot;downup&quot;) %&gt;%
+  fill(id_pr, .direction=&quot;downup&quot;) %&gt;%
+  slice_head() -&gt; supervisors_nomatch</code></pre>
+</div>
+<div id="adding-names-from-the-professors-database"
+class="section level1" number="9">
+<h1><span class="header-section-number">9</span> Adding names from the
+professors database</h1>
+<pre class="r test"><code>nrow(supervisors_nomatch[!is.na(supervisors_nomatch$sv_fn),])</code></pre>
+<pre class="test2"><code>#&gt; [1] 6</code></pre>
+<pre class="r test"><code># Copy the professors&#39; first names if they are not yet filled
+supervisors_nomatch$sv_fn &lt;- ifelse(is.na(supervisors_nomatch$sv_fn), supervisors_nomatch$firstname_pr, supervisors_nomatch$sv_fn)
+
+
+nrow(supervisors_nomatch[!is.na(supervisors_nomatch$sv_fn),])</code></pre>
+<pre class="test2"><code>#&gt; [1] 8</code></pre>
+</div>
+<div
+id="combining-the-professor-info-based-on-the-two-matching-strategies"
+class="section level1" number="10">
+<h1><span class="header-section-number">10</span> Combining the
+professor info based on the two matching strategies</h1>
+<pre class="r test"><code>supervisors_match &lt;- subset(supervisors_match, select=c(&quot;id_phd&quot;, &quot;id_phd_sv&quot;, &quot;phd_year_phd&quot;, &quot;supervisors&quot;, &quot;sv_fn&quot;, &quot;sv_ini&quot;, &quot;sv_ln&quot;, &quot;id_pr&quot;, &quot;firstyear&quot;))
+
+supervisors_nomatch &lt;- subset(supervisors_nomatch, select=c(&quot;id_phd&quot;, &quot;id_phd_sv&quot;, &quot;phd_year_phd&quot;, &quot;supervisors&quot;, &quot;sv_fn&quot;, &quot;sv_ini&quot;, &quot;sv_ln&quot;,  &quot;id_pr&quot;, &quot;firstyear&quot;))
+
+
+supervisors &lt;- rbind.data.frame(supervisors_match, supervisors_nomatch)
+
+supervisors$prof &lt;- ifelse((!is.na(supervisors$firstyear) &amp; supervisors$firstyear &lt; supervisors$phd_year_phd), 1, 0)</code></pre>
+</div>
+<div id="adding-names-from-publications-co-authored-with-phds"
+class="section level1" number="11">
+<h1><span class="header-section-number">11</span> Adding names from
+publications co-authored with PhDs</h1>
+<p>The code below is provided to show how we extracted supervisors’
+names from the publications co-authored with their PhDs.</p>
+<pre class="r test"><code># load in the publications
+
+
+# We only select supervisors from the batch whose name we do not yet know
+missingname &lt;- supervisors[is.na(supervisors$sv_fn),]
+
+# Keep the variables that are necessary to match on
+missingname &lt;- subset(missingname, select=c(&quot;sv_ln&quot;, &quot;id_phd&quot;, &quot;id_phd_sv&quot;))
+
+
+# adding pubs
+pubsmissingname &lt;- left_join(missingname, pubs, by=c(&quot;id_phd&quot;=&quot;id&quot;))
+
+
+# Make sure the format of last name aligns with the notation in the &#39;auteur&#39; column of the publications data
+pubsmissingname$lastname &lt;- str_to_title(pubsmissingname$sv_ln) # start with a capital letter
+pubsmissingname$lastname &lt;- unaccent(pubsmissingname$lastname) # no diacritics
+pubsmissingname$lastname &lt;- paste0(pubsmissingname$lastname, &quot;,&quot;) # add comma so that only a 1:1 match is detected, not partial matches 
+
+# Create a 0/1 variable indicating whether a certain publication is co-authored by supervisor
+pubsmissingname$with_sv &lt;- as.numeric(str_detect(pubsmissingname$auteur, pubsmissingname$lastname))
+
+# Only select publications co-authored by the supervisor
+pubsmissingname &lt;- pubsmissingname[pubsmissingname$with_sv==1,]
+
+
+# Get everything after the last name of the supervisor
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$auteur, paste0(&quot;^\n?.*&quot;, pubsmissingname$lastname))
+
+# Remove author information that comes after the supervisor (if present)
+pubsmissingname$fullname &lt;- ifelse(as.numeric(str_detect(pubsmissingname$fullname, &quot;;&quot;))==1, str_remove(pubsmissingname$fullname, &quot;;.*$&quot;), pubsmissingname$fullname)
+
+
+# Remove double last names (usually separated by a -)
+# A good signal that this is the case, is when the string (after above manipulations starts with &quot;-&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(&quot;^-((V|v)an)?\\s?((D|d)e)?\\s?[A-Za-z]+&quot;))
+
+
+# Remove initials
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, initialpattern)
+
+# Remove commas
+# I do this before removing nobiliary particles, because sometimes, a nobiliary particle is immediately followed by a comma
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;,&quot;)
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+# Remove nobiliary particles
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(vande0, collapse=&quot;|&quot;))
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(vande1, collapse=&quot;|&quot;))
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(vande2, collapse=&quot;|&quot;))
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(vande3, collapse=&quot;|&quot;))
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, paste0(vande4, collapse=&quot;|&quot;))
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+# Remove a couple of odd characters and non-names I detected
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;†&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;(co-)?promotor&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;[Ii]n\\.&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;[Vv]an\\.&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;[Dd]e\\.&quot;)
+# Removing brackets
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;\\(&quot;)
+pubsmissingname$fullname &lt;- str_remove_all(pubsmissingname$fullname, &quot;\\)&quot;)
+pubsmissingname$fullname &lt;- trimws(pubsmissingname$fullname)
+
+# Extract only the first-mentioned name
+pubsmissingname$firstname &lt;- str_extract(pubsmissingname$fullname, &quot;[:alpha:]+&quot;)
+
+# Remove one-character (initial) names
+pubsmissingname$firstname &lt;- ifelse(nchar(pubsmissingname$firstname)==1, NA, pubsmissingname$firstname) 
+pubsmissingname$firstname &lt;- ifelse(pubsmissingname$firstname==&quot;^Th$&quot;, NA, pubsmissingname$firstname) 
+
+# lowercase
+pubsmissingname$firstname &lt;- unaccent(tolower(pubsmissingname$firstname))
+
+pubsmissingname$firstname &lt;- tolower(pubsmissingname$firstname)
+
+
+# levels(as.factor(pubsmissingname$firstname)) # optional check
+
+
+# selecting only the relevant columns
+pubsmissingname &lt;- subset(pubsmissingname, select=c(&quot;id_phd_sv&quot;, &quot;firstname&quot;))
+pubsmissingname &lt;- rename(pubsmissingname, firstname_pubs = firstname)
+
+
+# removing empty lines
+pubsmissingname &lt;- pubsmissingname[!is.na(pubsmissingname$firstname_pubs),]
+
+
+# in case a PhD has multiple co-authors with the same last name but different first names, we pick the name that is most common
+pubsmissingname %&gt;%
+  group_by(id_phd_sv, firstname_pubs) %&gt;%
+  summarise(counter = n(), .groups=&#39;drop&#39;) %&gt;%
+  ungroup() -&gt; namecounter
+
+
+# this piece of code is used to check how many names are added
+namecounter %&gt;%
+group_by(id_phd_sv) %&gt;%
+arrange(desc(counter)) %&gt;%
+filter(row_number()==1) %&gt;%
+select(id_phd_sv, firstname_pubs) -&gt; namecounter
+
+
+# merging the names back into the data
+nrow(supervisors[!is.na(supervisors$sv_fn),]) nrow(supervisors[!is.na(supervisors$sv_fn),]) # check how many supervisors&#39; first names are missing before adding names from publications
+ 
+supervisors %&gt;% left_join(namecounter, by=&quot;id_phd_sv&quot;) -&gt; supervisors # add names
+
+supervisors$sv_fn &lt;- ifelse(is.na(supervisors$sv_fn), supervisors$firstname_pubs, supervisors$sv_fn) # fill names based on the publications
+
+
+nrow(supervisors[!is.na(supervisors$sv_fn),]) # check how many supervisors&#39; first names are missing after adding names from publications</code></pre>
+</div>
+<div id="adding-gender" class="section level1" number="12">
+<h1><span class="header-section-number">12</span> Adding gender</h1>
+<p>From Meertens first name database</p>
+<pre class="r test"><code>supervisors &lt;- left_join(supervisors, gender, by=c(&quot;sv_fn&quot; = &quot;firstname&quot;))
+
+
+supervisors %&gt;% 
+  mutate(freq_m = ifelse((freq_m==&quot;--&quot;), 0, freq_m), 
+         freq_f = ifelse((freq_f==&quot;--&quot;), 0, freq_f), 
+         female = ifelse((freq_f &gt; freq_m), 1, 0),
+         female = ifelse((freq_m == freq_f), NA, female)) -&gt; supervisors
+
+
+# renaming the variable and transforming into a factor
+
+supervisors$female &lt;- as.factor(supervisors$female)
+levels(supervisors$female)</code></pre>
+<pre class="test2"><code>#&gt; [1] &quot;0&quot; &quot;1&quot;</code></pre>
+<pre class="r test"><code>levels(supervisors$female) &lt;- c(&quot;men&quot;, &quot;women&quot;)
+supervisors &lt;- supervisors %&gt;% dplyr::rename(sv_gender = female)
+
+# dropping the frequency variables
+supervisors &lt;- supervisors %&gt;% select(id_phd, id_phd_sv, phd_year_phd, supervisors, sv_fn, sv_ini, sv_ln,  id_pr, firstyear, prof, sv_gender)</code></pre>
+<div id="gender-based-on-genderizer" class="section level2"
+number="12.1">
+<h2><span class="header-section-number">12.1</span> Gender based on
+GenderizeR</h2>
+<p>We use GenderizeR to supplement gender based on Meertens
+Voornamenbank, the same way we do for PhDs themselves as detailed in <a
+href="gender.html">gender</a>. Given that the method is exactly the
+same, we repeat the code here to illuminate our workflow, but set it to
+non-active.</p>
+<pre class="r test"><code># Merging the origin variables onto supervisors
+supervisors &lt;- left_join(supervisors, ln_origin, by = c(&quot;sv_ln&quot; = &quot;lastname&quot;))
+
+supervisors &lt;- supervisors %&gt;% rename(sv_ethnicity=origin) # rename the variable to make clear it is the supervisors
+
+supervisors &lt;- left_join(supervisors, genderizer, by=c(&quot;sv_fn&quot; = &quot;firstname&quot;))
+
+
+# Take country-specific genderizeR data where applicable, else the complete genderizeR database
+supervisors %&gt;%
+  mutate(genderZ = gender_all,
+         genderZ = ifelse(sv_ethnicity==&quot;dutch&quot;, gender_nl, genderZ),
+         genderZ = ifelse(sv_ethnicity==&quot;moroccan&quot;, gender_ma, genderZ),
+         genderZ = ifelse(sv_ethnicity==&quot;turkish&quot;, gender_tr, genderZ)) -&gt; supervisors
+
+supervisors$genderZ &lt;- as.factor(supervisors$genderZ)
+
+# Only use genderizeR when gender is not present from Meertens
+supervisors$sv_gender &lt;- ifelse(is.na(supervisors$sv_gender), supervisors$genderZ, supervisors$sv_gender)
+
+supervisors$sv_gender &lt;- as.factor(supervisors$sv_gender)
+levels(supervisors$sv_gender) &lt;- c(&quot;men&quot;, &quot;women&quot;)
+
+# recall Meertens + genderizeR
+nrow(supervisors[(!is.na(supervisors$sv_gender)),]) / nrow(supervisors) * 100
+
+
+# Create an extra value for missing
+supervisors$sv_gender &lt;- fct_explicit_na(supervisors$sv_gender, &quot;missing&quot;)
+
+
+# Only keeping relevant variables
+supervisors %&gt;%
+  select(c(&quot;id_phd&quot;, &quot;id_phd_sv&quot;, &quot;phd_year_phd&quot;, &quot;supervisors&quot;, &quot;sv_fn&quot;, &quot;sv_ini&quot;, &quot;sv_ln&quot;, &quot;sv_gender&quot;, &quot;prof&quot;, &quot;id_pr&quot;)) -&gt; supervisors</code></pre>
+</div>
+</div>
+<div id="creating-variables-at-the-level-of-the-supervisory-team"
+class="section level1" number="13">
+<h1><span class="header-section-number">13</span> Creating variables at
+the level of the supervisory team</h1>
+<p>More than 1 professor</p>
+<pre class="r test"><code>supervisors %&gt;%
+  group_by(id_phd) %&gt;%
+  summarise(sumprof = sum(prof)) -&gt; sumprof # group by id and then sum the number of supervisors who are professor
+
+supervisors %&gt;%
+  left_join(sumprof, by=&quot;id_phd&quot;) %&gt;%
+  mutate(prof2p = ifelse(sumprof&lt;2, 0, 1)) -&gt; professorsteam # create a new variable on the level of PhDs specifying if the phd has 2+ professors in their team (prof2p)
+
+professorsteam &lt;- subset(professorsteam, select=c(&quot;id_phd&quot;, &quot;prof2p&quot;)) # extract only the id and the relevant variable so we can easily add this to our dataframe of phds
+
+professorsteam &lt;- professorsteam[!duplicated(professorsteam$id_phd),] # remove duplicaties
+
+summary(as.factor(professorsteam$prof2p)) # check how many people score a 0 and a 1 on the new variable</code></pre>
+<pre class="test2"><code>#&gt; 0 
+#&gt; 8</code></pre>
+<p>Size of the team</p>
+<pre class="r test"><code>supervisors %&gt;%
+  group_by(id_phd) %&gt;%
+  summarise(teamsize = n()) %&gt;%
+  select(id_phd, teamsize) -&gt; teamsize # grouping the dataframe by PhD and tallying up the number of supervisors
+
+summary(as.factor(teamsize$teamsize))</code></pre>
+<pre class="test2"><code>#&gt; 1 2 3 
+#&gt; 2 5 1</code></pre>
+<p>Percentage of women in the team</p>
+<pre class="r test"><code>summary(as.factor(supervisors$sv_gender))</code></pre>
+<pre class="test2"><code>#&gt;   men women  NA&#39;s 
+#&gt;     4     6     5</code></pre>
+<pre class="r test"><code>supervisors %&gt;%
+  group_by(id_phd) %&gt;%
+  count(sv_gender) -&gt; teamgender # creating a dataframe with the number of women/men/missing gender per phd
+
+
+teamgender %&gt;%
+  left_join(teamsize, by=&quot;id_phd&quot;) -&gt; teamgender # adding the teamsize variable we created in the chunk before, so we can calculate the share of supervisors from each gender
+
+
+teamgender$prop &lt;- teamgender$n / teamgender$teamsize # calculating the share of m/f/missing gender supervisors
+
+
+teamgender &lt;- pivot_wider(teamgender, id_cols=&quot;id_phd&quot;, names_from = &quot;sv_gender&quot;, names_prefix = &quot;prop&quot;, values_from = &quot;prop&quot;) # reshaping the dataframe so that one phd has one row again
+
+# set NA values to 0
+teamgender$propmen &lt;- ifelse(is.na(teamgender$propmen), 0, teamgender$propmen) # some PhDs have no men on their supervision team
+teamgender$propwomen &lt;- ifelse(is.na(teamgender$propwomen), 0, teamgender$propwomen) # or no women
+teamgender$propNA &lt;- ifelse(is.na(teamgender$propNA), 0, teamgender$propNA) # or no supervisors with a missing gender</code></pre>
+<p>1+ woman in the team</p>
+<pre class="r test"><code>teamgender$wom_sv1 &lt;- ifelse(teamgender$propwomen==0, 0, 1)</code></pre>
+<p>Adding both variables to the PhD dataframe</p>
+<pre class="r test"><code># selecting relevant variables
+phd_supervisors &lt;- subset(phdgender, select=c(id, supervisors))
+
+# collapsing the data again
+phd_supervisors &lt;- phd_supervisors[!duplicated(phd_supervisors$id),]
+
+# adding teamsize, gender variables and professor variable
+phd_supervisors &lt;- left_join(phd_supervisors, teamsize, by=c(&quot;id&quot;=&quot;id_phd&quot;))
+phd_supervisors &lt;- left_join(phd_supervisors, teamgender, by=c(&quot;id&quot;=&quot;id_phd&quot;))
+phd_supervisors &lt;- left_join(phd_supervisors, professorsteam, by=c(&quot;id&quot;=&quot;id_phd&quot;))
+
+# removing the supervisors string, as it is already present in the base data
+phd_supervisors &lt;- subset(phd_supervisors, select=-supervisors)
+supervisors &lt;- subset(supervisors, select=-supervisors)</code></pre>
+</div>
+<div id="saving" class="section level1" number="14">
+<h1><span class="header-section-number">14</span> saving</h1>
+<pre class="r test"><code>save(supervisors, file=&quot;./data/processed/supervisors.rda&quot;) # saving the data in the format of one row per supervisor
+
+save(phd_supervisors, file=&quot;./data/processed/phd_supervisors.rda&quot;) # saving the data with the variables at the level of phds</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1lbnRvcmluZyBmb3IgZ2VuZGVyIGVxdWFsaXR5IGluIGVhcmx5LWNhcmVlciBncmFudCByZWNlaXB0OiBzdXBlcnZpc29yIHZhcmlhYmxlcyINCmRhdGU6ICJMYXN0IGNvbXBpbGVkIG9uIGByIFN5cy5EYXRlKClgIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICBjc3M6IHR3ZWFrcy5jc3MNCiAgICB0b2M6ICB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgY29kZV9kb3dubG9hZDogeWVzDQogICAgDQotLS0NCg0KDQpgYGB7ciwgZ2xvYmFsc2V0dGluZ3MsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIHJlc3VsdHM9ImhpZGUifQ0KDQpsaWJyYXJ5KGtuaXRyKQ0KbGlicmFyeShmb3JtYXRSKQ0Kb3B0c19jaHVuayRzZXQodGlkeS5vcHRzPWxpc3Qod2lkdGguY3V0b2ZmPTEwMCksdGlkeT1GQUxTRSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlID0gRkFMU0UsY29tbWVudCA9ICIjPiIsIGNhY2hlPVRSVUUsIGNsYXNzLnNvdXJjZT1jKCJ0ZXN0IiksIGNsYXNzLm91dHB1dD1jKCJ0ZXN0MiIpLCBjYWNoZS5sYXp5ID0gRkFMU0UpDQpvcHRpb25zKHdpZHRoID0gMTAwKQ0KcmdsOjpzZXR1cEtuaXRyKCkNCg0KY29sb3JpemUgPC0gZnVuY3Rpb24oeCwgY29sb3IpIHtzcHJpbnRmKCI8c3BhbiBzdHlsZT0nY29sb3I6ICVzOyc+JXM8L3NwYW4+IiwgY29sb3IsIHgpIH0NCg0KYGBgDQoNCmBgYHtyIGtsaXBweSwgZWNobz1GQUxTRSwgaW5jbHVkZT1UUlVFfQ0KDQprbGlwcHk6OmtsaXBweShwb3NpdGlvbiA9IGMoJ3RvcCcsICdyaWdodCcpKQ0KDQpgYGANCg0KDQoNCg0KLS0tLQ0KDQoNClRoaXMgbGFiIGpvdXJuYWwgc2hvd3MgaG93IHdlIGNvbnN0cnVjdCB0aGUgdmFyaWFibGVzIGZvciByZXNvdXJjZXMgcHJlc2VudCBpbiB0aGUgc3VwZXJ2aXNpb24gdGVhbS4gDQoNCg0KLS0tLQ0KDQoNCiMgQ3VzdG9tIGZ1bmN0aW9ucw0KDQotIGBwYWNrYWdlLmNoZWNrYDogQ2hlY2sgaWYgcGFja2FnZXMgYXJlIGluc3RhbGxlZCAoYW5kIGluc3RhbGwgaWYgbm90KSBpbiBSIChbc291cmNlXShodHRwczovL3ZiYWxpZ2EuZ2l0aHViLmlvL3ZlcmlmeS10aGF0LXItcGFja2FnZXMtYXJlLWluc3RhbGxlZC1hbmQtbG9hZGVkLykpLiANCg0KDQpgYGB7ciwgcmVzdWx0cz0naGlkZSd9DQoNCnJtKGxpc3Q9bHMoKSkNCg0KDQpmcGFja2FnZS5jaGVjayA8LSBmdW5jdGlvbihwYWNrYWdlcykgew0KICBsYXBwbHkocGFja2FnZXMsIEZVTiA9IGZ1bmN0aW9uKHgpIHsNCiAgICBpZiAoIXJlcXVpcmUoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKSkgew0KICAgICAgaW5zdGFsbC5wYWNrYWdlcyh4LCBkZXBlbmRlbmNpZXMgPSBUUlVFKQ0KICAgICAgbGlicmFyeSh4LCBjaGFyYWN0ZXIub25seSA9IFRSVUUpDQogICAgfQ0KICB9KQ0KfQ0KDQoNCmBgYA0KDQotLS0gIA0KDQojIFBhY2thZ2VzDQoNCg0KDQotIGB0aWR5dmVyc2VgOiBGb3IgZ2VuZXJhbCBkYXRhIG1hbmlwdWxhaW9uDQoNCi0gYHN0cmluZ3JgOiBGb3Igc3RyaW5nIG1hbmlwdWxhdGlvbnMNCg0KLSBgc3RyaW5naWA6IEZvciBzdHJpbmcgbWFuaXB1bGF0aW9ucw0KDQoNCmBgYHtyLCByZXN1bHRzPSdoaWRlJ30NCg0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAic3RyaW5nciIsICJzdHJpbmdpIikNCg0KZnBhY2thZ2UuY2hlY2socGFja2FnZXMpDQoNCg0KYGBgDQoNCi0tLSANCg0KDQojIElucHV0DQoNCldlIHVzZSBmb3VyIHByb2Nlc3NlZCBkYXRhc2V0cyBhbmQgb25lIHJhdyBkYXRhc2V0DQoNCiogW3BoZGdlbmRlcl0oaHR0cHM6Ly9naXRodWIuY29tL2FtbXVsZGVycy9hbWF0dGVyb2Z0aW1lL2RhdGEvcHJvY2Vzc2VkL3BoZGdlbmRlci5yZGEpOiBleGFtcGxlIGRhdGFzZXQgb2YgOCAoZmljdGlvbmFsKSBQaERzIHdpdGggZmlyc3QgYW5kIGxhc3QgbmFtZXMgYW5kIGdlbmRlcg0KICAgIC0gRm9yIGNvbnN0cnVjdGlvbiBvZiB0aGlzIGRhdGFzZXQgc2VlIFtJbmRlcGVuZGVudCB2YXJpYWJsZXM6IGdlbmRlcl0oZ2VuZGVyLmh0bWwpDQogICAgLSBuYW1lIG9mIGRhdGFzZXQ6IGBwaGRnZW5kZXJgIA0KICAgIA0KKiBbcHJvZnNdKGh0dHBzOi8vZ2l0aHViLmNvbS9hbW11bGRlcnMvYW1hdHRlcm9mdGltZS9kYXRhL3Byb2Zlc3NvcnMvcHJvZnMucmRhKTogYSAoZmljdGlvbmFsKSBsaXN0IG9mIHByb2Zlc3NvcnMsIHRoZSBzdHJ1Y3R1cmUgb2Ygd2hpY2ggaXMgYSBjb3B5IG9mIHRoZSBvcmlnaW5hbCBsaXN0cyBvYnRhaW5lZCBmcm9tIE5BUkNJUw0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgcHJvZnNgICAgICANCg0KKiBbbG5fb3JpZ2luXShodHRwczovL2dpdGh1Yi5jb20vYW1tdWxkZXJzL2FtYXR0ZXJvZnRpbWUvZGF0YS9wcm9jZXNzZWQvbG5fb3JpZ2luLnJkYSk6IGV0aG5pY2l0eSBpbmZvcm1hdGlvbiBhc3NvY2lhdGVkIHdpdGggdGhlIGxhc3QgbmFtZXMgaW4gb3VyIGRhdGEgDQogICAgLSBFdGhuaWNpdHkgaXMgbm90IGEgbWFpbiBjb3ZhcmlhdGUgaW4gdGhpcyBwYXBlciwgc28gd2UgZG8gbm90IGhhdmUgYSBzZXBhcmF0ZSBwYWdlIGRldGFpbGluZyBob3cgd2UgDQogICAgY29uc3RydWN0IGl0IGhlcmUsIGJ1dCBvdXIgbWV0aG9kIGNhbiBiZSBmb3VuZCBbaGVyZV0oaHR0cHM6Ly9hbW11bGRlcnMuZ2l0aHViLmlvL2FtYXR0ZXJvZnRpbWUvZXRobmljaXR5Lmh0bWwpDQogICAgLSBuYW1lIG9mIGRhdGFzZXQ6IGBsbl9vcmlnaW5gIA0KICAgIA0KKiBbZ2VuZGVyXShodHRwczovL2dpdGh1Yi5jb20vYW1tdWxkZXJzL2FtYXR0ZXJvZnRpbWUvZGF0YS9wcm9jZXNzZWQvZ2VuZGVyLnJkYSk6IHdlYiBzY3JhcGVkIGdlbmRlciBkYXRhIGZvciB0aGUgOCBmaXJzdCBuYW1lcyBpbiB0aGUgZXhhbXBsZSBkYXRhLCBmcm9tIE1lZXJ0ZW5zIFZvb3JuYW1lbmJhbmsNCiAgICAtIG5hbWUgb2YgZGF0YXNldDogYGdlbmRlcmAgDQoNCiogW2dlbmRlcml6ZXJdKGh0dHBzOi8vZ2l0aHViLmNvbS9hbW11bGRlcnMvYW1hdHRlcm9mdGltZS9kYXRhL3Byb2Nlc3NlZC9nZW5kZXJpemVyLnJkYSk6IHdlYiBzY3JhcGVkIGdlbmRlciBkYXRhIGZvciB0aGUgZmlyc3QgbmFtZXMgaW4gdGhlIGV4YW1wbGUgZGF0YSwgZnJvbSBHZW5kZXJpemVSIGdsb2JhbCwgTW9yb2NjbywgVHVya2V5IGFuZCBOZXRoZXJsYW5kcw0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgZ2VuZGVyaXplcmAgIA0KDQoNCmBgYHtyIGZpbGVzLCBldmFsPVRSVUV9DQoNCmxvYWQoZmlsZSA9ICJkYXRhL3Byb2Nlc3NlZC9waGRnZW5kZXIucmRhIikNCg0KbG9hZChmaWxlID0gImRhdGEvcHJvZmVzc29ycy9wcm9mcy5yZGEiKQ0KDQpsb2FkKGZpbGUgPSAiLi9kYXRhL3Byb2Nlc3NlZC9sbl9vcmlnaW4ucmRhIikNCg0KbG9hZChmaWxlID0gImRhdGEvcHJvY2Vzc2VkL2dlbmRlci5yZGEiKQ0KDQpsb2FkKGZpbGUgPSAiZGF0YS9wcm9jZXNzZWQvZ2VuZGVyaXplci5yZGEiKQ0KDQoNCmBgYA0KDQoNCi0tLSAgDQoNCg0KDQojIENvbWJpbmluZyB0aGUgdHdvIHN1cGVydmlzb3IgY29sdW1ucyBpbiBwaGRfbWV0YWRmIHRvIG9uZSANCg0KDQoNCiMgVHJhbnNmb3JtaW5nIHRoZSBkYXRhIHNvIHRoYXQgd2UgaGF2ZSBvbmUgc3VwZXJ2aXNvciBwZXIgcm93DQoNCmBgYHtyfQ0KDQojIGNyZWF0ZSBvbmUgb2JqZWN0IGZvciBlYWNoIHN1cGVydmlzb3INCg0KIyBzdXBlcnZpc29yIDEgYW5kIDINCnBoZGdlbmRlciRzdXBlcnZpc29yMSA8LSBzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29ycywgIjsuKiIpICMgZGVsZXRlIGV2ZXJ5dGhpbmcgYWZ0ZXIgdGhlIGZpcnN0IDsNCnBoZGdlbmRlciRzdXBlcnZpc29yMiA8LSBzdHJfcmVtb3ZlX2FsbChwaGRnZW5kZXIkc3VwZXJ2aXNvcnMsIHBoZGdlbmRlciRzdXBlcnZpc29yMSkgIyByZW1vdmUgc3VwZXJ2aXNvcjEgZnJvbSB0aGUgc3VwZXJ2aXNvciBvYmplY3QgdG8gZ2V0IHN1cGVydmlzb3JzIDItaw0KcGhkZ2VuZGVyJHN1cGVydmlzb3IyIDwtIHN0cl9yZW1vdmVfYWxsKHBoZGdlbmRlciRzdXBlcnZpc29yMiwgIl4oXFxzKT87XFxzIikgIyByZW1vdmUgOyBhdCB0aGUgYmVnaW5uaW5nIG9mIHRoaXMgb2JqZWN0DQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjIgPC0gaWZlbHNlKHBoZGdlbmRlciRzdXBlcnZpc29yMj09IiIgfCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjI9PSIgIiwgTkEsIHBoZGdlbmRlciRzdXBlcnZpc29yMikNCg0KIyBzdXBlcnZpc29yIDMNCnBoZGdlbmRlciRzdXBlcnZpc29yMyA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjIsICI7LiokIikgIyBnZXQgc3VwZXJ2aXNvciAzIGJ5IGV4dHJhY3RpbmcgZXZlcnl0aGluZyBhZnRlciA7IGluIHN1cGVydmlzb3IgMg0KcGhkZ2VuZGVyJHN1cGVydmlzb3IyIDwtIGlmZWxzZSghaXMubmEocGhkZ2VuZGVyJHN1cGVydmlzb3IzKSwgc3RyX3JlbW92ZShwaGRnZW5kZXIkc3VwZXJ2aXNvcjIsIHBoZGdlbmRlciRzdXBlcnZpc29yMyksIHBoZGdlbmRlciRzdXBlcnZpc29yMikgDQojIHJlbW92ZSBzdXBlcnZpc29yIDMgZnJvbSB0aGUgc3VwZXJ2aXNvciAyIG9iamVjdCwgYnV0IG9ubHkgaWYgdGhlcmUgaXMgYSB0aGlyZCBzdXBlcnZpc29yIHByZXNlbnQNCnBoZGdlbmRlciRzdXBlcnZpc29yMyA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjMsICJbOnVwcGVyOl0uKiIpICMgcmVtb3ZlIDsgYXQgdGhlIGJlZ2lubmluZyBvZiB0aGlzIG9iamVjdA0KDQojIHN1cGVydmlzb3IgNA0KcGhkZ2VuZGVyJHN1cGVydmlzb3I0IDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yMywgIjsuKiQiKSAjIHNhbWUgcHJvY2VkdXJlIGFzIGZvciBzdXBlcnZpc29yIDMgZnJvbSBub3cgb24NCnBoZGdlbmRlciRzdXBlcnZpc29yMyA8LSBpZmVsc2UoIWlzLm5hKHBoZGdlbmRlciRzdXBlcnZpc29yNCksIHN0cl9yZW1vdmUocGhkZ2VuZGVyJHN1cGVydmlzb3IzLCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjQpLCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjMpIA0KcGhkZ2VuZGVyJHN1cGVydmlzb3I0IDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yNCwgIls6dXBwZXI6XS4qIikNCg0KIyBzdXBlcnZpc29yIDUNCnBoZGdlbmRlciRzdXBlcnZpc29yNSA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjQsICI7LiokIikgDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjQgPC0gaWZlbHNlKCFpcy5uYShwaGRnZW5kZXIkc3VwZXJ2aXNvcjUpLCBzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29yNCwgcGhkZ2VuZGVyJHN1cGVydmlzb3I1KSwgcGhkZ2VuZGVyJHN1cGVydmlzb3I0KSANCnBoZGdlbmRlciRzdXBlcnZpc29yNSA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjUsICJbOnVwcGVyOl0uKiIpIA0KDQojIHN1cGVydmlzb3IgNg0KcGhkZ2VuZGVyJHN1cGVydmlzb3I2IDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yNSwgIjsuKiQiKSANCnBoZGdlbmRlciRzdXBlcnZpc29yNSA8LSBpZmVsc2UoIWlzLm5hKHBoZGdlbmRlciRzdXBlcnZpc29yNiksc3RyX3JlbW92ZShwaGRnZW5kZXIkc3VwZXJ2aXNvcjUsIHBoZGdlbmRlciRzdXBlcnZpc29yNiksIHBoZGdlbmRlciRzdXBlcnZpc29yNSkgDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjYgPC0gc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN1cGVydmlzb3I2LCAiWzp1cHBlcjpdLioiKSANCg0KIyBzdXBlcnZpc29yIDcNCnBoZGdlbmRlciRzdXBlcnZpc29yNyA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjYsICI7LiokIikgDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjYgPC0gaWZlbHNlKCFpcy5uYShwaGRnZW5kZXIkc3VwZXJ2aXNvcjcpLHN0cl9yZW1vdmUocGhkZ2VuZGVyJHN1cGVydmlzb3I2LCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjcpLCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjYpIA0KcGhkZ2VuZGVyJHN1cGVydmlzb3I3IDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yNywgIls6dXBwZXI6XS4qIikgDQoNCiMgc3VwZXJ2aXNvciA4DQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjggPC0gc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN1cGVydmlzb3I3LCAiOy4qJCIpIA0KcGhkZ2VuZGVyJHN1cGVydmlzb3I3IDwtIGlmZWxzZSghaXMubmEocGhkZ2VuZGVyJHN1cGVydmlzb3I4KSxzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29yNywgcGhkZ2VuZGVyJHN1cGVydmlzb3I4KSwgcGhkZ2VuZGVyJHN1cGVydmlzb3I3KSANCnBoZGdlbmRlciRzdXBlcnZpc29yOCA8LSBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3VwZXJ2aXNvcjgsICJbOnVwcGVyOl0uKiIpIA0KDQojIHN1cGVydmlzb3IgOQ0KcGhkZ2VuZGVyJHN1cGVydmlzb3I5IDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yOCwgIjsuKiQiKSANCnBoZGdlbmRlciRzdXBlcnZpc29yOCA8LSBpZmVsc2UoIWlzLm5hKHBoZGdlbmRlciRzdXBlcnZpc29yOSksc3RyX3JlbW92ZShwaGRnZW5kZXIkc3VwZXJ2aXNvcjgsIHBoZGdlbmRlciRzdXBlcnZpc29yOSksIHBoZGdlbmRlciRzdXBlcnZpc29yOCkgDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjkgPC0gc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN1cGVydmlzb3I5LCAiWzp1cHBlcjpdLioiKSANCg0KIyBzdXBlcnZpc29yIDEwDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjEwIDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yOSwgIjsuKiQiKSANCnBoZGdlbmRlciRzdXBlcnZpc29yOSA8LSBpZmVsc2UoIWlzLm5hKHBoZGdlbmRlciRzdXBlcnZpc29yMTApLCBzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29yOSwgcGhkZ2VuZGVyJHN1cGVydmlzb3IxMCksIHBoZGdlbmRlciRzdXBlcnZpc29yOSkgDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjEwIDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdXBlcnZpc29yMTAsICJbOnVwcGVyOl0uKiIpIA0KDQojIHN1cGVydmlzb3IgMTENCnBoZGdlbmRlciRzdXBlcnZpc29yMTEgPC0gc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN1cGVydmlzb3IxMCwgIjsuKiQiKSANCnBoZGdlbmRlciRzdXBlcnZpc29yMTAgPC0gaWZlbHNlKCFpcy5uYShwaGRnZW5kZXIkc3VwZXJ2aXNvcjExKSxzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29yMTAsIHBoZGdlbmRlciRzdXBlcnZpc29yMTEpLCBwaGRnZW5kZXIkc3VwZXJ2aXNvcjEwKSANCnBoZGdlbmRlciRzdXBlcnZpc29yMTEgPC0gc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN1cGVydmlzb3IxMSwgIls6dXBwZXI6XS4qIikgDQoNCiMgdHJpbSB3aGl0ZXNwYWNlcw0KcGhkZ2VuZGVyJHN1cGVydmlzb3IxIDwtIHRyaW13cyhwaGRnZW5kZXIkc3VwZXJ2aXNvcjEpDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjIgPC0gdHJpbXdzKHBoZGdlbmRlciRzdXBlcnZpc29yMikNCnBoZGdlbmRlciRzdXBlcnZpc29yMyA8LSB0cmltd3MocGhkZ2VuZGVyJHN1cGVydmlzb3IzKQ0KcGhkZ2VuZGVyJHN1cGVydmlzb3I0IDwtIHRyaW13cyhwaGRnZW5kZXIkc3VwZXJ2aXNvcjQpDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjUgPC0gdHJpbXdzKHBoZGdlbmRlciRzdXBlcnZpc29yNSkNCnBoZGdlbmRlciRzdXBlcnZpc29yNiA8LSB0cmltd3MocGhkZ2VuZGVyJHN1cGVydmlzb3I2KQ0KcGhkZ2VuZGVyJHN1cGVydmlzb3I3IDwtIHRyaW13cyhwaGRnZW5kZXIkc3VwZXJ2aXNvcjcpDQpwaGRnZW5kZXIkc3VwZXJ2aXNvcjggPC0gdHJpbXdzKHBoZGdlbmRlciRzdXBlcnZpc29yOCkNCnBoZGdlbmRlciRzdXBlcnZpc29yOSA8LSB0cmltd3MocGhkZ2VuZGVyJHN1cGVydmlzb3I5KQ0KcGhkZ2VuZGVyJHN1cGVydmlzb3IxMCA8LSB0cmltd3MocGhkZ2VuZGVyJHN1cGVydmlzb3IxMCkNCnBoZGdlbmRlciRzdXBlcnZpc29yMTEgPC0gdHJpbXdzKHBoZGdlbmRlciRzdXBlcnZpc29yMTEpDQoNCg0KcGhkZ2VuZGVyIDwtIHBpdm90X2xvbmdlcihwaGRnZW5kZXIsIGNvbHM9YyhzdXBlcnZpc29yMSwgc3VwZXJ2aXNvcjIsIHN1cGVydmlzb3IzLCBzdXBlcnZpc29yNCwgc3VwZXJ2aXNvcjUsIHN1cGVydmlzb3I2LCBzdXBlcnZpc29yNywgc3VwZXJ2aXNvcjgsIHN1cGVydmlzb3I5LCBzdXBlcnZpc29yMTAsIHN1cGVydmlzb3IxMSksIG5hbWVzX3RvPSJzdl9uIiwgdmFsdWVzX3RvPSJzdXBlcnZpc29yIikNCg0KDQojIGFkZGluZyBhIHBoZC1zdXBlcnZpc29yIElEIHZhcmlhYmxlDQpwaGRnZW5kZXIkaWRfcGhkX3N2IDwtIHBhc3RlMChwaGRnZW5kZXIkaWQsICItIiwgc3RyX2V4dHJhY3QocGhkZ2VuZGVyJHN2X24sICJbOmRpZ2l0Ol0rIikpDQoNCiMgcmVtb3ZpbmcgZW1wdHkgbGluZXMNCnBoZGdlbmRlciA8LSBwaGRnZW5kZXJbIWlzLm5hKHBoZGdlbmRlciRzdXBlcnZpc29yKSwgXQ0KDQpgYGANCg0KDQoNCg0KDQojIEdhdGhlcmluZyBzdXBlcnZpc29ycycgZmlyc3QgYW5kIGxhc3QgbmFtZXMgaW50byBzZXBhcmF0ZSBjb2x1bW5zDQoNCmBgYHtyfQ0KDQojIGRlZmluaW5nIG5vYmlsaWFyeSBwYXJ0aWNsZXMgc28gdGhhdCB0aGVzZSBjYW4gYmUgcmVtb3ZlZA0KdmFuZGUwIDwtIGMoIihWfHYpYW4gKER8ZCllciIsICIoVnx2KWFuIChEfGQpZW4iLCAiKFZ8dilhbiAoRHxkKWUiLCAiKFZ8dilhbmRlKG4pPyIsICIoVnx2KWFuICcoVHx0KSIsICIoVnx2KWFuJyhUfHQpIiwgIihWfHYpYW4gKEh8aClldCIsICIoVnx2KW9uIChEfGQpZXIiLCAiKE98bylwIGRlbiIsICIoT3xvKXAgJ3QiLCAiKE98bylmIHRlbiIsICIoQXxhKWFuIGRlKG4pPyIsICIoRHxkKWUgKEx8bClhIiwgIihJfGkpbiAoSHxoKWV0IiwgIihJfGkpbiAnKFR8dCkiLCAiKEl8aSluJyhUfHQpIiwgIihJfGkpbiAoRHxkKWVyIiwgIihCfGIpaWogKER8ZCllIikgIyBub2JpbGlhcnkgcGFydGljbGVzIGFueXdoZXJlIGluIHN0cmluZw0KDQp2YW5kZTEgPC0gYygiXihMfGwpYVxccyIsICJeKE98bylwXFxzIiAsIl4oVnx2KWFuXFxzIiwgIl4oVnx2KW9uXFxzIiwgIl4oRHxkKWVuXFxzIiwgIl4oRHxkKWVyXFxzIiwgIl4oRHxkKWVsXFxzIiwgIl4oRHxkKShlfGF8dXxpKVxccyIsICJeKER8ZClvcz9cXHMiLCAiXihUfHQpZXJcXHMiICwgIl4oVHx0KWVuXFxzIiwgIl4oVHx0KWVcXHMiLCAiXicoVHx0KVxccyIsICJeKEx8bCllXFxzIiwgIl5FbC0iLCAiXlsoQXxhKShFfGUpXShMfGwpJz9cXHMiLCAiXihEfGQpJyIsICJeenVcXHMiLCAiXihafHopdXJcXHMiLCAiXmVcXHMiKSAjIHN0YXJ0cyB3aXRoIG5wDQoNCnZhbmRlMiA8LSBjKCJcXHMoTHxsKWEkIiwgIlxccyhPfG8pcCQiICwiXFxzKFZ8dilhbiQiLCAiXFxzKFZ8dilvbiQiLCAiXFxzKER8ZCllbiQiLCAiXFxzKER8ZCllciQiLCAiXFxzKER8ZCllbCQiLCAiXFxzKER8ZCkoZXxhfHV8aSkkIiwgIlxccyhEfGQpb3M/JCIsICJcXHMoVHx0KWVyJCIsICJcXHMoVHx0KWVuJCIsICJcXHMoVHx0KWUkIiwgIlxccycoVHx0KSQiLCAiXFxzKEx8bCllJCIsICJcXHNbKEF8YSkoRXxlKV0oTHxsKSc/JCIsICJcXHMoRHxkKSckIiwgIlxcc3p1JCIsICJcXHMoWnx6KXVyJCIpICMgZW5kcyB3aXRoIG5wDQoNCnZhbmRlMyA8LSBjKCJcXHMoTHxsKWFcXHMiLCAiXFxzKE98bylwXFxzIiAsIlxccyhWfHYpYW5cXHMiLCAiXFxzKFZ8dilvblxccyIsICJcXHMoRHxkKWVuXFxzIiwgIlxccyhEfGQpZXJcXHMiLCAiXFxzKER8ZCllbFxccyIsICJcXHMoRHxkKShlfGF8dXxpKVxccyIsICJcXHMoRHxkKW9zP1xccyIsICJcXHMoVHx0KWVyXFxzIiwgIlxccyhUfHQpZW5cXHMiLCAiXFxzKFR8dCllXFxzIiwgIlxccycoVHx0KVxccyIsICJcXHMoTHxsKWVcXHMiLCAiXFxzKEV8QSlsLSIsICJcXHNbKEF8YSkoRXxlKV0oTHxsKSc/XFxzIiwgIlxccyhEfGQpJyIsICJcXHN6dVxccyIsICJcXHMoWnx6KXVyXFxzIiwgIlxccyhZfHkpXFxzIiwgIlxccyhFfGUpXFxzIikgIyBucCBpbiB0aGUgbWlkZGxlDQoNCnZhbmRlNCA8LSBjKCJeKEx8bClhJCIsICJeKE98bylwJCIgLCAiXihWfHYpYW4kIiwgIl4oVnx2KW9uJCIsICJeKER8ZCllbiQiLCAiXihEfGQpZXIkIiwgIl4oRHxkKWVsJCIsICJeKER8ZCkoZXxhfHV8aSkkIiwgIl4oRHxkKW9zPyQiLCAiXlZhbmRlWyQvL3NdIiwgIl4oVHx0KWVyJCIsICAiXihUfHQpZW4kIiwgIl4oVHx0KWUkIiwgIl4nKFR8dCkkIiwgIl4oTHxsKWUkIiwgIl5bKEF8YSkoRXxlKV0oTHxsKSc/JCIsICJeKER8ZCknJCIsICJeenUkIiwgIl4oWnx6KXVyJCIpICMgZW50aXJlIHN0cmluZyBpcyBhIG5wDQoNCg0KDQoNCiMgZmlyc3QgbmFtZSBvZiBzdXBlcnZpc29yDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyX3JlbW92ZShwaGRnZW5kZXIkc3VwZXJ2aXNvciwgIl4uKiwiKSAjIG5hbWUgYWZ0ZXIgY29tbWENCnBoZGdlbmRlciRzdl9mbiA8LSBpZmVsc2UoYXMubnVtZXJpYyhzdHJfZGV0ZWN0KHBoZGdlbmRlciRzdl9mbiwgIig/PD1cXCgpLiooPz1cXCkpIikpPT0xLCBzdHJfZXh0cmFjdChwaGRnZW5kZXIkc3ZfZm4sICAiKD88PVxcKCkuKig/PVxcKSkiKSwgcGhkZ2VuZGVyJHN2X2ZuKSAgIyBuYW1lIGluIGJyYWNrZXRzDQpwaGRnZW5kZXIkc3ZfZm4gPC0gdHJpbXdzKHBoZGdlbmRlciRzdl9mbiwgd2hpY2g9ImJvdGgiKQ0KDQojIEV4dHJhY3Qgbm9iaWxpYXJ5IHBhcnRpY2xlcw0KcGhkZ2VuZGVyJHN2X25wIDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdl9mbiwgcGFzdGUwKGModmFuZGUwLCB2YW5kZTEsIHZhbmRlMiksIGNvbGxhcHNlPSJ8IikpDQpwaGRnZW5kZXIkc3ZfbnAgPC0gdG9sb3dlcihwaGRnZW5kZXIkc3ZfbnApDQoNCiMgUmVtb3ZlIG5vYmlsaWFyeSBwYXJ0aWNsZXMgZnJvbSB0aGUgZmlyc3RuYW1lDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyX3JlbW92ZV9hbGwocGhkZ2VuZGVyJHN2X2ZuLCBwYXN0ZTAodmFuZGUwLCBjb2xsYXBzZT0ifCIpKSAjIHJlbW92ZSBub2JpbGlhcnkgcGFydGljbGVzDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyX3JlbW92ZV9hbGwocGhkZ2VuZGVyJHN2X2ZuLCBwYXN0ZTAodmFuZGUxLCBjb2xsYXBzZT0ifCIpKSAjIHJlbW92ZSBub2JpbGlhcnkgcGFydGljbGVzDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyX3JlbW92ZV9hbGwocGhkZ2VuZGVyJHN2X2ZuLCBwYXN0ZTAodmFuZGUyLCBjb2xsYXBzZT0ifCIpKSAjIHJlbW92ZSBub2JpbGlhcnkgcGFydGljbGVzDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyX3JlbW92ZV9hbGwocGhkZ2VuZGVyJHN2X2ZuLCBwYXN0ZTAodmFuZGUzLCBjb2xsYXBzZT0ifCIpKSAjIHJlbW92ZSBub2JpbGlhcnkgcGFydGljbGVzDQoNCnBoZGdlbmRlciRzdl9mbiA8LSBpZmVsc2UocGhkZ2VuZGVyJHN2X2ZuID09ICIiLCBOQSwgcGhkZ2VuZGVyJHN2X2ZuKSAjIHNldCB0byBOQSBpZiBtaXNzaW5nDQoNCg0KIyBleHRyYWN0IGluaXRpYWxzIGJhc2VkIG9uIGZ1bGwgZmlyc3QgbmFtZXMNCnBoZGdlbmRlciRzdl9pbmkgPC0gc3RyX2V4dHJhY3RfYWxsKHBoZGdlbmRlciRzdl9mbiwgIls6dXBwZXI6XSIpDQojIGNvbWJpbmUgbXVsdGlwbGUgaW5pdGlhbHMgaW4gYygpIG9iamVjdCBpbnRvIGEgc2luZ2xlIHN0cmluZw0KcGhkZ2VuZGVyJHN2X2luaSA8LSBnc3ViKCJjXFwoXCIiLCAiIiwgcGhkZ2VuZGVyJHN2X2luaSkNCnBoZGdlbmRlciRzdl9pbmkgPC0gZ3N1YigiXCIsIFwiIiwgIi4iLCBwaGRnZW5kZXIkc3ZfaW5pKQ0KcGhkZ2VuZGVyJHN2X2luaSA8LSBnc3ViKCJcIlxcKSIsICIuIiwgcGhkZ2VuZGVyJHN2X2luaSkNCiMgYWRkIGZ1bGwgc3RvcCBhdCB0aGUgZW5kIG9mIHNpbmdsZS1sZXR0ZXIgaW5pdGlhbHMNCnBoZGdlbmRlciRzdl9pbmkgPC0gdHJpbXdzKHBoZGdlbmRlciRzdl9pbmkpDQpwaGRnZW5kZXIkc3ZfaW5pIDwtIGlmZWxzZShhcy5udW1lcmljKHN0cl9kZXRlY3QocGhkZ2VuZGVyJHN2X2luaSwgIl5bOnVwcGVyOl0kIikpPT0xLCBwYXN0ZTAocGhkZ2VuZGVyJHN2X2luaSwgIi4iKSwgcGhkZ2VuZGVyJHN2X2luaSkNCg0KDQojIG5leHQsIHdlIHJlbW92ZSBpbml0aWFscyBmcm9tIHRoZSBzdXBlcnZpc29ycycgbmFtZXMNCmluaXRpYWxwYXR0ZXJuIDwtIHBhc3RlKGMoIl4oWzp1cHBlcjpdXFwuP1xcLVxcLj8pKyIsICAgICAgICAgICAgICAgICAjIEEtIG9yIEEtLiBvciBBLi0NCiAgICAgICAgICAgICAgICAgICAgICAgICAgIihUfHR8Q3xjfFB8cCloXFwuXFxzPyIsICAgICAgICAgICAgICAgICAgICAjIFRoLiBQaC4gQ2guIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAiXihbOnVwcGVyOl1cXC4pK1s6dXBwZXI6XShcXHMpPyQiLCAgICAgICAgICMgQS5BLkENCiAgICAgICAgICAgICAgICAgICAgICAgICAgIihbOnVwcGVyOl1cXC4rKSsiLCAiKFs6bG93ZXI6XVxcLil7Mix9IiwgICAjIEEuICBvciBhLg0KICAgICAgICAgICAgICAgICAgICAgICAgICAiXlxccz8oWzphbHBoYTpdXFxzKSsiLCAgICAgICAgICAgICAgICAgICAgICMgQSBvciBhIHN1cnJvdW5kZWQgYnkgd2hpdGVzcGFjZQ0KICAgICAgICAgICAgICAgICAgICAgICAgICAiXlxccz9bOmFscGhhOl1cXC4/XFxzPyQiLCAgICAgICAgICAgICAgICAgICMgZW50aXJlIHN0cmluZyBjb25zaXN0cyBvZiBhIHNpbmdsZSBsZXR0ZXINCiAgICAgICAgICAgICAgICAgICAgICAgICAgIl5cXHM/Wzp1cHBlcjpdezIsNH1cXHM/JCIpLCAgICAgICAgICAgICAgICAjIGVudGlyZSBzdHJpbmcgY29uc2lzdHMgb2YgMi00IGNhcGl0YWwgbGV0dGVycw0KICAgICAgICAgICAgICAgICAgICAgICAgY29sbGFwc2UgPSAifCIpDQoNCiMgcmVtb3ZpbmcgbG93ZXJjYXNlIHYuZC4gYXQgdGhlIGJlZ2lubmluZyBvZiBmaXJzdCBuYW1lLCBzaW5jZSB0aGlzIHRlbmRzIHRvIHNpZ25hbCAidmFuIGRlIiBpbiBEdXRjaA0KcGhkZ2VuZGVyJHN2X2ZuIDwtIGdzdWIoIl52LmQuXFxzIiwgIiIsIHBoZGdlbmRlciRzdl9mbikNCnBoZGdlbmRlciRzdl9mbiA8LSBnc3ViKCJedlxccyIsICIiLCBwaGRnZW5kZXIkc3ZfZm4pDQoNCiMgcmVtb3ZpbmcgaW5pdGlhbHMgZnJvbSBmaXJzdCBuYW1lIG9iamVjdA0KcGhkZ2VuZGVyJHN2X2ZuIDwtIHN0cl9yZW1vdmVfYWxsKHBoZGdlbmRlciRzdl9mbiwgaW5pdGlhbHBhdHRlcm4pDQoNCg0KIyBzb21lIGNsZWFuaW5nOiBsb3dlcmNhc2UgbmFtZXMgYW5kIGV4dHJhY3Rpbmcgb25seSB0aGUgZmlyc3QtbWVudGlvbmVkIGxhc3QgbmFtZQ0KcGhkZ2VuZGVyJHN2X2ZuIDwtIHRyaW13cyhwaGRnZW5kZXIkc3ZfZm4pDQpwaGRnZW5kZXIkc3ZfZm4gPC0gdG9sb3dlcihwaGRnZW5kZXIkc3ZfZm4pICMgbG93ZXJjYXNlDQpwaGRnZW5kZXIkc3ZfZm4gPC0gc3RyaV90cmFuc19nZW5lcmFsKHBoZGdlbmRlciRzdl9mbiwgaWQ9ImxhdGluLWFzY2lpIikNCg0KcGhkZ2VuZGVyJHN2X2ZuIDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdl9mbiwgIlthLXpdK1xcLSpbYS16XSoiKQ0KDQojIGxhc3QgbmFtZXMgb2Ygc3VwZXJ2aXNvciANCnBoZGdlbmRlciRzdl9sbiA8LSBzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdXBlcnZpc29yLCAiLC4qJCIpDQpwaGRnZW5kZXIkc3ZfbG4gPC0gc3RyX3JlbW92ZShwaGRnZW5kZXIkc3ZfbG4sIHBhc3RlMCh2YW5kZTAsIGNvbGxhcHNlPSJ8IikpICMgcmVtb3ZlIG5vYmlsaWFyeSBwYXJ0aWNsZXMNCnBoZGdlbmRlciRzdl9sbiA8LSBzdHJfcmVtb3ZlKHBoZGdlbmRlciRzdl9sbiwgcGFzdGUwKHZhbmRlMSwgY29sbGFwc2U9InwiKSkgIyByZW1vdmUgbm9iaWxpYXJ5IHBhcnRpY2xlcw0KDQpwaGRnZW5kZXIkc3ZfbG4gPC0gdG9sb3dlcihwaGRnZW5kZXIkc3ZfbG4pICMgbG93ZXJjYXNlDQpwaGRnZW5kZXIkc3ZfbG4gPC0gc3RyaV90cmFuc19nZW5lcmFsKHBoZGdlbmRlciRzdl9sbiwgaWQ9ImxhdGluLWFzY2lpIikNCg0KcGhkZ2VuZGVyJHN2X2xuIDwtIHN0cl9leHRyYWN0KHBoZGdlbmRlciRzdl9sbiwgIlthLXpdKyIpICMgZmlyc3QtbWVudGlvbmVkIGxhc3QgbmFtZQ0KDQoNCmBgYA0KDQoNCg0KIyBDcmVhdGUgYSBtYXRjaGFibGUgZGF0YWZyYW1lIG9mIHN1cGVydmlzb3JzDQoNCmBgYHtyfQ0KDQpzdXBlcnZpc29ycyA8LSBzdWJzZXQocGhkZ2VuZGVyLCBzZWxlY3Q9YyhpZCwgaWRfcGhkX3N2LCBwaGRfeWVhciwgc3VwZXJ2aXNvcnMsIHN2X2ZuLCBzdl9pbmksIHN2X2xuLCBzdl9uKSkNCg0Kc3VwZXJ2aXNvcnMgJT4lDQogIHJlbmFtZShpZF9waGQgPSBpZCwNCiAgICAgICAgIHBoZF95ZWFyX3BoZCA9IHBoZF95ZWFyKSAtPiBzdXBlcnZpc29ycw0KDQoNCiMgZmlsbCBmaXJzdCBuYW1lcyBmb3Igc3VwZXJ2aXNvcnMgaW4gY2FzZSB0aGUgbmFtZSBmb3JtYXQgdmFyaWVzIHBlciBQaEQgKGUuZy4gc29tZSBoYXZlIG9ubHkgaW5pdGlhbHMsIHNvbWUgaGF2ZSBuYW1lIGFuZCBpbml0aWFscykgDQpzdXBlcnZpc29ycyAlPiUNCiAgZ3JvdXBfYnkoc3ZfbG4sIHN2X2luaSkgJT4lDQogIGZpbGwoc3ZfZm4sIC5kaXJlY3Rpb249ImRvd251cCIpIC0+IHN1cGVydmlzb3JzDQoNCg0KYGBgDQoNCg0KDQoNCg0KIyBBZGRpbmcgcHJvZmVzc29yIHRpdGxlcw0KDQpgYGB7cn0NCg0KZnVsbCA8LSBwcm9mc1twcm9mcyR0aXRsZT09ImZ1bGwiLF0NCg0KDQpmdWxsIDwtIHN1YnNldChmdWxsLCBzZWxlY3Q9YygiaWRfcHIiLCAiZmlyc3RuYW1lX3ByIiwgImluaSIsICJsYXN0bmFtZSIsICJmdWxsbmFtZV9wciIsICJucF9wciIsICJmaXJzdHllYXIiKSkNCg0KIyBXZSBmaXJzdCBtYXRjaCBzdXBlcnZpc29ycyB0byB0aGUgcHJvZmVzc29yIGRhdGFiYXNlIGJhc2VkIG9uIGZpcnN0bmFtZSANCmZ1bGxfZmlyc3RuYW1lIDwtIGZ1bGxbIWlzLm5hKGZ1bGwkZmlyc3RuYW1lX3ByKSxdDQoNCg0Kc3VwZXJ2aXNvcnMgPC0gbGVmdF9qb2luKHN1cGVydmlzb3JzLCBmdWxsX2ZpcnN0bmFtZSwgYnk9Yygic3ZfbG4iPSJsYXN0bmFtZSIsICJzdl9mbiI9ImZpcnN0bmFtZV9wciIpKQ0KIyBjcmVhdGVzIGFib3V0IDJrIGR1cGxpY2F0ZXMsIHVwb24gaW5zcGVjdGlvbiwgdGhlc2Ugc2VlbSB0byBiZSB0aGUgc2FtZSBwZW9wbGUNCg0KIyByZW1vdmUgZHVwbGljYXRlcw0Kc3VwZXJ2aXNvcnMgJT4lDQogIGdyb3VwX2J5KGlkX3BoZF9zdikgJT4lDQogIHNsaWNlX2hlYWQoKSAlPiUNCiAgdW5ncm91cCAtPiBzdXBlcnZpc29ycw0KDQoNCiMgVGhlbiwgd2UgbWF0Y2ggc3VwZXJ2aXNvcnMgdG8gdGhlIHByb2Zlc3NvciBkYXRhYmFzZSBiYXNlZCBvbiBpbml0aWFscw0KIyBCdXQgb25seSB0aGUgcGFydCB0aGF0IGlzIG5vdCB5ZXQgbWF0Y2hlZCANCg0Kc3VwZXJ2aXNvcnNfbWF0Y2ggPC0gc3VwZXJ2aXNvcnNbIWlzLm5hKHN1cGVydmlzb3JzJGZpcnN0eWVhciksXSAjIDU4SyBzdXBlcnZpc29ycyBhcmUgbWF0Y2hlZA0KDQpzdXBlcnZpc29yc19ub21hdGNoIDwtIHN1cGVydmlzb3JzW2lzLm5hKHN1cGVydmlzb3JzJGZpcnN0eWVhciksXSAjIG5vdCB5ZXQgbWF0Y2hlZCBzdXBlcnZpc29ycyANCnN1cGVydmlzb3JzX25vbWF0Y2ggPC0gc3Vic2V0KHN1cGVydmlzb3JzX25vbWF0Y2gsIHNlbGVjdD1jKCJpZF9waGQiLCAiaWRfcGhkX3N2IiwgInBoZF95ZWFyX3BoZCIsICJzdXBlcnZpc29ycyIsICJzdl9mbiIsICJzdl9pbmkiLCAic3ZfbG4iLCAic3ZfbiIgKSkNCg0Kc3VwZXJ2aXNvcnNfbm9tYXRjaCA8LSBsZWZ0X2pvaW4oc3VwZXJ2aXNvcnNfbm9tYXRjaCwgZnVsbCwgYnk9Yygic3ZfbG4iPSJsYXN0bmFtZSIsICJzdl9pbmkiPSJpbmkiKSkNCg0KIyByZW1vdmluZyBkdXBsaWNhdGVzIGFnYWluDQoNCnN1cGVydmlzb3JzX25vbWF0Y2ggJT4lDQogIGdyb3VwX2J5KGlkX3BoZF9zdikgJT4lDQogIGZpbGwoZmlyc3RuYW1lX3ByLCAuZGlyZWN0aW9uPSJkb3dudXAiKSAlPiUNCiAgZmlsbChpZF9wciwgLmRpcmVjdGlvbj0iZG93bnVwIikgJT4lDQogIHNsaWNlX2hlYWQoKSAtPiBzdXBlcnZpc29yc19ub21hdGNoDQoNCg0KYGBgDQoNCg0KIyBBZGRpbmcgbmFtZXMgZnJvbSB0aGUgcHJvZmVzc29ycyBkYXRhYmFzZQ0KDQpgYGB7cn0NCg0KbnJvdyhzdXBlcnZpc29yc19ub21hdGNoWyFpcy5uYShzdXBlcnZpc29yc19ub21hdGNoJHN2X2ZuKSxdKQ0KDQoNCiMgQ29weSB0aGUgcHJvZmVzc29ycycgZmlyc3QgbmFtZXMgaWYgdGhleSBhcmUgbm90IHlldCBmaWxsZWQNCnN1cGVydmlzb3JzX25vbWF0Y2gkc3ZfZm4gPC0gaWZlbHNlKGlzLm5hKHN1cGVydmlzb3JzX25vbWF0Y2gkc3ZfZm4pLCBzdXBlcnZpc29yc19ub21hdGNoJGZpcnN0bmFtZV9wciwgc3VwZXJ2aXNvcnNfbm9tYXRjaCRzdl9mbikNCg0KDQpucm93KHN1cGVydmlzb3JzX25vbWF0Y2hbIWlzLm5hKHN1cGVydmlzb3JzX25vbWF0Y2gkc3ZfZm4pLF0pDQoNCg0KYGBgDQoNCg0KIyBDb21iaW5pbmcgdGhlIHByb2Zlc3NvciBpbmZvIGJhc2VkIG9uIHRoZSB0d28gbWF0Y2hpbmcgc3RyYXRlZ2llcw0KDQpgYGB7cn0NCg0Kc3VwZXJ2aXNvcnNfbWF0Y2ggPC0gc3Vic2V0KHN1cGVydmlzb3JzX21hdGNoLCBzZWxlY3Q9YygiaWRfcGhkIiwgImlkX3BoZF9zdiIsICJwaGRfeWVhcl9waGQiLCAic3VwZXJ2aXNvcnMiLCAic3ZfZm4iLCAic3ZfaW5pIiwgInN2X2xuIiwgImlkX3ByIiwgImZpcnN0eWVhciIpKQ0KDQpzdXBlcnZpc29yc19ub21hdGNoIDwtIHN1YnNldChzdXBlcnZpc29yc19ub21hdGNoLCBzZWxlY3Q9YygiaWRfcGhkIiwgImlkX3BoZF9zdiIsICJwaGRfeWVhcl9waGQiLCAic3VwZXJ2aXNvcnMiLCAic3ZfZm4iLCAic3ZfaW5pIiwgInN2X2xuIiwgICJpZF9wciIsICJmaXJzdHllYXIiKSkNCg0KDQpzdXBlcnZpc29ycyA8LSByYmluZC5kYXRhLmZyYW1lKHN1cGVydmlzb3JzX21hdGNoLCBzdXBlcnZpc29yc19ub21hdGNoKQ0KDQpzdXBlcnZpc29ycyRwcm9mIDwtIGlmZWxzZSgoIWlzLm5hKHN1cGVydmlzb3JzJGZpcnN0eWVhcikgJiBzdXBlcnZpc29ycyRmaXJzdHllYXIgPCBzdXBlcnZpc29ycyRwaGRfeWVhcl9waGQpLCAxLCAwKQ0KDQpgYGANCg0KDQojIEFkZGluZyBuYW1lcyBmcm9tIHB1YmxpY2F0aW9ucyBjby1hdXRob3JlZCB3aXRoIFBoRHMNCg0KVGhlIGNvZGUgYmVsb3cgaXMgcHJvdmlkZWQgdG8gc2hvdyBob3cgd2UgZXh0cmFjdGVkIHN1cGVydmlzb3JzJyBuYW1lcyBmcm9tIHRoZSBwdWJsaWNhdGlvbnMgY28tYXV0aG9yZWQgd2l0aCB0aGVpciBQaERzLiANCg0KDQpgYGB7ciwgZXZhbD1GQUxTRX0NCg0KIyBsb2FkIGluIHRoZSBwdWJsaWNhdGlvbnMNCg0KDQojIFdlIG9ubHkgc2VsZWN0IHN1cGVydmlzb3JzIGZyb20gdGhlIGJhdGNoIHdob3NlIG5hbWUgd2UgZG8gbm90IHlldCBrbm93DQptaXNzaW5nbmFtZSA8LSBzdXBlcnZpc29yc1tpcy5uYShzdXBlcnZpc29ycyRzdl9mbiksXQ0KDQojIEtlZXAgdGhlIHZhcmlhYmxlcyB0aGF0IGFyZSBuZWNlc3NhcnkgdG8gbWF0Y2ggb24NCm1pc3NpbmduYW1lIDwtIHN1YnNldChtaXNzaW5nbmFtZSwgc2VsZWN0PWMoInN2X2xuIiwgImlkX3BoZCIsICJpZF9waGRfc3YiKSkNCg0KDQojIGFkZGluZyBwdWJzDQpwdWJzbWlzc2luZ25hbWUgPC0gbGVmdF9qb2luKG1pc3NpbmduYW1lLCBwdWJzLCBieT1jKCJpZF9waGQiPSJpZCIpKQ0KDQoNCiMgTWFrZSBzdXJlIHRoZSBmb3JtYXQgb2YgbGFzdCBuYW1lIGFsaWducyB3aXRoIHRoZSBub3RhdGlvbiBpbiB0aGUgJ2F1dGV1cicgY29sdW1uIG9mIHRoZSBwdWJsaWNhdGlvbnMgZGF0YQ0KcHVic21pc3NpbmduYW1lJGxhc3RuYW1lIDwtIHN0cl90b190aXRsZShwdWJzbWlzc2luZ25hbWUkc3ZfbG4pICMgc3RhcnQgd2l0aCBhIGNhcGl0YWwgbGV0dGVyDQpwdWJzbWlzc2luZ25hbWUkbGFzdG5hbWUgPC0gdW5hY2NlbnQocHVic21pc3NpbmduYW1lJGxhc3RuYW1lKSAjIG5vIGRpYWNyaXRpY3MNCnB1YnNtaXNzaW5nbmFtZSRsYXN0bmFtZSA8LSBwYXN0ZTAocHVic21pc3NpbmduYW1lJGxhc3RuYW1lLCAiLCIpICMgYWRkIGNvbW1hIHNvIHRoYXQgb25seSBhIDE6MSBtYXRjaCBpcyBkZXRlY3RlZCwgbm90IHBhcnRpYWwgbWF0Y2hlcyANCg0KIyBDcmVhdGUgYSAwLzEgdmFyaWFibGUgaW5kaWNhdGluZyB3aGV0aGVyIGEgY2VydGFpbiBwdWJsaWNhdGlvbiBpcyBjby1hdXRob3JlZCBieSBzdXBlcnZpc29yDQpwdWJzbWlzc2luZ25hbWUkd2l0aF9zdiA8LSBhcy5udW1lcmljKHN0cl9kZXRlY3QocHVic21pc3NpbmduYW1lJGF1dGV1ciwgcHVic21pc3NpbmduYW1lJGxhc3RuYW1lKSkNCg0KIyBPbmx5IHNlbGVjdCBwdWJsaWNhdGlvbnMgY28tYXV0aG9yZWQgYnkgdGhlIHN1cGVydmlzb3INCnB1YnNtaXNzaW5nbmFtZSA8LSBwdWJzbWlzc2luZ25hbWVbcHVic21pc3NpbmduYW1lJHdpdGhfc3Y9PTEsXQ0KDQoNCiMgR2V0IGV2ZXJ5dGhpbmcgYWZ0ZXIgdGhlIGxhc3QgbmFtZSBvZiB0aGUgc3VwZXJ2aXNvcg0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHN0cl9yZW1vdmVfYWxsKHB1YnNtaXNzaW5nbmFtZSRhdXRldXIsIHBhc3RlMCgiXlxuPy4qIiwgcHVic21pc3NpbmduYW1lJGxhc3RuYW1lKSkNCg0KIyBSZW1vdmUgYXV0aG9yIGluZm9ybWF0aW9uIHRoYXQgY29tZXMgYWZ0ZXIgdGhlIHN1cGVydmlzb3IgKGlmIHByZXNlbnQpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gaWZlbHNlKGFzLm51bWVyaWMoc3RyX2RldGVjdChwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUsICI7IikpPT0xLCBzdHJfcmVtb3ZlKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSwgIjsuKiQiKSwgcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lKQ0KDQoNCiMgUmVtb3ZlIGRvdWJsZSBsYXN0IG5hbWVzICh1c3VhbGx5IHNlcGFyYXRlZCBieSBhIC0pDQojIEEgZ29vZCBzaWduYWwgdGhhdCB0aGlzIGlzIHRoZSBjYXNlLCBpcyB3aGVuIHRoZSBzdHJpbmcgKGFmdGVyIGFib3ZlIG1hbmlwdWxhdGlvbnMgc3RhcnRzIHdpdGggIi0iKQ0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHN0cl9yZW1vdmVfYWxsKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSwgcGFzdGUwKCJeLSgoVnx2KWFuKT9cXHM/KChEfGQpZSk/XFxzP1tBLVphLXpdKyIpKQ0KDQoNCiMgUmVtb3ZlIGluaXRpYWxzDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCBpbml0aWFscGF0dGVybikNCg0KIyBSZW1vdmUgY29tbWFzDQojIEkgZG8gdGhpcyBiZWZvcmUgcmVtb3Zpbmcgbm9iaWxpYXJ5IHBhcnRpY2xlcywgYmVjYXVzZSBzb21ldGltZXMsIGEgbm9iaWxpYXJ5IHBhcnRpY2xlIGlzIGltbWVkaWF0ZWx5IGZvbGxvd2VkIGJ5IGEgY29tbWENCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSBzdHJfcmVtb3ZlX2FsbChwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUsICIsIikNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSB0cmltd3MocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lKQ0KDQojIFJlbW92ZSBub2JpbGlhcnkgcGFydGljbGVzDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCBwYXN0ZTAodmFuZGUwLCBjb2xsYXBzZT0ifCIpKQ0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHRyaW13cyhwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUpDQoNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSBzdHJfcmVtb3ZlX2FsbChwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUsIHBhc3RlMCh2YW5kZTEsIGNvbGxhcHNlPSJ8IikpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gdHJpbXdzKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSkNCg0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHN0cl9yZW1vdmVfYWxsKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSwgcGFzdGUwKHZhbmRlMiwgY29sbGFwc2U9InwiKSkNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSB0cmltd3MocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lKQ0KDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCBwYXN0ZTAodmFuZGUzLCBjb2xsYXBzZT0ifCIpKQ0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHRyaW13cyhwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUpDQoNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSBzdHJfcmVtb3ZlX2FsbChwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUsIHBhc3RlMCh2YW5kZTQsIGNvbGxhcHNlPSJ8IikpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gdHJpbXdzKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSkNCg0KIyBSZW1vdmUgYSBjb3VwbGUgb2Ygb2RkIGNoYXJhY3RlcnMgYW5kIG5vbi1uYW1lcyBJIGRldGVjdGVkDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCAi4oCgIikNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSBzdHJfcmVtb3ZlX2FsbChwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUsICIoY28tKT9wcm9tb3RvciIpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCAiW0lpXW5cXC4iKQ0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHN0cl9yZW1vdmVfYWxsKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSwgIltWdl1hblxcLiIpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCAiW0RkXWVcXC4iKQ0KIyBSZW1vdmluZyBicmFja2V0cw0KcHVic21pc3NpbmduYW1lJGZ1bGxuYW1lIDwtIHN0cl9yZW1vdmVfYWxsKHB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSwgIlxcKCIpDQpwdWJzbWlzc2luZ25hbWUkZnVsbG5hbWUgPC0gc3RyX3JlbW92ZV9hbGwocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCAiXFwpIikNCnB1YnNtaXNzaW5nbmFtZSRmdWxsbmFtZSA8LSB0cmltd3MocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lKQ0KDQojIEV4dHJhY3Qgb25seSB0aGUgZmlyc3QtbWVudGlvbmVkIG5hbWUNCnB1YnNtaXNzaW5nbmFtZSRmaXJzdG5hbWUgPC0gc3RyX2V4dHJhY3QocHVic21pc3NpbmduYW1lJGZ1bGxuYW1lLCAiWzphbHBoYTpdKyIpDQoNCiMgUmVtb3ZlIG9uZS1jaGFyYWN0ZXIgKGluaXRpYWwpIG5hbWVzDQpwdWJzbWlzc2luZ25hbWUkZmlyc3RuYW1lIDwtIGlmZWxzZShuY2hhcihwdWJzbWlzc2luZ25hbWUkZmlyc3RuYW1lKT09MSwgTkEsIHB1YnNtaXNzaW5nbmFtZSRmaXJzdG5hbWUpIA0KcHVic21pc3NpbmduYW1lJGZpcnN0bmFtZSA8LSBpZmVsc2UocHVic21pc3NpbmduYW1lJGZpcnN0bmFtZT09Il5UaCQiLCBOQSwgcHVic21pc3NpbmduYW1lJGZpcnN0bmFtZSkgDQoNCiMgbG93ZXJjYXNlDQpwdWJzbWlzc2luZ25hbWUkZmlyc3RuYW1lIDwtIHVuYWNjZW50KHRvbG93ZXIocHVic21pc3NpbmduYW1lJGZpcnN0bmFtZSkpDQoNCnB1YnNtaXNzaW5nbmFtZSRmaXJzdG5hbWUgPC0gdG9sb3dlcihwdWJzbWlzc2luZ25hbWUkZmlyc3RuYW1lKQ0KDQoNCiMgbGV2ZWxzKGFzLmZhY3RvcihwdWJzbWlzc2luZ25hbWUkZmlyc3RuYW1lKSkgIyBvcHRpb25hbCBjaGVjaw0KDQoNCiMgc2VsZWN0aW5nIG9ubHkgdGhlIHJlbGV2YW50IGNvbHVtbnMNCnB1YnNtaXNzaW5nbmFtZSA8LSBzdWJzZXQocHVic21pc3NpbmduYW1lLCBzZWxlY3Q9YygiaWRfcGhkX3N2IiwgImZpcnN0bmFtZSIpKQ0KcHVic21pc3NpbmduYW1lIDwtIHJlbmFtZShwdWJzbWlzc2luZ25hbWUsIGZpcnN0bmFtZV9wdWJzID0gZmlyc3RuYW1lKQ0KDQoNCiMgcmVtb3ZpbmcgZW1wdHkgbGluZXMNCnB1YnNtaXNzaW5nbmFtZSA8LSBwdWJzbWlzc2luZ25hbWVbIWlzLm5hKHB1YnNtaXNzaW5nbmFtZSRmaXJzdG5hbWVfcHVicyksXQ0KDQoNCiMgaW4gY2FzZSBhIFBoRCBoYXMgbXVsdGlwbGUgY28tYXV0aG9ycyB3aXRoIHRoZSBzYW1lIGxhc3QgbmFtZSBidXQgZGlmZmVyZW50IGZpcnN0IG5hbWVzLCB3ZSBwaWNrIHRoZSBuYW1lIHRoYXQgaXMgbW9zdCBjb21tb24NCnB1YnNtaXNzaW5nbmFtZSAlPiUNCiAgZ3JvdXBfYnkoaWRfcGhkX3N2LCBmaXJzdG5hbWVfcHVicykgJT4lDQogIHN1bW1hcmlzZShjb3VudGVyID0gbigpLCAuZ3JvdXBzPSdkcm9wJykgJT4lDQogIHVuZ3JvdXAoKSAtPiBuYW1lY291bnRlcg0KDQoNCiMgdGhpcyBwaWVjZSBvZiBjb2RlIGlzIHVzZWQgdG8gY2hlY2sgaG93IG1hbnkgbmFtZXMgYXJlIGFkZGVkDQpuYW1lY291bnRlciAlPiUNCmdyb3VwX2J5KGlkX3BoZF9zdikgJT4lDQphcnJhbmdlKGRlc2MoY291bnRlcikpICU+JQ0KZmlsdGVyKHJvd19udW1iZXIoKT09MSkgJT4lDQpzZWxlY3QoaWRfcGhkX3N2LCBmaXJzdG5hbWVfcHVicykgLT4gbmFtZWNvdW50ZXINCg0KDQojIG1lcmdpbmcgdGhlIG5hbWVzIGJhY2sgaW50byB0aGUgZGF0YQ0KbnJvdyhzdXBlcnZpc29yc1shaXMubmEoc3VwZXJ2aXNvcnMkc3ZfZm4pLF0pIG5yb3coc3VwZXJ2aXNvcnNbIWlzLm5hKHN1cGVydmlzb3JzJHN2X2ZuKSxdKSAjIGNoZWNrIGhvdyBtYW55IHN1cGVydmlzb3JzJyBmaXJzdCBuYW1lcyBhcmUgbWlzc2luZyBiZWZvcmUgYWRkaW5nIG5hbWVzIGZyb20gcHVibGljYXRpb25zDQogDQpzdXBlcnZpc29ycyAlPiUgbGVmdF9qb2luKG5hbWVjb3VudGVyLCBieT0iaWRfcGhkX3N2IikgLT4gc3VwZXJ2aXNvcnMgIyBhZGQgbmFtZXMNCg0Kc3VwZXJ2aXNvcnMkc3ZfZm4gPC0gaWZlbHNlKGlzLm5hKHN1cGVydmlzb3JzJHN2X2ZuKSwgc3VwZXJ2aXNvcnMkZmlyc3RuYW1lX3B1YnMsIHN1cGVydmlzb3JzJHN2X2ZuKSAjIGZpbGwgbmFtZXMgYmFzZWQgb24gdGhlIHB1YmxpY2F0aW9ucw0KDQoNCm5yb3coc3VwZXJ2aXNvcnNbIWlzLm5hKHN1cGVydmlzb3JzJHN2X2ZuKSxdKSAjIGNoZWNrIGhvdyBtYW55IHN1cGVydmlzb3JzJyBmaXJzdCBuYW1lcyBhcmUgbWlzc2luZyBhZnRlciBhZGRpbmcgbmFtZXMgZnJvbSBwdWJsaWNhdGlvbnMNCg0KYGBgDQoNCg0KDQojIEFkZGluZyBnZW5kZXINCg0KRnJvbSBNZWVydGVucyBmaXJzdCBuYW1lIGRhdGFiYXNlDQoNCmBgYHtyfQ0KDQpzdXBlcnZpc29ycyA8LSBsZWZ0X2pvaW4oc3VwZXJ2aXNvcnMsIGdlbmRlciwgYnk9Yygic3ZfZm4iID0gImZpcnN0bmFtZSIpKQ0KDQoNCnN1cGVydmlzb3JzICU+JSANCiAgbXV0YXRlKGZyZXFfbSA9IGlmZWxzZSgoZnJlcV9tPT0iLS0iKSwgMCwgZnJlcV9tKSwgDQogICAgICAgICBmcmVxX2YgPSBpZmVsc2UoKGZyZXFfZj09Ii0tIiksIDAsIGZyZXFfZiksIA0KICAgICAgICAgZmVtYWxlID0gaWZlbHNlKChmcmVxX2YgPiBmcmVxX20pLCAxLCAwKSwNCiAgICAgICAgIGZlbWFsZSA9IGlmZWxzZSgoZnJlcV9tID09IGZyZXFfZiksIE5BLCBmZW1hbGUpKSAtPiBzdXBlcnZpc29ycw0KDQoNCiMgcmVuYW1pbmcgdGhlIHZhcmlhYmxlIGFuZCB0cmFuc2Zvcm1pbmcgaW50byBhIGZhY3Rvcg0KDQpzdXBlcnZpc29ycyRmZW1hbGUgPC0gYXMuZmFjdG9yKHN1cGVydmlzb3JzJGZlbWFsZSkNCmxldmVscyhzdXBlcnZpc29ycyRmZW1hbGUpDQpsZXZlbHMoc3VwZXJ2aXNvcnMkZmVtYWxlKSA8LSBjKCJtZW4iLCAid29tZW4iKQ0Kc3VwZXJ2aXNvcnMgPC0gc3VwZXJ2aXNvcnMgJT4lIGRwbHlyOjpyZW5hbWUoc3ZfZ2VuZGVyID0gZmVtYWxlKQ0KDQojIGRyb3BwaW5nIHRoZSBmcmVxdWVuY3kgdmFyaWFibGVzDQpzdXBlcnZpc29ycyA8LSBzdXBlcnZpc29ycyAlPiUgc2VsZWN0KGlkX3BoZCwgaWRfcGhkX3N2LCBwaGRfeWVhcl9waGQsIHN1cGVydmlzb3JzLCBzdl9mbiwgc3ZfaW5pLCBzdl9sbiwgIGlkX3ByLCBmaXJzdHllYXIsIHByb2YsIHN2X2dlbmRlcikNCg0KYGBgDQoNCg0KIyMgR2VuZGVyIGJhc2VkIG9uIEdlbmRlcml6ZVIgDQoNCldlIHVzZSBHZW5kZXJpemVSIHRvIHN1cHBsZW1lbnQgZ2VuZGVyIGJhc2VkIG9uIE1lZXJ0ZW5zIFZvb3JuYW1lbmJhbmssIHRoZSBzYW1lIHdheSB3ZSBkbyBmb3IgUGhEcyB0aGVtc2VsdmVzIGFzIGRldGFpbGVkIGluIFtnZW5kZXJdKGdlbmRlci5odG1sKS4gR2l2ZW4gdGhhdCB0aGUgbWV0aG9kIGlzIGV4YWN0bHkgdGhlIHNhbWUsIHdlIHJlcGVhdCB0aGUgY29kZSBoZXJlIHRvIGlsbHVtaW5hdGUgb3VyIHdvcmtmbG93LCBidXQgc2V0IGl0IHRvIG5vbi1hY3RpdmUuIA0KDQpgYGB7ciwgZXZhbD1GQUxTRX0NCg0KIyBNZXJnaW5nIHRoZSBvcmlnaW4gdmFyaWFibGVzIG9udG8gc3VwZXJ2aXNvcnMNCnN1cGVydmlzb3JzIDwtIGxlZnRfam9pbihzdXBlcnZpc29ycywgbG5fb3JpZ2luLCBieSA9IGMoInN2X2xuIiA9ICJsYXN0bmFtZSIpKQ0KDQpzdXBlcnZpc29ycyA8LSBzdXBlcnZpc29ycyAlPiUgcmVuYW1lKHN2X2V0aG5pY2l0eT1vcmlnaW4pICMgcmVuYW1lIHRoZSB2YXJpYWJsZSB0byBtYWtlIGNsZWFyIGl0IGlzIHRoZSBzdXBlcnZpc29ycw0KDQpzdXBlcnZpc29ycyA8LSBsZWZ0X2pvaW4oc3VwZXJ2aXNvcnMsIGdlbmRlcml6ZXIsIGJ5PWMoInN2X2ZuIiA9ICJmaXJzdG5hbWUiKSkNCg0KDQojIFRha2UgY291bnRyeS1zcGVjaWZpYyBnZW5kZXJpemVSIGRhdGEgd2hlcmUgYXBwbGljYWJsZSwgZWxzZSB0aGUgY29tcGxldGUgZ2VuZGVyaXplUiBkYXRhYmFzZQ0Kc3VwZXJ2aXNvcnMgJT4lDQogIG11dGF0ZShnZW5kZXJaID0gZ2VuZGVyX2FsbCwNCiAgICAgICAgIGdlbmRlclogPSBpZmVsc2Uoc3ZfZXRobmljaXR5PT0iZHV0Y2giLCBnZW5kZXJfbmwsIGdlbmRlclopLA0KICAgICAgICAgZ2VuZGVyWiA9IGlmZWxzZShzdl9ldGhuaWNpdHk9PSJtb3JvY2NhbiIsIGdlbmRlcl9tYSwgZ2VuZGVyWiksDQogICAgICAgICBnZW5kZXJaID0gaWZlbHNlKHN2X2V0aG5pY2l0eT09InR1cmtpc2giLCBnZW5kZXJfdHIsIGdlbmRlclopKSAtPiBzdXBlcnZpc29ycw0KDQpzdXBlcnZpc29ycyRnZW5kZXJaIDwtIGFzLmZhY3RvcihzdXBlcnZpc29ycyRnZW5kZXJaKQ0KDQojIE9ubHkgdXNlIGdlbmRlcml6ZVIgd2hlbiBnZW5kZXIgaXMgbm90IHByZXNlbnQgZnJvbSBNZWVydGVucw0Kc3VwZXJ2aXNvcnMkc3ZfZ2VuZGVyIDwtIGlmZWxzZShpcy5uYShzdXBlcnZpc29ycyRzdl9nZW5kZXIpLCBzdXBlcnZpc29ycyRnZW5kZXJaLCBzdXBlcnZpc29ycyRzdl9nZW5kZXIpDQoNCnN1cGVydmlzb3JzJHN2X2dlbmRlciA8LSBhcy5mYWN0b3Ioc3VwZXJ2aXNvcnMkc3ZfZ2VuZGVyKQ0KbGV2ZWxzKHN1cGVydmlzb3JzJHN2X2dlbmRlcikgPC0gYygibWVuIiwgIndvbWVuIikNCg0KIyByZWNhbGwgTWVlcnRlbnMgKyBnZW5kZXJpemVSDQpucm93KHN1cGVydmlzb3JzWyghaXMubmEoc3VwZXJ2aXNvcnMkc3ZfZ2VuZGVyKSksXSkgLyBucm93KHN1cGVydmlzb3JzKSAqIDEwMA0KDQoNCiMgQ3JlYXRlIGFuIGV4dHJhIHZhbHVlIGZvciBtaXNzaW5nDQpzdXBlcnZpc29ycyRzdl9nZW5kZXIgPC0gZmN0X2V4cGxpY2l0X25hKHN1cGVydmlzb3JzJHN2X2dlbmRlciwgIm1pc3NpbmciKQ0KDQoNCiMgT25seSBrZWVwaW5nIHJlbGV2YW50IHZhcmlhYmxlcw0Kc3VwZXJ2aXNvcnMgJT4lDQogIHNlbGVjdChjKCJpZF9waGQiLCAiaWRfcGhkX3N2IiwgInBoZF95ZWFyX3BoZCIsICJzdXBlcnZpc29ycyIsICJzdl9mbiIsICJzdl9pbmkiLCAic3ZfbG4iLCAic3ZfZ2VuZGVyIiwgInByb2YiLCAiaWRfcHIiKSkgLT4gc3VwZXJ2aXNvcnMNCg0KDQoNCmBgYA0KDQoNCg0KIyBDcmVhdGluZyB2YXJpYWJsZXMgYXQgdGhlIGxldmVsIG9mIHRoZSBzdXBlcnZpc29yeSB0ZWFtDQoNCk1vcmUgdGhhbiAxIHByb2Zlc3Nvcg0KDQpgYGB7cn0NCg0Kc3VwZXJ2aXNvcnMgJT4lDQogIGdyb3VwX2J5KGlkX3BoZCkgJT4lDQogIHN1bW1hcmlzZShzdW1wcm9mID0gc3VtKHByb2YpKSAtPiBzdW1wcm9mICMgZ3JvdXAgYnkgaWQgYW5kIHRoZW4gc3VtIHRoZSBudW1iZXIgb2Ygc3VwZXJ2aXNvcnMgd2hvIGFyZSBwcm9mZXNzb3INCg0Kc3VwZXJ2aXNvcnMgJT4lDQogIGxlZnRfam9pbihzdW1wcm9mLCBieT0iaWRfcGhkIikgJT4lDQogIG11dGF0ZShwcm9mMnAgPSBpZmVsc2Uoc3VtcHJvZjwyLCAwLCAxKSkgLT4gcHJvZmVzc29yc3RlYW0gIyBjcmVhdGUgYSBuZXcgdmFyaWFibGUgb24gdGhlIGxldmVsIG9mIFBoRHMgc3BlY2lmeWluZyBpZiB0aGUgcGhkIGhhcyAyKyBwcm9mZXNzb3JzIGluIHRoZWlyIHRlYW0gKHByb2YycCkNCg0KcHJvZmVzc29yc3RlYW0gPC0gc3Vic2V0KHByb2Zlc3NvcnN0ZWFtLCBzZWxlY3Q9YygiaWRfcGhkIiwgInByb2YycCIpKSAjIGV4dHJhY3Qgb25seSB0aGUgaWQgYW5kIHRoZSByZWxldmFudCB2YXJpYWJsZSBzbyB3ZSBjYW4gZWFzaWx5IGFkZCB0aGlzIHRvIG91ciBkYXRhZnJhbWUgb2YgcGhkcw0KDQpwcm9mZXNzb3JzdGVhbSA8LSBwcm9mZXNzb3JzdGVhbVshZHVwbGljYXRlZChwcm9mZXNzb3JzdGVhbSRpZF9waGQpLF0gIyByZW1vdmUgZHVwbGljYXRpZXMNCg0Kc3VtbWFyeShhcy5mYWN0b3IocHJvZmVzc29yc3RlYW0kcHJvZjJwKSkgIyBjaGVjayBob3cgbWFueSBwZW9wbGUgc2NvcmUgYSAwIGFuZCBhIDEgb24gdGhlIG5ldyB2YXJpYWJsZQ0KDQoNCmBgYA0KDQoNCg0KU2l6ZSBvZiB0aGUgdGVhbQ0KDQpgYGB7cn0NCg0Kc3VwZXJ2aXNvcnMgJT4lDQogIGdyb3VwX2J5KGlkX3BoZCkgJT4lDQogIHN1bW1hcmlzZSh0ZWFtc2l6ZSA9IG4oKSkgJT4lDQogIHNlbGVjdChpZF9waGQsIHRlYW1zaXplKSAtPiB0ZWFtc2l6ZSAjIGdyb3VwaW5nIHRoZSBkYXRhZnJhbWUgYnkgUGhEIGFuZCB0YWxseWluZyB1cCB0aGUgbnVtYmVyIG9mIHN1cGVydmlzb3JzDQoNCnN1bW1hcnkoYXMuZmFjdG9yKHRlYW1zaXplJHRlYW1zaXplKSkNCg0KYGBgDQoNCg0KUGVyY2VudGFnZSBvZiB3b21lbiBpbiB0aGUgdGVhbQ0KDQpgYGB7cn0NCg0Kc3VtbWFyeShhcy5mYWN0b3Ioc3VwZXJ2aXNvcnMkc3ZfZ2VuZGVyKSkNCg0Kc3VwZXJ2aXNvcnMgJT4lDQogIGdyb3VwX2J5KGlkX3BoZCkgJT4lDQogIGNvdW50KHN2X2dlbmRlcikgLT4gdGVhbWdlbmRlciAjIGNyZWF0aW5nIGEgZGF0YWZyYW1lIHdpdGggdGhlIG51bWJlciBvZiB3b21lbi9tZW4vbWlzc2luZyBnZW5kZXIgcGVyIHBoZA0KDQoNCnRlYW1nZW5kZXIgJT4lDQogIGxlZnRfam9pbih0ZWFtc2l6ZSwgYnk9ImlkX3BoZCIpIC0+IHRlYW1nZW5kZXIgIyBhZGRpbmcgdGhlIHRlYW1zaXplIHZhcmlhYmxlIHdlIGNyZWF0ZWQgaW4gdGhlIGNodW5rIGJlZm9yZSwgc28gd2UgY2FuIGNhbGN1bGF0ZSB0aGUgc2hhcmUgb2Ygc3VwZXJ2aXNvcnMgZnJvbSBlYWNoIGdlbmRlcg0KDQoNCnRlYW1nZW5kZXIkcHJvcCA8LSB0ZWFtZ2VuZGVyJG4gLyB0ZWFtZ2VuZGVyJHRlYW1zaXplICMgY2FsY3VsYXRpbmcgdGhlIHNoYXJlIG9mIG0vZi9taXNzaW5nIGdlbmRlciBzdXBlcnZpc29ycw0KDQoNCnRlYW1nZW5kZXIgPC0gcGl2b3Rfd2lkZXIodGVhbWdlbmRlciwgaWRfY29scz0iaWRfcGhkIiwgbmFtZXNfZnJvbSA9ICJzdl9nZW5kZXIiLCBuYW1lc19wcmVmaXggPSAicHJvcCIsIHZhbHVlc19mcm9tID0gInByb3AiKSAjIHJlc2hhcGluZyB0aGUgZGF0YWZyYW1lIHNvIHRoYXQgb25lIHBoZCBoYXMgb25lIHJvdyBhZ2Fpbg0KDQojIHNldCBOQSB2YWx1ZXMgdG8gMA0KdGVhbWdlbmRlciRwcm9wbWVuIDwtIGlmZWxzZShpcy5uYSh0ZWFtZ2VuZGVyJHByb3BtZW4pLCAwLCB0ZWFtZ2VuZGVyJHByb3BtZW4pICMgc29tZSBQaERzIGhhdmUgbm8gbWVuIG9uIHRoZWlyIHN1cGVydmlzaW9uIHRlYW0NCnRlYW1nZW5kZXIkcHJvcHdvbWVuIDwtIGlmZWxzZShpcy5uYSh0ZWFtZ2VuZGVyJHByb3B3b21lbiksIDAsIHRlYW1nZW5kZXIkcHJvcHdvbWVuKSAjIG9yIG5vIHdvbWVuDQp0ZWFtZ2VuZGVyJHByb3BOQSA8LSBpZmVsc2UoaXMubmEodGVhbWdlbmRlciRwcm9wTkEpLCAwLCB0ZWFtZ2VuZGVyJHByb3BOQSkgIyBvciBubyBzdXBlcnZpc29ycyB3aXRoIGEgbWlzc2luZyBnZW5kZXINCg0KDQoNCmBgYA0KDQoxKyB3b21hbiBpbiB0aGUgdGVhbQ0KDQpgYGB7cn0NCg0KdGVhbWdlbmRlciR3b21fc3YxIDwtIGlmZWxzZSh0ZWFtZ2VuZGVyJHByb3B3b21lbj09MCwgMCwgMSkNCg0KDQpgYGANCg0KDQoNCkFkZGluZyBib3RoIHZhcmlhYmxlcyB0byB0aGUgUGhEIGRhdGFmcmFtZQ0KDQpgYGB7cn0NCg0KIyBzZWxlY3RpbmcgcmVsZXZhbnQgdmFyaWFibGVzDQpwaGRfc3VwZXJ2aXNvcnMgPC0gc3Vic2V0KHBoZGdlbmRlciwgc2VsZWN0PWMoaWQsIHN1cGVydmlzb3JzKSkNCg0KIyBjb2xsYXBzaW5nIHRoZSBkYXRhIGFnYWluDQpwaGRfc3VwZXJ2aXNvcnMgPC0gcGhkX3N1cGVydmlzb3JzWyFkdXBsaWNhdGVkKHBoZF9zdXBlcnZpc29ycyRpZCksXQ0KDQojIGFkZGluZyB0ZWFtc2l6ZSwgZ2VuZGVyIHZhcmlhYmxlcyBhbmQgcHJvZmVzc29yIHZhcmlhYmxlDQpwaGRfc3VwZXJ2aXNvcnMgPC0gbGVmdF9qb2luKHBoZF9zdXBlcnZpc29ycywgdGVhbXNpemUsIGJ5PWMoImlkIj0iaWRfcGhkIikpDQpwaGRfc3VwZXJ2aXNvcnMgPC0gbGVmdF9qb2luKHBoZF9zdXBlcnZpc29ycywgdGVhbWdlbmRlciwgYnk9YygiaWQiPSJpZF9waGQiKSkNCnBoZF9zdXBlcnZpc29ycyA8LSBsZWZ0X2pvaW4ocGhkX3N1cGVydmlzb3JzLCBwcm9mZXNzb3JzdGVhbSwgYnk9YygiaWQiPSJpZF9waGQiKSkNCg0KIyByZW1vdmluZyB0aGUgc3VwZXJ2aXNvcnMgc3RyaW5nLCBhcyBpdCBpcyBhbHJlYWR5IHByZXNlbnQgaW4gdGhlIGJhc2UgZGF0YQ0KcGhkX3N1cGVydmlzb3JzIDwtIHN1YnNldChwaGRfc3VwZXJ2aXNvcnMsIHNlbGVjdD0tc3VwZXJ2aXNvcnMpDQpzdXBlcnZpc29ycyA8LSBzdWJzZXQoc3VwZXJ2aXNvcnMsIHNlbGVjdD0tc3VwZXJ2aXNvcnMpDQoNCmBgYA0KDQoNCg0KDQojIHNhdmluZw0KDQpgYGB7ciwgZXZhbD1GQUxTRX0NCg0Kc2F2ZShzdXBlcnZpc29ycywgZmlsZT0iLi9kYXRhL3Byb2Nlc3NlZC9zdXBlcnZpc29ycy5yZGEiKSAjIHNhdmluZyB0aGUgZGF0YSBpbiB0aGUgZm9ybWF0IG9mIG9uZSByb3cgcGVyIHN1cGVydmlzb3INCg0Kc2F2ZShwaGRfc3VwZXJ2aXNvcnMsIGZpbGU9Ii4vZGF0YS9wcm9jZXNzZWQvcGhkX3N1cGVydmlzb3JzLnJkYSIpICMgc2F2aW5nIHRoZSBkYXRhIHdpdGggdGhlIHZhcmlhYmxlcyBhdCB0aGUgbGV2ZWwgb2YgcGhkcw0KDQpgYGANCg0KDQoNCg0K</div>
+<style>
+  .center {
+    text-align: center;
+    color: red;
+  }
+</style>
+  
+  <hr>
+  <br>
+  <p class="center">Copyright &copy; 2024 </p>
+    
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("supervisors.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

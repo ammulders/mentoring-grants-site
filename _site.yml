@@ -1,0 +1,44 @@
+name: "Mentoring for Grants"
+
+exclude: 
+  - "rawdata"
+ 
+navbar:
+  left:
+  - icon: fa-home
+    href: index.html
+  - text: "Independent variables"
+    menu:
+    - text: "Names"
+      href: names.html
+    - text: "Gender"
+      href: gender.html
+    - text: "Supervisor variables"
+      href: supervisors.html
+    - text: "Discipline"
+      href: discipline.html
+  - text: "Dependent variables" 
+    menu:
+    - text: "Veni receipt"
+      href: dataprep-veni.html
+  - text: "Analyses"
+    menu:
+    - text: "Main analysis Veni receipt"
+      href: analyses.html
+    - text: "Supplementary analyses"
+      href: robustness.html
+  - text: "Figures"
+    href: figures.html
+
+
+  right:
+    - icon: fab fa-github
+      href: https://github.com/
+      
+output:
+  html_document:
+    theme: flatly
+    highlight: default
+    include:
+      after_body: footer.html
+output_dir: "docs"
