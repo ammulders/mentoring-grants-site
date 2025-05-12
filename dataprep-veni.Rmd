@@ -155,6 +155,7 @@ phds <- phds[phds$start_pub==1 & phds$phd_year>1996 & phds$phd_year<2020,]
 
 ```
 
+
 Selections for robustness checks
 ```{r}
 
@@ -177,14 +178,21 @@ Selections for robustness checks
 phds %>% 
   left_join(phd_supervisors, by="id") -> phds
 
+
 # removing PhDs without known supervisors
 nrow(phds)
 phds <- phds[!is.na(phds$supervisors),]
 nrow(phds)
 
+# removing PhDs with no mean pubs of supervisosrs
+nrow(phds)
+phds <- phds[!is.na(phds$npubs_sv_norm),]
+nrow(phds)
+
 # Factorize "1+ women in supervisory team" and add separate category for missing
 phds$wom_sv1 <- factor(phds$wom_sv1)
 levels(phds$wom_sv1) <- c("no women", "1+ woman")
+
 
 
 ```
@@ -489,22 +497,11 @@ veni_ppf <- subset(veni_ppf, select=-maxv)
 veni_ppf$time <- veni_ppf$year - veni_ppf$phd_year
 
 
-# Centre PhD year variable
+# Centre PhD cohort variable
 veni_ppf$phd_year <- veni_ppf$phd_year - min(veni_ppf$phd_year)
 
 
 veni_ppf <- veni_ppf %>% distinct()
-
-```
-
-
-# Veni within regular deadline vs extended deadline
-
-```{r}
-
-veni_ppf$extended <- as.factor(ifelse(veni_ppf$time<4, 0, 1))
-
-levels(veni_ppf$extended) <- c("before extension", "after extension")
 
 ```
 
@@ -677,48 +674,8 @@ nrow(veni_ppf[veni_ppf$veni==1,])
 nrow(veni_ppf[veni_ppf$veni==1,]) 
 veni_ppf <- veni_ppf[veni_ppf$time<9,]
 nrow(veni_ppf[veni_ppf$veni==1,]) 
-```
-
-
-
-
-# Veni within 3 years
-
-```{r}
-
-summary(as.factor(veni_ppf$veni))
-veni_ppf %>% filter(time<4) -> veni3_ppf
-
-summary(as.factor(veni3_ppf$veni))
-
 
 ```
-
-
-# Veni in the year or the following year
-
-```{r}
-
-summary(as.factor(veni_ppf$veni))
-veni_ppf %>% filter(time<2) -> veni1_ppf
-
-summary(as.factor(veni1_ppf$veni))
-
-
-```
-
-# Veni 4-8 years after doctorate
-
-```{r}
-
-summary(as.factor(veni_ppf$veni))
-veni_ppf %>% filter(time>3) -> veni48_ppf
-
-summary(as.factor(veni48_ppf$veni))
-
-
-```
-
 
 
  # Saving

@@ -78,60 +78,34 @@ We use several results objects:
     - name of dataset: `veni_ppf`
     - used here to show Veni hazard rates per year after obtaining doctorate
 
-* [20240319boot1-3c.rda](data/results/): results of our main analyses with bootstrapped standard errors
+* [20250506_ame.rda](https://github.com/ammulders/amatteroftime/results/cont_cohort/20250506_ame.rda): results of our main analyses with bootstrapped standard errors
 
-* [20240527boot4.rda](data/results/): results of our main analyses with bootstrapped standard errors
-
-* [20240322robustness3a-d.rda](data/results/robustness/): results of our models split out by cohort
+* [20250507_c1-3.rda](https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20250507_c1.rda): results of our models split out by cohort
 
 
 
 ```{r files, eval=TRUE}
 
 
+load(file="./results/cont_cohort/20250506_ame.rda")
+AMEs <- x
+
 load("./data/processed/veni_ppf.rda")
 
 
-load("./results/20240319boot1.rda")
-b1 <- x
-rm(x)
 
-load("./results/20240319boot2.rda")
-b2 <- x
-rm(x)
-
-load("./results/20240319boot3a.rda")
-b3 <- x
-rm(x)
-
-load("./results/20240319boot3b.rda")
-b4 <- x
-rm(x)
-
-load("./results/20240319boot3c.rda")
-b5 <- x
-rm(x)
-
-load("./results/20240527boot4.rda")
-b6 <- x
-rm(x)
-
-
-load(file = "./results/robustness/20240322robustness3a.rda")
+load(file = "./results/robustness/bycohort/20250507_c1.rda")
 coh1 <- x
 rm(x)
 
-load(file = "./results/robustness/20240322robustness3b.rda")
+load(file = "./results/robustness/bycohort/20250507_c2.rda")
 coh2 <- x
 rm(x)
 
-load(file = "./results/robustness/20240322robustness3c.rda")
+load(file = "./results/robustness/bycohort/20250507_c3.rda")
 coh3 <- x
 rm(x)
 
-load(file = "./results/robustness/20240322robustness3d.rda")
-coh4 <- x
-rm(x)
 
 
 ```
@@ -164,18 +138,19 @@ veni_ppf %>%
         panel.background = element_rect(fill="white"),
         panel.grid.major.y = element_line(color="#C9c9c9", linewidth=0.2),
         panel.grid.minor=element_blank())
+
+
+
+veni_ppf %>%
+  filter(year>2002) %>%
+  group_by(time, gender_2) %>%
+  summarise(event = sum(veni),
+            total = n()) %>%
+  mutate(hazard = event/total) -> datacheck
   
 
 ```
 
-
-
-```{r}
-
-ggsave("./output/plot1.jpg", height=8, width=12, dpi=2000)
-
-
-```
 
 
 
@@ -187,99 +162,15 @@ Loading in the model output and creating dataframes for each model
 
 ```{r}
 
-original <- b1$t0
-bias <- colMeans(b1$t) - b1$t0
-se <- apply(b1$t, 2, sd)
+original <- AMEs$t0
+bias <- colMeans(AMEs$t) - AMEs$t0
+se <- apply(AMEs$t, 2, sd)
 
-boot.df1 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df1) <- c("AME_gender", "AME_ext", "AME_cohort")
+AMEs.df <- data.frame(original=original, bias=bias, se=se)
+row.names(AMEs.df) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_cohort_m2", "AME_cohort_m3a", "AME_cohort_m3b", "AME_cohort_m3c", "AME_cohort_m4", "AME_gendercohort_m2", "AME_gendercohort_m3a", "AME_gendercohort_m3b", "AME_gendercohort_m3c", "AME_gendercohort_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
-boot.df1$t <- (boot.df1$original / boot.df1$se)
+AMEs$t <- (AMEs$original / AMEs$se)
 
-round(boot.df1, 5)
-
-
-```
-
-
-```{r}
-
-original <- b2$t0
-bias <- colMeans(b2$t) - b2$t0
-se <- apply(b2$t, 2, sd)
-
-boot.df2 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df2) <- c("AME_gender", "AME_ext", "AME_genderext","AME_cohort")
-
-boot.df2$t <- (boot.df2$original / boot.df2$se)
-
-round(boot.df2, 5)
-
-
-```
-
-
-```{r}
-
-original <- b3$t0
-bias <- colMeans(b3$t) - b3$t0
-se <- apply(b3$t, 2, sd)
-
-boot.df3 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df3) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs")
-
-boot.df3$t <- (boot.df3$original / boot.df3$se)
-
-round(boot.df3, 5)
-
-```
-
-
-
-```{r}
-
-original <- b4$t0
-bias <- colMeans(b4$t) - b4$t0
-se <- apply(b4$t, 2, sd)
-
-boot.df4 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df4) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof")
-
-boot.df4$t <- (boot.df4$original / boot.df4$se)
-
-round(boot.df4, 5)
-
-```
-
-
-```{r}
-
-original <- b5$t0
-bias <- colMeans(b5$t) - b5$t0
-se <- apply(b5$t, 2, sd)
-
-boot.df5 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df5) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv")
-
-boot.df5$t <- (boot.df5$original / boot.df5$se)
-
-round(boot.df5, 5)
-
-```
-
-
-```{r}
-
-original <- b6$t0
-bias <- colMeans(b6$t) - b6$t0
-se <- apply(b6$t, 2, sd)
-
-boot.df6 <- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df6) <- c("AME_gender", "AME_ext", "AME_genderext", "AME_cohort", "AME_cumulpubs", "AME_prevpubs", "AME_netsize", "AME_prof", "AME_womsv", "AME_genderwomsv")
-
-boot.df6$t <- (boot.df6$original / boot.df6$se)
-
-round(boot.df6, 5)
 
 ```
 
@@ -296,82 +187,54 @@ womenc <- "#48a363"
 Extracting relevant coefficients and creating a combined dataframe containing the results of all models
 ```{r}
 
+models <- rownames(AMEs.df)
 
-boot.df1 %>%
-  mutate(ame = original, 
-         model = "M1") %>%
-  select(ame, se, model) -> ames1
+AMEs.df %>%
+  mutate(ame = original,
+         model = toupper(str_remove(models, "^.*_"))) %>%
+  select(ame, model, se) -> ames
   
-boot.df2 %>%
-  mutate(ame = original, 
-         model = "M2") %>%
-  select(ame, se, model) -> ames2
+row.names(ames) <- models
 
+ames$cov2 <- str_remove(rownames(ames), "_m[:digit:][abc]?")
 
-boot.df3 %>%
-  mutate(ame = original, 
-         model = "M3") %>%
-  select(ame, se, model) -> ames3
+ames$covariate <- ""
+ames$covariate <- ifelse(ames$cov2=="AME_gender", "Woman **(H1)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_cohort", "PhD cohort **(H2a)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_time", "Time in years since PhD", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_gendercohort", "PhD cohort * Woman **(H2b)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_cpubs", "Publications: cumulative", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_ppubs", "Publications: previous year", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_netsize", "Supervision team: size **(H3a)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_prof", "Supervision team: 2+ professors **(H3b)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_svpubs", "Supervision team: publications **(H3c)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_womsv", "Supervision team: 1+ woman **(H4a)**", ames$covariate)
+ames$covariate <- ifelse(ames$cov2=="AME_genderwomsv", "Woman * 1+ woman **(H4b)**", ames$covariate)
 
+ames$covariate <- factor(ames$covariate, levels=c("Woman **(H1)**", "PhD cohort **(H2a)**", "Time in years since PhD", "PhD cohort * Woman **(H2b)**", "Supervision team: size **(H3a)**", "Supervision team: 2+ professors **(H3b)**", "Supervision team: publications **(H3c)**", "Supervision team: 1+ woman **(H4a)**", "Woman * 1+ woman **(H4b)**", "Publications: cumulative", "Publications: previous year"))
 
-boot.df4 %>%
-  mutate(ame = original, 
-         model = "M4") %>%
-  select(ame, se, model) -> ames4
+ames <- ames %>% mutate(model = ifelse(model=="M4", "M6", model),
+                        model = ifelse(model=="M3A", "M3", model),
+                        model = ifelse(model=="M3B", "M4", model),
+                        model = ifelse(model=="M3C", "M5", model))
 
-
-
-boot.df5 %>%
-  mutate(ame = original, 
-         model = "M5") %>%
-  select(ame, se, model) -> ames5
-
-
-boot.df6 %>%
-  mutate(ame = original, 
-         model = "M6") %>%
-  select(ame, se, model) -> ames6
-
-
-AMEs <- do.call("rbind", list(ames1, ames2, ames3, ames4, ames5, ames6))
-
-AMEs$cov2 <- str_extract(rownames(AMEs), "AME_[:alpha:]+")
-
-AMEs$covariate <- ""
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_gender", "Woman **(H1)**", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_ext", "Extension period", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_cohort", "PhD cohort", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderext", "Woman * extension period **(H2)**", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_cumulpubs", "Publications: cumulative", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_prevpubs", "Publications: previous year", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_netsize", "Supervision team: size **(H3a)**", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_prof", "Supervision team: 2+ professors **(H3b)**", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_womsv", "Supervision team: 1+ woman **(H4a)**", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_gendersize", "Woman * team size", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderprof", "Woman * 2+ professors", AMEs$covariate)
-AMEs$covariate <- ifelse(AMEs$cov2=="AME_genderwomsv", "Woman * 1+ woman **(H4b)**", AMEs$covariate)
-
-AMEs$covariate <- factor(AMEs$covariate, levels=c("Woman **(H1)**", "Extension period", "PhD cohort", "Woman * extension period **(H2)**", "Supervision team: size **(H3a)**", "Supervision team: 2+ professors **(H3b)**", "Supervision team: 1+ woman **(H4a)**", "Woman * team size", "Woman * 2+ professors", "Woman * 1+ woman **(H4b)**", "Publications: cumulative", "Publications: previous year"))
-
-AMEs$model <- factor(AMEs$model, levels=c("M1", "M2", "M3", "M4", "M5", "M6"))
+ames$model <- factor(ames$model, levels=c("M1", "M2", "M3", "M4", "M5", "M6"))
 #AMEs$model <- factor(AMEs$model, levels=c("M6", "M5", "M4", "M3", "M2", "M1"))
 
-AMEs <- AMEs %>% arrange(covariate, model)
+ames <- ames %>% arrange(covariate, model)
 
 ```
 
 
 
-
-
 ```{r}
 
-ggplot(AMEs, aes(y=ame, x=covariate)) +
+ggplot(ames, aes(y=ame, x=covariate)) +
   geom_hline(yintercept=0, color="brown4", linewidth=.5) +
   geom_point() +
   facet_wrap(model ~ ., nrow=3, ncol=2, scales = "free") + 
   geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
-  scale_y_continuous(limits = c(-0.015, 0.005), breaks=seq(-0.015, 0.005, by = 0.005)) +
+  scale_y_continuous(limits = c(-0.005, 0.005), breaks=seq(-0.005, 0.005, by = 0.005)) +
   labs(y="AME") +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_markdown(angle=30, hjust=1, vjust=1),
@@ -386,16 +249,10 @@ ggplot(AMEs, aes(y=ame, x=covariate)) +
 
 ```
 
-```{r}
-
-ggsave("./output/plot2.jpg", height=8, width=12, dpi=2400)
-
-
-```
-
 
 
 ## Figure 3: Cohort splits
+
 
 ```{r}
 
@@ -403,19 +260,17 @@ original <- coh1$t0
 bias <- colMeans(coh1$t) - coh1$t0
 se <- apply(coh1$t, 2, sd)
 
-df.robust3a <- data.frame(original=original, bias=bias, se=se)
+df.coh1 <- data.frame(original=original, bias=bias, se=se)
 
+row.names(df.coh1) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
+df.coh1$t <- (df.coh1$original / df.coh1$se)
 
-row.names(df.robust3a) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+round(df.coh1, 5)
 
-df.robust3a$t <- (df.robust3a$original / df.robust3a$se)
+df.coh1 <- df.coh1[3,] # select only gender M3
 
-round(df.robust3a, 5)
-
-df.robust3a <- df.robust3a[3,]
-
-df.robust3a %>%
+df.coh1 %>%
   mutate(ame = original, 
          cohort = "Cohort 1") %>%
   select(ame, se, cohort) -> ames1
@@ -425,71 +280,48 @@ original <- coh2$t0
 bias <- colMeans(coh2$t) - coh2$t0
 se <- apply(coh2$t, 2, sd)
 
-df.robust3b <- data.frame(original=original, bias=bias, se=se)
+df.coh2 <- data.frame(original=original, bias=bias, se=se)
 
+row.names(df.coh2) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_2015_m2", "AME_2015_m3a", "AME_2015_m3b", "AME_2015_m3c", "AME_2015_m4", "AME_gender2015_m2", "AME_gender2015_m3a", "AME_gender2015_m3b", "AME_gender2015_m3c", "AME_gender2015_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
-row.names(df.robust3b) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+df.coh2$t <- (df.coh2$original / df.coh2$se)
 
-df.robust3b$t <- (df.robust3b$original / df.robust3b$se)
+round(df.coh2, 5)  
 
-round(df.robust3b, 5)  
+df.coh2 <- df.coh2[3,]
 
-df.robust3b <- df.robust3b[3,]
-
-df.robust3b %>%
+df.coh2 %>%
   mutate(ame = original, 
          cohort = "Cohort 2") %>%
   select(ame, se, cohort) -> ames2
+
 
 original <- coh3$t0
 bias <- colMeans(coh3$t) - coh3$t0
 se <- apply(coh3$t, 2, sd)
 
-df.robust3c <- data.frame(original=original, bias=bias, se=se)
+df.coh3 <- data.frame(original=original, bias=bias, se=se)
 
 
-row.names(df.robust3c) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
+row.names(df.coh3) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
-df.robust3c$t <- (df.robust3c$original / df.robust3c$se)
+df.coh3$t <- (df.coh3$original / df.coh3$se)
 
-round(df.robust3c, 5)
+round(df.coh3, 5)
 
-df.robust3c <- df.robust3c[3,]
+df.coh3 <- df.coh3[3,]
 
-df.robust3c %>%
+df.coh3 %>%
   mutate(ame = original, 
          cohort = "Cohort 3") %>%
   select(ame, se, cohort) -> ames3
 
+AMEs <- do.call("rbind", list(ames1, ames2, ames3))
 
-original <- coh4$t0
-bias <- colMeans(coh4$t) - coh4$t0
-se <- apply(coh4$t, 2, sd)
-
-df.robust3d <- data.frame(original=original, bias=bias, se=se)
-
-
-row.names(df.robust3d) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_gendertime_m2", "AME_gendertime_m3a", "AME_gendertime_m3b", "AME_gendertime_m3c", "AME_gendertime_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_gendersize_m4", "AME_genderprof_m4", "AME_genderwomsv_m4", "AME_gender_d3ab")
-
-df.robust3d$t <- (df.robust3d$original / df.robust3d$se)
-
-round(df.robust3d, 5)
-
-df.robust3d <- df.robust3d[3,]
-
-df.robust3d %>%
-  mutate(ame = original, 
-         cohort = "Cohort 4") %>%
-  select(ame, se, cohort) -> ames4
-
-
-AMEs <- do.call("rbind", list(ames1, ames2, ames3, ames4))
-
-AMEs$covariate <- c("Woman (coh. 1997-2006)", "Woman (coh. 2007-2010)", "Woman (coh. 2011-2013)", "Woman (coh. 2014-2019)")
+AMEs$covariate <- c("Woman (coh. 1997-2006)", "Woman (coh. 2007-2014)", "Woman (coh. 2015-2019)")
 
 
 ```
-
 
 
 ```{r}
@@ -498,7 +330,7 @@ ggplot(AMEs, aes(y=ame, x=covariate)) +
   geom_hline(yintercept=0, color="brown4", linewidth=.5) +
   geom_point() +
   geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
-  scale_y_continuous(limits = c(-0.006, 0.007), breaks=seq(-0.005, 0.010, by = 0.005)) +
+  scale_y_continuous(limits = c(-0.004, 0.008), breaks=seq(-0.005, 0.010, by = 0.005)) +
   labs(y="AME") +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_markdown(angle=20, hjust=1, vjust=1),
@@ -512,11 +344,4 @@ ggplot(AMEs, aes(y=ame, x=covariate)) +
         panel.grid.major.x=element_blank())
 
 ```
-
-```{r}
-
-ggsave("./output/plot3.jpg", height=8, width=12, dpi=2400)
-
-```
-
 

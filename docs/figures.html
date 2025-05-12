@@ -417,7 +417,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Mentoring for gender equality in
 early-career grant receipt: figures</h1>
-<h4 class="date">Last compiled on 2024-05-28</h4>
+<h4 class="date">Last compiled on 2025-05-12</h4>
 
 </div>
 
@@ -481,56 +481,30 @@ variable</p>
 <li>used here to show Veni hazard rates per year after obtaining
 doctorate</li>
 </ul></li>
-<li><p><a href="data/results/">20240319boot1-3c.rda</a>: results of our
-main analyses with bootstrapped standard errors</p></li>
-<li><p><a href="data/results/">20240527boot4.rda</a>: results of our
-main analyses with bootstrapped standard errors</p></li>
 <li><p><a
-href="data/results/robustness/">20240322robustness3a-d.rda</a>: results
-of our models split out by cohort</p></li>
+href="https://github.com/ammulders/amatteroftime/results/cont_cohort/20250506_ame.rda">20250506_ame.rda</a>:
+results of our main analyses with bootstrapped standard errors</p></li>
+<li><p><a
+href="https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20250507_c1.rda">20250507_c1-3.rda</a>:
+results of our models split out by cohort</p></li>
 </ul>
-<pre class="r"><code>load(&quot;./data/processed/veni_ppf.rda&quot;)
+<pre class="r"><code>load(file=&quot;./results/cont_cohort/20250506_ame.rda&quot;)
+AMEs &lt;- x
+
+load(&quot;./data/processed/veni_ppf.rda&quot;)
 
 
-load(&quot;./results/20240319boot1.rda&quot;)
-b1 &lt;- x
-rm(x)
 
-load(&quot;./results/20240319boot2.rda&quot;)
-b2 &lt;- x
-rm(x)
-
-load(&quot;./results/20240319boot3a.rda&quot;)
-b3 &lt;- x
-rm(x)
-
-load(&quot;./results/20240319boot3b.rda&quot;)
-b4 &lt;- x
-rm(x)
-
-load(&quot;./results/20240319boot3c.rda&quot;)
-b5 &lt;- x
-rm(x)
-
-load(&quot;./results/20240527boot4.rda&quot;)
-b6 &lt;- x
-rm(x)
-
-
-load(file = &quot;./results/robustness/20240322robustness3a.rda&quot;)
+load(file = &quot;./results/robustness/bycohort/20250507_c1.rda&quot;)
 coh1 &lt;- x
 rm(x)
 
-load(file = &quot;./results/robustness/20240322robustness3b.rda&quot;)
+load(file = &quot;./results/robustness/bycohort/20250507_c2.rda&quot;)
 coh2 &lt;- x
 rm(x)
 
-load(file = &quot;./results/robustness/20240322robustness3c.rda&quot;)
+load(file = &quot;./results/robustness/bycohort/20250507_c3.rda&quot;)
 coh3 &lt;- x
-rm(x)
-
-load(file = &quot;./results/robustness/20240322robustness3d.rda&quot;)
-coh4 &lt;- x
 rm(x)</code></pre>
 <div id="figure-1-veni-hazard-rate-by-time-and-gender"
 class="section level2" number="3.1">
@@ -556,10 +530,17 @@ veni_ppf %&gt;%
         panel.background = element_rect(fill=&quot;white&quot;),
         panel.grid.major.y = element_line(color=&quot;#C9c9c9&quot;, linewidth=0.2),
         panel.grid.minor=element_blank())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;time&#39;. You can
-## override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;time&#39;. You can override using the `.groups`
+## argument.</code></pre>
 <p><img src="figures_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>ggsave(&quot;./output/plot1.jpg&quot;, height=8, width=12, dpi=2000)</code></pre>
+<pre class="r"><code>veni_ppf %&gt;%
+  filter(year&gt;2002) %&gt;%
+  group_by(time, gender_2) %&gt;%
+  summarise(event = sum(veni),
+            total = n()) %&gt;%
+  mutate(hazard = event/total) -&gt; datacheck</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;time&#39;. You can override using the `.groups`
+## argument.</code></pre>
 </div>
 <div id="figure-2-model-coefficients" class="section level2"
 number="3.2">
@@ -567,183 +548,60 @@ number="3.2">
 coefficients</h2>
 <p>Loading in the model output and creating dataframes for each
 model</p>
-<pre class="r"><code>original &lt;- b1$t0
-bias &lt;- colMeans(b1$t) - b1$t0
-se &lt;- apply(b1$t, 2, sd)
+<pre class="r"><code>original &lt;- AMEs$t0
+bias &lt;- colMeans(AMEs$t) - AMEs$t0
+se &lt;- apply(AMEs$t, 2, sd)
 
-boot.df1 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df1) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_cohort&quot;)
+AMEs.df &lt;- data.frame(original=original, bias=bias, se=se)
+row.names(AMEs.df) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_cohort_m2&quot;, &quot;AME_cohort_m3a&quot;, &quot;AME_cohort_m3b&quot;, &quot;AME_cohort_m3c&quot;, &quot;AME_cohort_m4&quot;, &quot;AME_gendercohort_m2&quot;, &quot;AME_gendercohort_m3a&quot;, &quot;AME_gendercohort_m3b&quot;, &quot;AME_gendercohort_m3c&quot;, &quot;AME_gendercohort_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_cpubs_m3a&quot;, &quot;AME_cpubs_m3b&quot;, &quot;AME_cpubs_m3c&quot;, &quot;AME_cpubs_m4&quot;, &quot;AME_ppubs_m3a&quot;, &quot;AME_ppubs_m3b&quot;, &quot;AME_ppubs_m3c&quot;, &quot;AME_ppubs_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_svpubs_m3b&quot;, &quot;AME_svpubs_m3c&quot;, &quot;AME_svpubs_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_genderwomsv_m4&quot;)
 
-boot.df1$t &lt;- (boot.df1$original / boot.df1$se)
-
-round(boot.df1, 5)</code></pre>
-<pre><code>##            original  bias      se         t
-## AME_gender  0.00022 0e+00 0.00054   0.40235
-## AME_ext    -0.01081 2e-05 0.00051 -21.01267
-## AME_cohort -0.00018 0e+00 0.00004  -4.51981</code></pre>
-<pre class="r"><code>original &lt;- b2$t0
-bias &lt;- colMeans(b2$t) - b2$t0
-se &lt;- apply(b2$t, 2, sd)
-
-boot.df2 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df2) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_genderext&quot;,&quot;AME_cohort&quot;)
-
-boot.df2$t &lt;- (boot.df2$original / boot.df2$se)
-
-round(boot.df2, 5)</code></pre>
-<pre><code>##               original   bias      se         t
-## AME_gender     0.00023  3e-05 0.00058   0.39937
-## AME_ext       -0.01081  2e-05 0.00052 -20.69055
-## AME_genderext  0.00273 -3e-05 0.00109   2.49463
-## AME_cohort    -0.00018  0e+00 0.00004  -4.59196</code></pre>
-<pre class="r"><code>original &lt;- b3$t0
-bias &lt;- colMeans(b3$t) - b3$t0
-se &lt;- apply(b3$t, 2, sd)
-
-boot.df3 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df3) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_genderext&quot;, &quot;AME_cohort&quot;, &quot;AME_cumulpubs&quot;, &quot;AME_prevpubs&quot;)
-
-boot.df3$t &lt;- (boot.df3$original / boot.df3$se)
-
-round(boot.df3, 5)</code></pre>
-<pre><code>##               original   bias      se         t
-## AME_gender     0.00066  2e-05 0.00059   1.11151
-## AME_ext       -0.01286  0e+00 0.00070 -18.34983
-## AME_genderext  0.00206 -1e-05 0.00124   1.66310
-## AME_cohort    -0.00019  0e+00 0.00005  -3.91884
-## AME_cumulpubs  0.00394  2e-05 0.00049   7.97767
-## AME_prevpubs   0.00233  2e-05 0.00049   4.78615</code></pre>
-<pre class="r"><code>original &lt;- b4$t0
-bias &lt;- colMeans(b4$t) - b4$t0
-se &lt;- apply(b4$t, 2, sd)
-
-boot.df4 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df4) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_genderext&quot;, &quot;AME_cohort&quot;, &quot;AME_cumulpubs&quot;, &quot;AME_prevpubs&quot;, &quot;AME_netsize&quot;, &quot;AME_prof&quot;)
-
-boot.df4$t &lt;- (boot.df4$original / boot.df4$se)
-
-round(boot.df4, 5)</code></pre>
-<pre><code>##               original   bias      se         t
-## AME_gender     0.00079  0e+00 0.00061   1.29405
-## AME_ext       -0.01286  1e-05 0.00070 -18.25910
-## AME_genderext  0.00184  1e-05 0.00129   1.42351
-## AME_cohort    -0.00020  0e+00 0.00005  -4.14135
-## AME_cumulpubs  0.00392 -1e-05 0.00049   7.95736
-## AME_prevpubs   0.00232  3e-05 0.00049   4.71760
-## AME_netsize   -0.00129  0e+00 0.00035  -3.64775
-## AME_prof       0.00194 -3e-05 0.00079   2.46637</code></pre>
-<pre class="r"><code>original &lt;- b5$t0
-bias &lt;- colMeans(b5$t) - b5$t0
-se &lt;- apply(b5$t, 2, sd)
-
-boot.df5 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df5) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_genderext&quot;, &quot;AME_cohort&quot;, &quot;AME_cumulpubs&quot;, &quot;AME_prevpubs&quot;, &quot;AME_netsize&quot;, &quot;AME_prof&quot;, &quot;AME_womsv&quot;)
-
-boot.df5$t &lt;- (boot.df5$original / boot.df5$se)
-
-round(boot.df5, 5)</code></pre>
-<pre><code>##               original   bias      se         t
-## AME_gender     0.00084  0e+00 0.00058   1.43790
-## AME_ext       -0.01285  2e-05 0.00070 -18.48294
-## AME_genderext  0.00175 -1e-05 0.00126   1.38431
-## AME_cohort    -0.00019  0e+00 0.00005  -3.70835
-## AME_cumulpubs  0.00392 -2e-05 0.00049   7.99128
-## AME_prevpubs   0.00232  2e-05 0.00050   4.67311
-## AME_netsize   -0.00124 -2e-05 0.00039  -3.19539
-## AME_prof       0.00194  2e-05 0.00083   2.33049
-## AME_womsv     -0.00041  3e-05 0.00066  -0.61565</code></pre>
-<pre class="r"><code>original &lt;- b6$t0
-bias &lt;- colMeans(b6$t) - b6$t0
-se &lt;- apply(b6$t, 2, sd)
-
-boot.df6 &lt;- data.frame(original=original, bias=bias, se=se)
-row.names(boot.df6) &lt;- c(&quot;AME_gender&quot;, &quot;AME_ext&quot;, &quot;AME_genderext&quot;, &quot;AME_cohort&quot;, &quot;AME_cumulpubs&quot;, &quot;AME_prevpubs&quot;, &quot;AME_netsize&quot;, &quot;AME_prof&quot;, &quot;AME_womsv&quot;, &quot;AME_genderwomsv&quot;)
-
-boot.df6$t &lt;- (boot.df6$original / boot.df6$se)
-
-round(boot.df6, 5)</code></pre>
-<pre><code>##                 original   bias      se         t
-## AME_gender       0.00087 -4e-05 0.00060   1.44768
-## AME_ext         -0.01288  0e+00 0.00072 -18.01739
-## AME_genderext    0.00164  6e-05 0.00125   1.30976
-## AME_cohort      -0.00020  0e+00 0.00005  -3.87028
-## AME_cumulpubs    0.00395  0e+00 0.00048   8.24530
-## AME_prevpubs     0.00230  3e-05 0.00049   4.72407
-## AME_netsize     -0.00125  0e+00 0.00038  -3.32310
-## AME_prof         0.00196  4e-05 0.00076   2.56946
-## AME_womsv       -0.00011  1e-05 0.00067  -0.15864
-## AME_genderwomsv -0.00284  0e+00 0.00126  -2.24997</code></pre>
+AMEs$t &lt;- (AMEs$original / AMEs$se)</code></pre>
 <pre class="r"><code>tot &lt;- &quot;#414141&quot;
 menc &lt;- &quot;#D1C166&quot;
 womenc &lt;- &quot;#48a363&quot;</code></pre>
 <p>Extracting relevant coefficients and creating a combined dataframe
 containing the results of all models</p>
-<pre class="r"><code>boot.df1 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M1&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames1
+<pre class="r"><code>models &lt;- rownames(AMEs.df)
+
+AMEs.df %&gt;%
+  mutate(ame = original,
+         model = toupper(str_remove(models, &quot;^.*_&quot;))) %&gt;%
+  select(ame, model, se) -&gt; ames
   
-boot.df2 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M2&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames2
+row.names(ames) &lt;- models
 
+ames$cov2 &lt;- str_remove(rownames(ames), &quot;_m[:digit:][abc]?&quot;)
 
-boot.df3 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M3&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames3
+ames$covariate &lt;- &quot;&quot;
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_gender&quot;, &quot;Woman **(H1)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_cohort&quot;, &quot;PhD cohort **(H2a)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_time&quot;, &quot;Time in years since PhD&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_gendercohort&quot;, &quot;PhD cohort * Woman **(H2b)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_cpubs&quot;, &quot;Publications: cumulative&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_ppubs&quot;, &quot;Publications: previous year&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_netsize&quot;, &quot;Supervision team: size **(H3a)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_prof&quot;, &quot;Supervision team: 2+ professors **(H3b)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_svpubs&quot;, &quot;Supervision team: publications **(H3c)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_womsv&quot;, &quot;Supervision team: 1+ woman **(H4a)**&quot;, ames$covariate)
+ames$covariate &lt;- ifelse(ames$cov2==&quot;AME_genderwomsv&quot;, &quot;Woman * 1+ woman **(H4b)**&quot;, ames$covariate)
 
+ames$covariate &lt;- factor(ames$covariate, levels=c(&quot;Woman **(H1)**&quot;, &quot;PhD cohort **(H2a)**&quot;, &quot;Time in years since PhD&quot;, &quot;PhD cohort * Woman **(H2b)**&quot;, &quot;Supervision team: size **(H3a)**&quot;, &quot;Supervision team: 2+ professors **(H3b)**&quot;, &quot;Supervision team: publications **(H3c)**&quot;, &quot;Supervision team: 1+ woman **(H4a)**&quot;, &quot;Woman * 1+ woman **(H4b)**&quot;, &quot;Publications: cumulative&quot;, &quot;Publications: previous year&quot;))
 
-boot.df4 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M4&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames4
+ames &lt;- ames %&gt;% mutate(model = ifelse(model==&quot;M4&quot;, &quot;M6&quot;, model),
+                        model = ifelse(model==&quot;M3A&quot;, &quot;M3&quot;, model),
+                        model = ifelse(model==&quot;M3B&quot;, &quot;M4&quot;, model),
+                        model = ifelse(model==&quot;M3C&quot;, &quot;M5&quot;, model))
 
-
-
-boot.df5 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M5&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames5
-
-
-boot.df6 %&gt;%
-  mutate(ame = original, 
-         model = &quot;M6&quot;) %&gt;%
-  select(ame, se, model) -&gt; ames6
-
-
-AMEs &lt;- do.call(&quot;rbind&quot;, list(ames1, ames2, ames3, ames4, ames5, ames6))
-
-AMEs$cov2 &lt;- str_extract(rownames(AMEs), &quot;AME_[:alpha:]+&quot;)
-
-AMEs$covariate &lt;- &quot;&quot;
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_gender&quot;, &quot;Woman **(H1)**&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_ext&quot;, &quot;Extension period&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_cohort&quot;, &quot;PhD cohort&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_genderext&quot;, &quot;Woman * extension period **(H2)**&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_cumulpubs&quot;, &quot;Publications: cumulative&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_prevpubs&quot;, &quot;Publications: previous year&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_netsize&quot;, &quot;Supervision team: size **(H3a)**&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_prof&quot;, &quot;Supervision team: 2+ professors **(H3b)**&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_womsv&quot;, &quot;Supervision team: 1+ woman **(H4a)**&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_gendersize&quot;, &quot;Woman * team size&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_genderprof&quot;, &quot;Woman * 2+ professors&quot;, AMEs$covariate)
-AMEs$covariate &lt;- ifelse(AMEs$cov2==&quot;AME_genderwomsv&quot;, &quot;Woman * 1+ woman **(H4b)**&quot;, AMEs$covariate)
-
-AMEs$covariate &lt;- factor(AMEs$covariate, levels=c(&quot;Woman **(H1)**&quot;, &quot;Extension period&quot;, &quot;PhD cohort&quot;, &quot;Woman * extension period **(H2)**&quot;, &quot;Supervision team: size **(H3a)**&quot;, &quot;Supervision team: 2+ professors **(H3b)**&quot;, &quot;Supervision team: 1+ woman **(H4a)**&quot;, &quot;Woman * team size&quot;, &quot;Woman * 2+ professors&quot;, &quot;Woman * 1+ woman **(H4b)**&quot;, &quot;Publications: cumulative&quot;, &quot;Publications: previous year&quot;))
-
-AMEs$model &lt;- factor(AMEs$model, levels=c(&quot;M1&quot;, &quot;M2&quot;, &quot;M3&quot;, &quot;M4&quot;, &quot;M5&quot;, &quot;M6&quot;))
+ames$model &lt;- factor(ames$model, levels=c(&quot;M1&quot;, &quot;M2&quot;, &quot;M3&quot;, &quot;M4&quot;, &quot;M5&quot;, &quot;M6&quot;))
 #AMEs$model &lt;- factor(AMEs$model, levels=c(&quot;M6&quot;, &quot;M5&quot;, &quot;M4&quot;, &quot;M3&quot;, &quot;M2&quot;, &quot;M1&quot;))
 
-AMEs &lt;- AMEs %&gt;% arrange(covariate, model)</code></pre>
-<pre class="r"><code>ggplot(AMEs, aes(y=ame, x=covariate)) +
+ames &lt;- ames %&gt;% arrange(covariate, model)</code></pre>
+<pre class="r"><code>ggplot(ames, aes(y=ame, x=covariate)) +
   geom_hline(yintercept=0, color=&quot;brown4&quot;, linewidth=.5) +
   geom_point() +
   facet_wrap(model ~ ., nrow=3, ncol=2, scales = &quot;free&quot;) + 
   geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
-  scale_y_continuous(limits = c(-0.015, 0.005), breaks=seq(-0.015, 0.005, by = 0.005)) +
+  scale_y_continuous(limits = c(-0.005, 0.005), breaks=seq(-0.005, 0.005, by = 0.005)) +
   labs(y=&quot;AME&quot;) +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_markdown(angle=30, hjust=1, vjust=1),
@@ -755,8 +613,7 @@ AMEs &lt;- AMEs %&gt;% arrange(covariate, model)</code></pre>
         panel.grid.major.y = element_line(color=&quot;#C9c9c9&quot;, linewidth=0.2, linetype=3),
         panel.grid.minor=element_blank(),
         panel.grid.major.x=element_blank())</code></pre>
-<p><img src="figures_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<pre class="r"><code>ggsave(&quot;./output/plot2.jpg&quot;, height=8, width=12, dpi=2400)</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="figure-3-cohort-splits" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Figure 3: Cohort
@@ -765,48 +622,49 @@ splits</h2>
 bias &lt;- colMeans(coh1$t) - coh1$t0
 se &lt;- apply(coh1$t, 2, sd)
 
-df.robust3a &lt;- data.frame(original=original, bias=bias, se=se)
+df.coh1 &lt;- data.frame(original=original, bias=bias, se=se)
 
+row.names(df.coh1) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_cpubs_m3a&quot;, &quot;AME_cpubs_m3b&quot;, &quot;AME_cpubs_m3c&quot;, &quot;AME_cpubs_m4&quot;, &quot;AME_ppubs_m3a&quot;, &quot;AME_ppubs_m3b&quot;, &quot;AME_ppubs_m3c&quot;, &quot;AME_ppubs_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_svpubs_m3b&quot;, &quot;AME_svpubs_m3c&quot;, &quot;AME_svpubs_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_genderwomsv_m4&quot;)
 
+df.coh1$t &lt;- (df.coh1$original / df.coh1$se)
 
-row.names(df.robust3a) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_gendertime_m2&quot;, &quot;AME_gendertime_m3a&quot;, &quot;AME_gendertime_m3b&quot;, &quot;AME_gendertime_m3c&quot;, &quot;AME_gendertime_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_gendersize_m4&quot;, &quot;AME_genderprof_m4&quot;, &quot;AME_genderwomsv_m4&quot;, &quot;AME_gender_d3ab&quot;)
+round(df.coh1, 5)</code></pre>
+<pre><code>##                    original   bias      se         t
+## AME_gender_m1       0.00467 -6e-05 0.00112   4.15229
+## AME_gender_m2       0.00467 -6e-05 0.00112   4.15229
+## AME_gender_m3a      0.00517 -4e-05 0.00122   4.24562
+## AME_gender_m3b      0.00515 -4e-05 0.00126   4.09103
+## AME_gender_m3c      0.00508 -4e-05 0.00126   4.02467
+## AME_gender_m4       0.00519 -4e-05 0.00128   4.06847
+## AME_time_m1        -0.00194  0e+00 0.00017 -11.10577
+## AME_time_m2        -0.00194  0e+00 0.00017 -11.10577
+## AME_time_m3a       -0.00221  0e+00 0.00024  -9.22109
+## AME_time_m3b       -0.00219  0e+00 0.00024  -9.15726
+## AME_time_m3c       -0.00219  0e+00 0.00024  -9.17432
+## AME_time_m4        -0.00220  0e+00 0.00024  -9.14690
+## AME_cpubs_m3a       0.00197 -3e-05 0.00088   2.25333
+## AME_cpubs_m3b       0.00196 -4e-05 0.00088   2.21846
+## AME_cpubs_m3c       0.00195 -4e-05 0.00088   2.21561
+## AME_cpubs_m4        0.00201 -4e-05 0.00089   2.26900
+## AME_ppubs_m3a       0.00275  8e-05 0.00106   2.59488
+## AME_ppubs_m3b       0.00278  8e-05 0.00107   2.60106
+## AME_ppubs_m3c       0.00277  8e-05 0.00107   2.59954
+## AME_ppubs_m4        0.00274  8e-05 0.00106   2.57770
+## AME_netsize_m3b    -0.00074 -1e-05 0.00064  -1.15018
+## AME_netsize_m3c    -0.00081 -1e-05 0.00067  -1.20898
+## AME_netsize_m4     -0.00082 -1e-05 0.00067  -1.22667
+## AME_prof_m3b        0.00395  7e-05 0.00242   1.63499
+## AME_prof_m3c        0.00394  7e-05 0.00242   1.63235
+## AME_prof_m4         0.00379  7e-05 0.00238   1.59371
+## AME_svpubs_m3b      0.00066  2e-05 0.00051   1.28002
+## AME_svpubs_m3c      0.00066  2e-05 0.00052   1.28140
+## AME_svpubs_m4       0.00068  2e-05 0.00052   1.31131
+## AME_womsv_m3c       0.00089 -1e-05 0.00161   0.55488
+## AME_womsv_m4        0.00142 -1e-05 0.00176   0.80223
+## AME_genderwomsv_m4 -0.00338  1e-05 0.00335  -1.00928</code></pre>
+<pre class="r"><code>df.coh1 &lt;- df.coh1[3,] # select only gender M3
 
-df.robust3a$t &lt;- (df.robust3a$original / df.robust3a$se)
-
-round(df.robust3a, 5)</code></pre>
-<pre><code>##                    original     bias      se         t
-## AME_gender_m1       0.00410  0.00007 0.00106   3.87995
-## AME_gender_m2       0.00411  0.00007 0.00106   3.88650
-## AME_gender_m3a      0.00458  0.00011 0.00114   4.02266
-## AME_gender_m3b      0.00470  0.00011 0.00117   4.03002
-## AME_gender_m3c      0.00470  0.00011 0.00117   3.99661
-## AME_gender_m4       0.00495  0.00011 0.00120   4.13903
-## AME_time_m1        -0.00572  0.00002 0.00053 -10.83959
-## AME_time_m2        -0.00572  0.00002 0.00053 -10.84431
-## AME_time_m3a       -0.00647  0.00001 0.00074  -8.80022
-## AME_time_m3b       -0.00649  0.00001 0.00074  -8.79497
-## AME_time_m3c       -0.00649  0.00001 0.00074  -8.79963
-## AME_time_m4        -0.00653  0.00001 0.00074  -8.80319
-## AME_gendertime_m2  -0.00238 -0.00007 0.00112  -2.12644
-## AME_gendertime_m3a -0.00317 -0.00012 0.00136  -2.32568
-## AME_gendertime_m3b -0.00328 -0.00012 0.00140  -2.34735
-## AME_gendertime_m3c -0.00327 -0.00012 0.00141  -2.33038
-## AME_gendertime_m4  -0.00351 -0.00012 0.00145  -2.42463
-## AME_netsize_m3b    -0.00073  0.00001 0.00064  -1.12834
-## AME_netsize_m3c    -0.00073  0.00001 0.00066  -1.10268
-## AME_netsize_m4     -0.00065 -0.00001 0.00068  -0.95801
-## AME_prof_m3b       -0.00009 -0.00001 0.00168  -0.05189
-## AME_prof_m3c       -0.00008 -0.00001 0.00168  -0.04987
-## AME_prof_m4         0.00031  0.00001 0.00178   0.17189
-## AME_womsv_m3c       0.00007  0.00002 0.00138   0.05439
-## AME_womsv_m4       -0.00003  0.00007 0.00143  -0.01791
-## AME_gendersize_m4  -0.00280 -0.00002 0.00150  -1.86283
-## AME_genderprof_m4  -0.00285  0.00005 0.00165  -1.72849
-## AME_genderwomsv_m4 -0.00118 -0.00005 0.00159  -0.74387
-## AME_gender_d3ab     0.00012  0.00000 0.00011   1.07254</code></pre>
-<pre class="r"><code>df.robust3a &lt;- df.robust3a[3,]
-
-df.robust3a %&gt;%
+df.coh1 %&gt;%
   mutate(ame = original, 
          cohort = &quot;Cohort 1&quot;) %&gt;%
   select(ame, se, cohort) -&gt; ames1
@@ -816,159 +674,124 @@ original &lt;- coh2$t0
 bias &lt;- colMeans(coh2$t) - coh2$t0
 se &lt;- apply(coh2$t, 2, sd)
 
-df.robust3b &lt;- data.frame(original=original, bias=bias, se=se)
+df.coh2 &lt;- data.frame(original=original, bias=bias, se=se)
 
+row.names(df.coh2) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_2015_m2&quot;, &quot;AME_2015_m3a&quot;, &quot;AME_2015_m3b&quot;, &quot;AME_2015_m3c&quot;, &quot;AME_2015_m4&quot;, &quot;AME_gender2015_m2&quot;, &quot;AME_gender2015_m3a&quot;, &quot;AME_gender2015_m3b&quot;, &quot;AME_gender2015_m3c&quot;, &quot;AME_gender2015_m4&quot;, &quot;AME_cpubs_m3a&quot;, &quot;AME_cpubs_m3b&quot;, &quot;AME_cpubs_m3c&quot;, &quot;AME_cpubs_m4&quot;, &quot;AME_ppubs_m3a&quot;, &quot;AME_ppubs_m3b&quot;, &quot;AME_ppubs_m3c&quot;, &quot;AME_ppubs_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_svpubs_m3b&quot;, &quot;AME_svpubs_m3c&quot;, &quot;AME_svpubs_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_genderwomsv_m4&quot;)
 
-row.names(df.robust3b) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_gendertime_m2&quot;, &quot;AME_gendertime_m3a&quot;, &quot;AME_gendertime_m3b&quot;, &quot;AME_gendertime_m3c&quot;, &quot;AME_gendertime_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_gendersize_m4&quot;, &quot;AME_genderprof_m4&quot;, &quot;AME_genderwomsv_m4&quot;, &quot;AME_gender_d3ab&quot;)
+df.coh2$t &lt;- (df.coh2$original / df.coh2$se)
 
-df.robust3b$t &lt;- (df.robust3b$original / df.robust3b$se)
-
-round(df.robust3b, 5)  </code></pre>
+round(df.coh2, 5)  </code></pre>
 <pre><code>##                    original   bias      se         t
-## AME_gender_m1      -0.00280 -4e-05 0.00113  -2.48315
-## AME_gender_m2      -0.00280 -4e-05 0.00113  -2.47604
-## AME_gender_m3a     -0.00261 -3e-05 0.00116  -2.24106
-## AME_gender_m3b     -0.00241 -4e-05 0.00118  -2.04718
-## AME_gender_m3c     -0.00243 -4e-05 0.00120  -2.02877
-## AME_gender_m4      -0.00239 -4e-05 0.00120  -1.99118
-## AME_time_m1        -0.00819  4e-05 0.00060 -13.69116
-## AME_time_m2        -0.00819  4e-05 0.00060 -13.68547
-## AME_time_m3a       -0.01004  2e-05 0.00094 -10.67558
-## AME_time_m3b       -0.01005  2e-05 0.00094 -10.69167
-## AME_time_m3c       -0.01004  2e-05 0.00094 -10.68705
-## AME_time_m4        -0.01002  2e-05 0.00094 -10.68477
-## AME_gendertime_m2   0.00522  0e+00 0.00123   4.23301
-## AME_gendertime_m3a  0.00567  2e-05 0.00149   3.79435
-## AME_gendertime_m3b  0.00546  2e-05 0.00149   3.65496
-## AME_gendertime_m3c  0.00549  2e-05 0.00151   3.64315
-## AME_gendertime_m4   0.00549  2e-05 0.00152   3.62438
-## AME_netsize_m3b    -0.00184 -1e-05 0.00078  -2.36553
-## AME_netsize_m3c    -0.00187 -1e-05 0.00078  -2.39841
-## AME_netsize_m4     -0.00191 -3e-05 0.00078  -2.43753
-## AME_prof_m3b        0.00131  8e-05 0.00149   0.87801
-## AME_prof_m3c        0.00133  9e-05 0.00150   0.88361
-## AME_prof_m4         0.00140  1e-04 0.00151   0.92911
-## AME_womsv_m3c       0.00022  4e-05 0.00150   0.15008
-## AME_womsv_m4        0.00038  5e-05 0.00152   0.25383
-## AME_gendersize_m4  -0.00172  0e+00 0.00157  -1.09549
-## AME_genderprof_m4   0.00014  2e-05 0.00160   0.08972
-## AME_genderwomsv_m4 -0.00057 -7e-05 0.00142  -0.40502
-## AME_gender_d3ab     0.00020  0e+00 0.00010   1.93885</code></pre>
-<pre class="r"><code>df.robust3b &lt;- df.robust3b[3,]
+## AME_gender_m1      -0.00200  1e-05 0.00071  -2.80726
+## AME_gender_m2      -0.00188  1e-05 0.00071  -2.65098
+## AME_gender_m3a     -0.00160  1e-05 0.00074  -2.16483
+## AME_gender_m3b     -0.00146  1e-05 0.00075  -1.94633
+## AME_gender_m3c     -0.00142  1e-05 0.00075  -1.88240
+## AME_gender_m4      -0.00142  1e-05 0.00075  -1.88316
+## AME_time_m1        -0.00169  0e+00 0.00011 -14.81750
+## AME_time_m2        -0.00121 -1e-05 0.00017  -7.00167
+## AME_time_m3a       -0.00169  0e+00 0.00021  -7.95259
+## AME_time_m3b       -0.00170  0e+00 0.00021  -7.94767
+## AME_time_m3c       -0.00170  0e+00 0.00021  -7.95143
+## AME_time_m4        -0.00170  0e+00 0.00021  -7.95043
+## AME_2015_m2        -0.00345  7e-05 0.00103  -3.33727
+## AME_2015_m3a       -0.00328  7e-05 0.00101  -3.24371
+## AME_2015_m3b       -0.00316  7e-05 0.00102  -3.10874
+## AME_2015_m3c       -0.00315  7e-05 0.00102  -3.08450
+## AME_2015_m4        -0.00314  7e-05 0.00102  -3.07095
+## AME_gender2015_m2   0.00435  2e-05 0.00147   2.96941
+## AME_gender2015_m3a  0.00400  4e-05 0.00146   2.73172
+## AME_gender2015_m3b  0.00399  5e-05 0.00146   2.73035
+## AME_gender2015_m3c  0.00399  5e-05 0.00146   2.73048
+## AME_gender2015_m4   0.00405  5e-05 0.00147   2.75344
+## AME_cpubs_m3a       0.00363 -3e-05 0.00073   4.94585
+## AME_cpubs_m3b       0.00360 -4e-05 0.00074   4.89240
+## AME_cpubs_m3c       0.00360 -4e-05 0.00074   4.89643
+## AME_cpubs_m4        0.00360 -3e-05 0.00074   4.89925
+## AME_ppubs_m3a       0.00335  8e-05 0.00078   4.28524
+## AME_ppubs_m3b       0.00337  8e-05 0.00079   4.27550
+## AME_ppubs_m3c       0.00337  8e-05 0.00079   4.27689
+## AME_ppubs_m4        0.00337  8e-05 0.00079   4.27132
+## AME_netsize_m3b    -0.00182 -2e-05 0.00054  -3.36634
+## AME_netsize_m3c    -0.00178 -2e-05 0.00056  -3.17970
+## AME_netsize_m4     -0.00178 -2e-05 0.00056  -3.19052
+## AME_prof_m3b        0.00186  3e-05 0.00095   1.96447
+## AME_prof_m3c        0.00186  3e-05 0.00095   1.95620
+## AME_prof_m4         0.00187  3e-05 0.00095   1.96858
+## AME_svpubs_m3b      0.00028  0e+00 0.00042   0.66636
+## AME_svpubs_m3c      0.00027  0e+00 0.00042   0.65141
+## AME_svpubs_m4       0.00027  0e+00 0.00042   0.64967
+## AME_womsv_m3c      -0.00029  1e-05 0.00087  -0.32859
+## AME_womsv_m4       -0.00023  1e-05 0.00088  -0.25971
+## AME_genderwomsv_m4 -0.00063 -4e-05 0.00170  -0.37284</code></pre>
+<pre class="r"><code>df.coh2 &lt;- df.coh2[3,]
 
-df.robust3b %&gt;%
+df.coh2 %&gt;%
   mutate(ame = original, 
          cohort = &quot;Cohort 2&quot;) %&gt;%
   select(ame, se, cohort) -&gt; ames2
+
 
 original &lt;- coh3$t0
 bias &lt;- colMeans(coh3$t) - coh3$t0
 se &lt;- apply(coh3$t, 2, sd)
 
-df.robust3c &lt;- data.frame(original=original, bias=bias, se=se)
+df.coh3 &lt;- data.frame(original=original, bias=bias, se=se)
 
 
-row.names(df.robust3c) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_gendertime_m2&quot;, &quot;AME_gendertime_m3a&quot;, &quot;AME_gendertime_m3b&quot;, &quot;AME_gendertime_m3c&quot;, &quot;AME_gendertime_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_gendersize_m4&quot;, &quot;AME_genderprof_m4&quot;, &quot;AME_genderwomsv_m4&quot;, &quot;AME_gender_d3ab&quot;)
+row.names(df.coh3) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_cpubs_m3a&quot;, &quot;AME_cpubs_m3b&quot;, &quot;AME_cpubs_m3c&quot;, &quot;AME_cpubs_m4&quot;, &quot;AME_ppubs_m3a&quot;, &quot;AME_ppubs_m3b&quot;, &quot;AME_ppubs_m3c&quot;, &quot;AME_ppubs_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_svpubs_m3b&quot;, &quot;AME_svpubs_m3c&quot;, &quot;AME_svpubs_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_genderwomsv_m4&quot;)
 
-df.robust3c$t &lt;- (df.robust3c$original / df.robust3c$se)
+df.coh3$t &lt;- (df.coh3$original / df.coh3$se)
 
-round(df.robust3c, 5)</code></pre>
+round(df.coh3, 5)</code></pre>
 <pre><code>##                    original     bias      se        t
-## AME_gender_m1      -0.00096 -0.00004 0.00105 -0.91919
-## AME_gender_m2      -0.00096 -0.00004 0.00105 -0.91418
-## AME_gender_m3a     -0.00069 -0.00004 0.00108 -0.63805
-## AME_gender_m3b     -0.00078 -0.00003 0.00108 -0.72430
-## AME_gender_m3c     -0.00068 -0.00003 0.00108 -0.63551
-## AME_gender_m4      -0.00063 -0.00003 0.00108 -0.58663
-## AME_time_m1        -0.00488 -0.00001 0.00058 -8.48133
-## AME_time_m2        -0.00488 -0.00001 0.00058 -8.48240
-## AME_time_m3a       -0.00648 -0.00001 0.00079 -8.16388
-## AME_time_m3b       -0.00644 -0.00001 0.00079 -8.12686
-## AME_time_m3c       -0.00642 -0.00001 0.00078 -8.18099
-## AME_time_m4        -0.00638 -0.00001 0.00078 -8.15264
-## AME_gendertime_m2   0.00289  0.00002 0.00107  2.69736
-## AME_gendertime_m3a  0.00302  0.00002 0.00130  2.32146
-## AME_gendertime_m3b  0.00309  0.00002 0.00131  2.37039
-## AME_gendertime_m3c  0.00299  0.00002 0.00130  2.29471
-## AME_gendertime_m4   0.00293  0.00002 0.00129  2.27510
-## AME_netsize_m3b    -0.00095 -0.00007 0.00078 -1.21830
-## AME_netsize_m3c    -0.00087 -0.00008 0.00081 -1.07356
-## AME_netsize_m4     -0.00105 -0.00010 0.00082 -1.29127
-## AME_prof_m3b        0.00317  0.00010 0.00144  2.20285
-## AME_prof_m3c        0.00318  0.00010 0.00144  2.21288
-## AME_prof_m4         0.00316  0.00014 0.00144  2.18620
-## AME_womsv_m3c      -0.00066  0.00003 0.00120 -0.55582
-## AME_womsv_m4       -0.00073  0.00004 0.00120 -0.61270
-## AME_gendersize_m4  -0.00249  0.00013 0.00149 -1.67461
-## AME_genderprof_m4  -0.00063 -0.00014 0.00140 -0.45211
-## AME_genderwomsv_m4  0.00128 -0.00004 0.00121  1.05516
-## AME_gender_d3ab    -0.00010  0.00001 0.00008 -1.16607</code></pre>
-<pre class="r"><code>df.robust3c &lt;- df.robust3c[3,]
+## AME_gender_m1      -0.00095 -0.00002 0.00118 -0.80465
+## AME_gender_m2      -0.00095 -0.00002 0.00118 -0.80465
+## AME_gender_m3a      0.00068  0.00000 0.00130  0.52378
+## AME_gender_m3b      0.00078  0.00001 0.00129  0.60073
+## AME_gender_m3c      0.00085  0.00001 0.00131  0.65126
+## AME_gender_m4       0.00088  0.00001 0.00132  0.66693
+## AME_time_m1         0.00206  0.00002 0.00030  6.90666
+## AME_time_m2         0.00206  0.00002 0.00030  6.90666
+## AME_time_m3a        0.00264  0.00000 0.00045  5.84038
+## AME_time_m3b        0.00261  0.00000 0.00045  5.84628
+## AME_time_m3c        0.00261  0.00000 0.00045  5.84494
+## AME_time_m4         0.00260  0.00001 0.00045  5.80197
+## AME_cpubs_m3a       0.00321  0.00013 0.00150  2.13156
+## AME_cpubs_m3b       0.00328  0.00014 0.00150  2.19221
+## AME_cpubs_m3c       0.00325  0.00014 0.00149  2.18342
+## AME_cpubs_m4        0.00329  0.00014 0.00149  2.20388
+## AME_ppubs_m3a       0.00736  0.00011 0.00188  3.91669
+## AME_ppubs_m3b       0.00732  0.00011 0.00186  3.93857
+## AME_ppubs_m3c       0.00733  0.00011 0.00186  3.94749
+## AME_ppubs_m4        0.00728  0.00012 0.00185  3.93948
+## AME_netsize_m3b    -0.00137  0.00002 0.00100 -1.37174
+## AME_netsize_m3c    -0.00130  0.00002 0.00102 -1.27709
+## AME_netsize_m4     -0.00131  0.00002 0.00102 -1.28630
+## AME_prof_m3b        0.00024  0.00004 0.00149  0.16167
+## AME_prof_m3c        0.00027  0.00003 0.00150  0.17755
+## AME_prof_m4         0.00030  0.00004 0.00150  0.19867
+## AME_svpubs_m3b     -0.00065  0.00003 0.00073 -0.89736
+## AME_svpubs_m3c     -0.00068  0.00003 0.00073 -0.93209
+## AME_svpubs_m4      -0.00067  0.00003 0.00073 -0.91867
+## AME_womsv_m3c      -0.00050  0.00002 0.00142 -0.35407
+## AME_womsv_m4       -0.00040  0.00001 0.00145 -0.27791
+## AME_genderwomsv_m4 -0.00231  0.00014 0.00279 -0.82817</code></pre>
+<pre class="r"><code>df.coh3 &lt;- df.coh3[3,]
 
-df.robust3c %&gt;%
+df.coh3 %&gt;%
   mutate(ame = original, 
          cohort = &quot;Cohort 3&quot;) %&gt;%
   select(ame, se, cohort) -&gt; ames3
 
+AMEs &lt;- do.call(&quot;rbind&quot;, list(ames1, ames2, ames3))
 
-original &lt;- coh4$t0
-bias &lt;- colMeans(coh4$t) - coh4$t0
-se &lt;- apply(coh4$t, 2, sd)
-
-df.robust3d &lt;- data.frame(original=original, bias=bias, se=se)
-
-
-row.names(df.robust3d) &lt;- c(&quot;AME_gender_m1&quot;, &quot;AME_gender_m2&quot;, &quot;AME_gender_m3a&quot;, &quot;AME_gender_m3b&quot;, &quot;AME_gender_m3c&quot;, &quot;AME_gender_m4&quot;, &quot;AME_time_m1&quot;, &quot;AME_time_m2&quot;, &quot;AME_time_m3a&quot;, &quot;AME_time_m3b&quot;, &quot;AME_time_m3c&quot;, &quot;AME_time_m4&quot;, &quot;AME_gendertime_m2&quot;, &quot;AME_gendertime_m3a&quot;, &quot;AME_gendertime_m3b&quot;, &quot;AME_gendertime_m3c&quot;, &quot;AME_gendertime_m4&quot;, &quot;AME_netsize_m3b&quot;, &quot;AME_netsize_m3c&quot;, &quot;AME_netsize_m4&quot;, &quot;AME_prof_m3b&quot;, &quot;AME_prof_m3c&quot;, &quot;AME_prof_m4&quot;, &quot;AME_womsv_m3c&quot;, &quot;AME_womsv_m4&quot;, &quot;AME_gendersize_m4&quot;, &quot;AME_genderprof_m4&quot;, &quot;AME_genderwomsv_m4&quot;, &quot;AME_gender_d3ab&quot;)
-
-df.robust3d$t &lt;- (df.robust3d$original / df.robust3d$se)
-
-round(df.robust3d, 5)</code></pre>
-<pre><code>##                    original     bias      se        t
-## AME_gender_m1      -0.00047 -0.00007 0.00104 -0.44804
-## AME_gender_m2      -0.00047 -0.00007 0.00104 -0.44900
-## AME_gender_m3a      0.00093 -0.00007 0.00114  0.81820
-## AME_gender_m3b      0.00113 -0.00006 0.00113  1.00313
-## AME_gender_m3c      0.00112 -0.00007 0.00117  0.95897
-## AME_gender_m4       0.00109 -0.00007 0.00117  0.92887
-## AME_time_m1        -0.00332 -0.00002 0.00046 -7.28329
-## AME_time_m2        -0.00331 -0.00002 0.00046 -7.26124
-## AME_time_m3a       -0.00367 -0.00002 0.00049 -7.55585
-## AME_time_m3b       -0.00365 -0.00002 0.00049 -7.48595
-## AME_time_m3c       -0.00365 -0.00002 0.00049 -7.47845
-## AME_time_m4        -0.00365 -0.00002 0.00049 -7.47848
-## AME_gendertime_m2  -0.00030  0.00002 0.00083 -0.35758
-## AME_gendertime_m3a -0.00102  0.00002 0.00085 -1.19308
-## AME_gendertime_m3b -0.00113  0.00002 0.00085 -1.32235
-## AME_gendertime_m3c -0.00113  0.00003 0.00087 -1.29086
-## AME_gendertime_m4  -0.00110  0.00003 0.00088 -1.26005
-## AME_netsize_m3b    -0.00138  0.00001 0.00073 -1.87484
-## AME_netsize_m3c    -0.00138  0.00000 0.00076 -1.82769
-## AME_netsize_m4     -0.00151 -0.00001 0.00079 -1.91053
-## AME_prof_m3b        0.00021 -0.00003 0.00132  0.15967
-## AME_prof_m3c        0.00021 -0.00003 0.00132  0.15868
-## AME_prof_m4         0.00038  0.00000 0.00139  0.27287
-## AME_womsv_m3c       0.00004  0.00007 0.00126  0.03013
-## AME_womsv_m4        0.00029  0.00006 0.00133  0.22214
-## AME_gendersize_m4   0.00259  0.00011 0.00160  1.62223
-## AME_genderprof_m4  -0.00203 -0.00004 0.00130 -1.56274
-## AME_genderwomsv_m4 -0.00169  0.00002 0.00130 -1.29963
-## AME_gender_d3ab     0.00020  0.00000 0.00011  1.79946</code></pre>
-<pre class="r"><code>df.robust3d &lt;- df.robust3d[3,]
-
-df.robust3d %&gt;%
-  mutate(ame = original, 
-         cohort = &quot;Cohort 4&quot;) %&gt;%
-  select(ame, se, cohort) -&gt; ames4
-
-
-AMEs &lt;- do.call(&quot;rbind&quot;, list(ames1, ames2, ames3, ames4))
-
-AMEs$covariate &lt;- c(&quot;Woman (coh. 1997-2006)&quot;, &quot;Woman (coh. 2007-2010)&quot;, &quot;Woman (coh. 2011-2013)&quot;, &quot;Woman (coh. 2014-2019)&quot;)</code></pre>
+AMEs$covariate &lt;- c(&quot;Woman (coh. 1997-2006)&quot;, &quot;Woman (coh. 2007-2014)&quot;, &quot;Woman (coh. 2015-2019)&quot;)</code></pre>
 <pre class="r"><code>ggplot(AMEs, aes(y=ame, x=covariate)) +
   geom_hline(yintercept=0, color=&quot;brown4&quot;, linewidth=.5) +
   geom_point() +
   geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
-  scale_y_continuous(limits = c(-0.006, 0.007), breaks=seq(-0.005, 0.010, by = 0.005)) +
+  scale_y_continuous(limits = c(-0.004, 0.008), breaks=seq(-0.005, 0.010, by = 0.005)) +
   labs(y=&quot;AME&quot;) +
   theme(axis.title.x = element_blank(),
         axis.text.x = element_markdown(angle=20, hjust=1, vjust=1),
@@ -980,12 +803,11 @@ AMEs$covariate &lt;- c(&quot;Woman (coh. 1997-2006)&quot;, &quot;Woman (coh. 200
         panel.grid.major.y = element_line(color=&quot;#C9c9c9&quot;, linewidth=0.2, linetype=3),
         panel.grid.minor=element_blank(),
         panel.grid.major.x=element_blank())</code></pre>
-<p><img src="figures_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<pre class="r"><code>ggsave(&quot;./output/plot3.jpg&quot;, height=8, width=12, dpi=2400)</code></pre>
+<p><img src="figures_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1lbnRvcmluZyBmb3IgZ2VuZGVyIGVxdWFsaXR5IGluIGVhcmx5LWNhcmVlciBncmFudCByZWNlaXB0OiBmaWd1cmVzIg0KZGF0ZTogIkxhc3QgY29tcGlsZWQgb24gYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6IA0KICBodG1sX2RvY3VtZW50Og0KICAgIGNzczogdHdlYWtzLmNzcw0KICAgIHRvYzogIHRydWUNCiAgICB0b2NfZmxvYXQ6IHRydWUNCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBjb2RlX2Rvd25sb2FkOiB5ZXMNCiAgICANCi0tLQ0KDQpUaGlzIGxhYiBqb3VybmFsIGRlbW9uc3RyYXRlcyBob3cgd2UgY3JlYXRlIHRoZSBmaWd1cmVzIGZlYXR1cmVkIGluIHRoZSBwYXBlci4gDQogIA0KLS0tLQ0KDQojIEN1c3RvbSBmdW5jdGlvbnMNCg0KLSBgcGFja2FnZS5jaGVja2A6IENoZWNrIGlmIHBhY2thZ2VzIGFyZSBpbnN0YWxsZWQgKGFuZCBpbnN0YWxsIGlmIG5vdCkgaW4gUiAoW3NvdXJjZV0oaHR0cHM6Ly92YmFsaWdhLmdpdGh1Yi5pby92ZXJpZnktdGhhdC1yLXBhY2thZ2VzLWFyZS1pbnN0YWxsZWQtYW5kLWxvYWRlZC8pKS4gDQoNCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnfQ0KDQpybShsaXN0PWxzKCkpDQoNCg0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsNCiAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgaWYgKCFyZXF1aXJlKHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkpIHsNCiAgICAgIGluc3RhbGwucGFja2FnZXMoeCwgZGVwZW5kZW5jaWVzID0gVFJVRSkNCiAgICAgIGxpYnJhcnkoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQ0KICAgIH0NCiAgfSkNCn0NCg0KDQoNCmZzYXZlIDwtIGZ1bmN0aW9uKHgsIGZpbGUsIGxvY2F0aW9uPSIuL2RhdGEvcHJvY2Vzc2VkLyIpIHsNCiAgZGF0ZW5hbWUgPC0gc3Vic3RyKGdzdWIoIls6LV0iLCAiIiwgU3lzLnRpbWUoKSksIDEsOCkgIA0KICB0b3RhbG5hbWUgPC0gcGFzdGUobG9jYXRpb24sIGRhdGVuYW1lLCBmaWxlLCBzZXA9IiIpDQogIHNhdmUoeCwgZmlsZSA9IHRvdGFsbmFtZSkgIA0KfQ0KDQoNCg0KYGBgDQoNCi0tLSAgDQoNCiMgUGFja2FnZXMNCg0KDQotIGB0aWR5dmVyc2VgOiBGb3IgZ2VuZXJhbCBkYXRhIG1hbmlwdWxhdGlvbg0KDQotIGBib290YDogVG8gY3JlYXRlIGJvb3RzdHJhcHBlZCBzdGFuZGFyZCBlcnJvcnMsIGZvbGxvd2luZyB0aGUgcHJvY2VkdXJlIGRlbGluZWF0ZWQgW2hlcmVdKGh0dHBzOi8vd3d3LmpvY2hlbXRvbHNtYS5ubC90dXRvcmlhbHMvbWUvKQ0KDQotIGBnZ3RleHRgOiB0byBlZGl0IGZvcm1hdHRpbmcgb2YgdGV4dCBpbiBnZ3Bsb3QgZmlndXJlcw0KDQoNCmBgYHtyLCByZXN1bHRzPSdoaWRlJ30NCg0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAiYm9vdCIsICJnZ3RleHQiKQ0KDQpmcGFja2FnZS5jaGVjayhwYWNrYWdlcykNCg0KYGBgDQoNCi0tLSANCg0KDQojIElucHV0DQoNCldlIHVzZSBzZXZlcmFsIHJlc3VsdHMgb2JqZWN0czoNCg0KKiBbdmVuaV9wcGZdKGRhdGEvcHJvY2Vzc2VkL3ZlbmlfcHBmLnJkYSk6IFByb2Nlc3NlZCBkYXRhc2V0IGNvbnRhaW5pbmcgYWxsIGluZGVwZW5kZW50IHZhcmlhYmxlcyBhbmQgdGhlIGRlcGVuZGVudCB2YXJpYWJsZQ0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgdmVuaV9wcGZgDQogICAgLSB1c2VkIGhlcmUgdG8gc2hvdyBWZW5pIGhhemFyZCByYXRlcyBwZXIgeWVhciBhZnRlciBvYnRhaW5pbmcgZG9jdG9yYXRlDQoNCiogWzIwMjQwMzE5Ym9vdDEtM2MucmRhXShkYXRhL3Jlc3VsdHMvKTogcmVzdWx0cyBvZiBvdXIgbWFpbiBhbmFseXNlcyB3aXRoIGJvb3RzdHJhcHBlZCBzdGFuZGFyZCBlcnJvcnMNCg0KKiBbMjAyNDA1Mjdib290NC5yZGFdKGRhdGEvcmVzdWx0cy8pOiByZXN1bHRzIG9mIG91ciBtYWluIGFuYWx5c2VzIHdpdGggYm9vdHN0cmFwcGVkIHN0YW5kYXJkIGVycm9ycw0KDQoqIFsyMDI0MDMyMnJvYnVzdG5lc3MzYS1kLnJkYV0oZGF0YS9yZXN1bHRzL3JvYnVzdG5lc3MvKTogcmVzdWx0cyBvZiBvdXIgbW9kZWxzIHNwbGl0IG91dCBieSBjb2hvcnQNCg0KDQoNCmBgYHtyIGZpbGVzLCBldmFsPVRSVUV9DQoNCg0KbG9hZCgiLi9kYXRhL3Byb2Nlc3NlZC92ZW5pX3BwZi5yZGEiKQ0KDQoNCmxvYWQoIi4vcmVzdWx0cy8yMDI0MDMxOWJvb3QxLnJkYSIpDQpiMSA8LSB4DQpybSh4KQ0KDQpsb2FkKCIuL3Jlc3VsdHMvMjAyNDAzMTlib290Mi5yZGEiKQ0KYjIgPC0geA0Kcm0oeCkNCg0KbG9hZCgiLi9yZXN1bHRzLzIwMjQwMzE5Ym9vdDNhLnJkYSIpDQpiMyA8LSB4DQpybSh4KQ0KDQpsb2FkKCIuL3Jlc3VsdHMvMjAyNDAzMTlib290M2IucmRhIikNCmI0IDwtIHgNCnJtKHgpDQoNCmxvYWQoIi4vcmVzdWx0cy8yMDI0MDMxOWJvb3QzYy5yZGEiKQ0KYjUgPC0geA0Kcm0oeCkNCg0KbG9hZCgiLi9yZXN1bHRzLzIwMjQwNTI3Ym9vdDQucmRhIikNCmI2IDwtIHgNCnJtKHgpDQoNCg0KbG9hZChmaWxlID0gIi4vcmVzdWx0cy9yb2J1c3RuZXNzLzIwMjQwMzIycm9idXN0bmVzczNhLnJkYSIpDQpjb2gxIDwtIHgNCnJtKHgpDQoNCmxvYWQoZmlsZSA9ICIuL3Jlc3VsdHMvcm9idXN0bmVzcy8yMDI0MDMyMnJvYnVzdG5lc3MzYi5yZGEiKQ0KY29oMiA8LSB4DQpybSh4KQ0KDQpsb2FkKGZpbGUgPSAiLi9yZXN1bHRzL3JvYnVzdG5lc3MvMjAyNDAzMjJyb2J1c3RuZXNzM2MucmRhIikNCmNvaDMgPC0geA0Kcm0oeCkNCg0KbG9hZChmaWxlID0gIi4vcmVzdWx0cy9yb2J1c3RuZXNzLzIwMjQwMzIycm9idXN0bmVzczNkLnJkYSIpDQpjb2g0IDwtIHgNCnJtKHgpDQoNCg0KYGBgDQoNCg0KDQoNCiMjIEZpZ3VyZSAxOiBWZW5pIGhhemFyZCByYXRlIGJ5IHRpbWUgYW5kIGdlbmRlcg0KDQoNCmBgYHtyfQ0KDQptZW5jIDwtICIjRDFDMTY2Ig0Kd29tZW5jIDwtICIjNDhhMzYzIg0KDQp2ZW5pX3BwZiAlPiUNCiAgZmlsdGVyKHllYXI+MjAwMikgJT4lDQogIGdyb3VwX2J5KHRpbWUsIGdlbmRlcl8yKSAlPiUNCiAgc3VtbWFyaXNlKGV2ZW50ID0gc3VtKHZlbmkpLA0KICAgICAgICAgICAgdG90YWwgPSBuKCkpICU+JQ0KICBtdXRhdGUoaGF6YXJkID0gZXZlbnQvdG90YWwpICU+JQ0KICBnZ3Bsb3QoYWVzKHg9dGltZSwgeSA9IGhhemFyZCwgZ3JvdXAgPSBnZW5kZXJfMiwgY29sb3I9Z2VuZGVyXzIpKSArDQogIGdlb21fcG9pbnQoKSArDQogIGxhYnMoeCA9ICJUaW1lIGluIHllYXJzIHNpbmNlIGRvY3RvcmF0ZSByZWNlaXB0IiwgeT0iSGF6YXJkIikgKw0KICBnZW9tX2xpbmUoKSArIA0KICBzY2FsZV9jb2xvcl9tYW51YWwodmFsdWVzPWMobWVuYywgd29tZW5jKSwgbmFtZT0iR2VuZGVyIikgKw0KICB0aGVtZShheGlzLnRpdGxlPWVsZW1lbnRfdGV4dChmYWNlPSJib2xkIiksIA0KICAgICAgICBsZWdlbmQudGl0bGU9ZWxlbWVudF90ZXh0KGZhY2U9ImJvbGQiKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci54ID0gZWxlbWVudF9ibGFuaygpLCANCiAgICAgICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsPSJ3aGl0ZSIpLA0KICAgICAgICBwYW5lbC5ncmlkLm1ham9yLnkgPSBlbGVtZW50X2xpbmUoY29sb3I9IiNDOWM5YzkiLCBsaW5ld2lkdGg9MC4yKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5taW5vcj1lbGVtZW50X2JsYW5rKCkpDQogIA0KDQpgYGANCg0KDQoNCmBgYHtyfQ0KDQpnZ3NhdmUoIi4vb3V0cHV0L3Bsb3QxLmpwZyIsIGhlaWdodD04LCB3aWR0aD0xMiwgZHBpPTIwMDApDQoNCg0KYGBgDQoNCg0KDQojIyBGaWd1cmUgMjogTW9kZWwgY29lZmZpY2llbnRzDQoNCg0KTG9hZGluZyBpbiB0aGUgbW9kZWwgb3V0cHV0IGFuZCBjcmVhdGluZyBkYXRhZnJhbWVzIGZvciBlYWNoIG1vZGVsDQoNCg0KYGBge3J9DQoNCm9yaWdpbmFsIDwtIGIxJHQwDQpiaWFzIDwtIGNvbE1lYW5zKGIxJHQpIC0gYjEkdDANCnNlIDwtIGFwcGx5KGIxJHQsIDIsIHNkKQ0KDQpib290LmRmMSA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0Kcm93Lm5hbWVzKGJvb3QuZGYxKSA8LSBjKCJBTUVfZ2VuZGVyIiwgIkFNRV9leHQiLCAiQU1FX2NvaG9ydCIpDQoNCmJvb3QuZGYxJHQgPC0gKGJvb3QuZGYxJG9yaWdpbmFsIC8gYm9vdC5kZjEkc2UpDQoNCnJvdW5kKGJvb3QuZGYxLCA1KQ0KDQoNCmBgYA0KDQoNCmBgYHtyfQ0KDQpvcmlnaW5hbCA8LSBiMiR0MA0KYmlhcyA8LSBjb2xNZWFucyhiMiR0KSAtIGIyJHQwDQpzZSA8LSBhcHBseShiMiR0LCAyLCBzZCkNCg0KYm9vdC5kZjIgPC0gZGF0YS5mcmFtZShvcmlnaW5hbD1vcmlnaW5hbCwgYmlhcz1iaWFzLCBzZT1zZSkNCnJvdy5uYW1lcyhib290LmRmMikgPC0gYygiQU1FX2dlbmRlciIsICJBTUVfZXh0IiwgIkFNRV9nZW5kZXJleHQiLCJBTUVfY29ob3J0IikNCg0KYm9vdC5kZjIkdCA8LSAoYm9vdC5kZjIkb3JpZ2luYWwgLyBib290LmRmMiRzZSkNCg0Kcm91bmQoYm9vdC5kZjIsIDUpDQoNCg0KYGBgDQoNCg0KYGBge3J9DQoNCm9yaWdpbmFsIDwtIGIzJHQwDQpiaWFzIDwtIGNvbE1lYW5zKGIzJHQpIC0gYjMkdDANCnNlIDwtIGFwcGx5KGIzJHQsIDIsIHNkKQ0KDQpib290LmRmMyA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0Kcm93Lm5hbWVzKGJvb3QuZGYzKSA8LSBjKCJBTUVfZ2VuZGVyIiwgIkFNRV9leHQiLCAiQU1FX2dlbmRlcmV4dCIsICJBTUVfY29ob3J0IiwgIkFNRV9jdW11bHB1YnMiLCAiQU1FX3ByZXZwdWJzIikNCg0KYm9vdC5kZjMkdCA8LSAoYm9vdC5kZjMkb3JpZ2luYWwgLyBib290LmRmMyRzZSkNCg0Kcm91bmQoYm9vdC5kZjMsIDUpDQoNCmBgYA0KDQoNCg0KYGBge3J9DQoNCm9yaWdpbmFsIDwtIGI0JHQwDQpiaWFzIDwtIGNvbE1lYW5zKGI0JHQpIC0gYjQkdDANCnNlIDwtIGFwcGx5KGI0JHQsIDIsIHNkKQ0KDQpib290LmRmNCA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0Kcm93Lm5hbWVzKGJvb3QuZGY0KSA8LSBjKCJBTUVfZ2VuZGVyIiwgIkFNRV9leHQiLCAiQU1FX2dlbmRlcmV4dCIsICJBTUVfY29ob3J0IiwgIkFNRV9jdW11bHB1YnMiLCAiQU1FX3ByZXZwdWJzIiwgIkFNRV9uZXRzaXplIiwgIkFNRV9wcm9mIikNCg0KYm9vdC5kZjQkdCA8LSAoYm9vdC5kZjQkb3JpZ2luYWwgLyBib290LmRmNCRzZSkNCg0Kcm91bmQoYm9vdC5kZjQsIDUpDQoNCmBgYA0KDQoNCmBgYHtyfQ0KDQpvcmlnaW5hbCA8LSBiNSR0MA0KYmlhcyA8LSBjb2xNZWFucyhiNSR0KSAtIGI1JHQwDQpzZSA8LSBhcHBseShiNSR0LCAyLCBzZCkNCg0KYm9vdC5kZjUgPC0gZGF0YS5mcmFtZShvcmlnaW5hbD1vcmlnaW5hbCwgYmlhcz1iaWFzLCBzZT1zZSkNCnJvdy5uYW1lcyhib290LmRmNSkgPC0gYygiQU1FX2dlbmRlciIsICJBTUVfZXh0IiwgIkFNRV9nZW5kZXJleHQiLCAiQU1FX2NvaG9ydCIsICJBTUVfY3VtdWxwdWJzIiwgIkFNRV9wcmV2cHVicyIsICJBTUVfbmV0c2l6ZSIsICJBTUVfcHJvZiIsICJBTUVfd29tc3YiKQ0KDQpib290LmRmNSR0IDwtIChib290LmRmNSRvcmlnaW5hbCAvIGJvb3QuZGY1JHNlKQ0KDQpyb3VuZChib290LmRmNSwgNSkNCg0KYGBgDQoNCg0KYGBge3J9DQoNCm9yaWdpbmFsIDwtIGI2JHQwDQpiaWFzIDwtIGNvbE1lYW5zKGI2JHQpIC0gYjYkdDANCnNlIDwtIGFwcGx5KGI2JHQsIDIsIHNkKQ0KDQpib290LmRmNiA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0Kcm93Lm5hbWVzKGJvb3QuZGY2KSA8LSBjKCJBTUVfZ2VuZGVyIiwgIkFNRV9leHQiLCAiQU1FX2dlbmRlcmV4dCIsICJBTUVfY29ob3J0IiwgIkFNRV9jdW11bHB1YnMiLCAiQU1FX3ByZXZwdWJzIiwgIkFNRV9uZXRzaXplIiwgIkFNRV9wcm9mIiwgIkFNRV93b21zdiIsICJBTUVfZ2VuZGVyd29tc3YiKQ0KDQpib290LmRmNiR0IDwtIChib290LmRmNiRvcmlnaW5hbCAvIGJvb3QuZGY2JHNlKQ0KDQpyb3VuZChib290LmRmNiwgNSkNCg0KYGBgDQoNCg0KYGBge3J9DQoNCnRvdCA8LSAiIzQxNDE0MSINCm1lbmMgPC0gIiNEMUMxNjYiDQp3b21lbmMgPC0gIiM0OGEzNjMiDQoNCmBgYA0KDQoNCkV4dHJhY3RpbmcgcmVsZXZhbnQgY29lZmZpY2llbnRzIGFuZCBjcmVhdGluZyBhIGNvbWJpbmVkIGRhdGFmcmFtZSBjb250YWluaW5nIHRoZSByZXN1bHRzIG9mIGFsbCBtb2RlbHMNCmBgYHtyfQ0KDQoNCmJvb3QuZGYxICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgbW9kZWwgPSAiTTEiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIG1vZGVsKSAtPiBhbWVzMQ0KICANCmJvb3QuZGYyICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgbW9kZWwgPSAiTTIiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIG1vZGVsKSAtPiBhbWVzMg0KDQoNCmJvb3QuZGYzICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgbW9kZWwgPSAiTTMiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIG1vZGVsKSAtPiBhbWVzMw0KDQoNCmJvb3QuZGY0ICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgbW9kZWwgPSAiTTQiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIG1vZGVsKSAtPiBhbWVzNA0KDQoNCg0KYm9vdC5kZjUgJT4lDQogIG11dGF0ZShhbWUgPSBvcmlnaW5hbCwgDQogICAgICAgICBtb2RlbCA9ICJNNSIpICU+JQ0KICBzZWxlY3QoYW1lLCBzZSwgbW9kZWwpIC0+IGFtZXM1DQoNCg0KYm9vdC5kZjYgJT4lDQogIG11dGF0ZShhbWUgPSBvcmlnaW5hbCwgDQogICAgICAgICBtb2RlbCA9ICJNNiIpICU+JQ0KICBzZWxlY3QoYW1lLCBzZSwgbW9kZWwpIC0+IGFtZXM2DQoNCg0KQU1FcyA8LSBkby5jYWxsKCJyYmluZCIsIGxpc3QoYW1lczEsIGFtZXMyLCBhbWVzMywgYW1lczQsIGFtZXM1LCBhbWVzNikpDQoNCkFNRXMkY292MiA8LSBzdHJfZXh0cmFjdChyb3duYW1lcyhBTUVzKSwgIkFNRV9bOmFscGhhOl0rIikNCg0KQU1FcyRjb3ZhcmlhdGUgPC0gIiINCkFNRXMkY292YXJpYXRlIDwtIGlmZWxzZShBTUVzJGNvdjI9PSJBTUVfZ2VuZGVyIiwgIldvbWFuICoqKEgxKSoqIiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX2V4dCIsICJFeHRlbnNpb24gcGVyaW9kIiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX2NvaG9ydCIsICJQaEQgY29ob3J0IiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX2dlbmRlcmV4dCIsICJXb21hbiAqIGV4dGVuc2lvbiBwZXJpb2QgKiooSDIpKioiLCBBTUVzJGNvdmFyaWF0ZSkNCkFNRXMkY292YXJpYXRlIDwtIGlmZWxzZShBTUVzJGNvdjI9PSJBTUVfY3VtdWxwdWJzIiwgIlB1YmxpY2F0aW9uczogY3VtdWxhdGl2ZSIsIEFNRXMkY292YXJpYXRlKQ0KQU1FcyRjb3ZhcmlhdGUgPC0gaWZlbHNlKEFNRXMkY292Mj09IkFNRV9wcmV2cHVicyIsICJQdWJsaWNhdGlvbnM6IHByZXZpb3VzIHllYXIiLCBBTUVzJGNvdmFyaWF0ZSkNCkFNRXMkY292YXJpYXRlIDwtIGlmZWxzZShBTUVzJGNvdjI9PSJBTUVfbmV0c2l6ZSIsICJTdXBlcnZpc2lvbiB0ZWFtOiBzaXplICoqKEgzYSkqKiIsIEFNRXMkY292YXJpYXRlKQ0KQU1FcyRjb3ZhcmlhdGUgPC0gaWZlbHNlKEFNRXMkY292Mj09IkFNRV9wcm9mIiwgIlN1cGVydmlzaW9uIHRlYW06IDIrIHByb2Zlc3NvcnMgKiooSDNiKSoqIiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX3dvbXN2IiwgIlN1cGVydmlzaW9uIHRlYW06IDErIHdvbWFuICoqKEg0YSkqKiIsIEFNRXMkY292YXJpYXRlKQ0KQU1FcyRjb3ZhcmlhdGUgPC0gaWZlbHNlKEFNRXMkY292Mj09IkFNRV9nZW5kZXJzaXplIiwgIldvbWFuICogdGVhbSBzaXplIiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX2dlbmRlcnByb2YiLCAiV29tYW4gKiAyKyBwcm9mZXNzb3JzIiwgQU1FcyRjb3ZhcmlhdGUpDQpBTUVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoQU1FcyRjb3YyPT0iQU1FX2dlbmRlcndvbXN2IiwgIldvbWFuICogMSsgd29tYW4gKiooSDRiKSoqIiwgQU1FcyRjb3ZhcmlhdGUpDQoNCkFNRXMkY292YXJpYXRlIDwtIGZhY3RvcihBTUVzJGNvdmFyaWF0ZSwgbGV2ZWxzPWMoIldvbWFuICoqKEgxKSoqIiwgIkV4dGVuc2lvbiBwZXJpb2QiLCAiUGhEIGNvaG9ydCIsICJXb21hbiAqIGV4dGVuc2lvbiBwZXJpb2QgKiooSDIpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogc2l6ZSAqKihIM2EpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogMisgcHJvZmVzc29ycyAqKihIM2IpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogMSsgd29tYW4gKiooSDRhKSoqIiwgIldvbWFuICogdGVhbSBzaXplIiwgIldvbWFuICogMisgcHJvZmVzc29ycyIsICJXb21hbiAqIDErIHdvbWFuICoqKEg0YikqKiIsICJQdWJsaWNhdGlvbnM6IGN1bXVsYXRpdmUiLCAiUHVibGljYXRpb25zOiBwcmV2aW91cyB5ZWFyIikpDQoNCkFNRXMkbW9kZWwgPC0gZmFjdG9yKEFNRXMkbW9kZWwsIGxldmVscz1jKCJNMSIsICJNMiIsICJNMyIsICJNNCIsICJNNSIsICJNNiIpKQ0KI0FNRXMkbW9kZWwgPC0gZmFjdG9yKEFNRXMkbW9kZWwsIGxldmVscz1jKCJNNiIsICJNNSIsICJNNCIsICJNMyIsICJNMiIsICJNMSIpKQ0KDQpBTUVzIDwtIEFNRXMgJT4lIGFycmFuZ2UoY292YXJpYXRlLCBtb2RlbCkNCg0KYGBgDQoNCg0KDQoNCg0KYGBge3J9DQoNCmdncGxvdChBTUVzLCBhZXMoeT1hbWUsIHg9Y292YXJpYXRlKSkgKw0KICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQ9MCwgY29sb3I9ImJyb3duNCIsIGxpbmV3aWR0aD0uNSkgKw0KICBnZW9tX3BvaW50KCkgKw0KICBmYWNldF93cmFwKG1vZGVsIH4gLiwgbnJvdz0zLCBuY29sPTIsIHNjYWxlcyA9ICJmcmVlIikgKyANCiAgZ2VvbV9wb2ludHJhbmdlKGFlcyh5bWluID0gYW1lIC0gMS45NipzZSwgeW1heCA9IGFtZSArIDEuOTYqc2UpLCBzaXplPTAuMSkgKw0KICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygtMC4wMTUsIDAuMDA1KSwgYnJlYWtzPXNlcSgtMC4wMTUsIDAuMDA1LCBieSA9IDAuMDA1KSkgKw0KICBsYWJzKHk9IkFNRSIpICsNCiAgdGhlbWUoYXhpcy50aXRsZS54ID0gZWxlbWVudF9ibGFuaygpLA0KICAgICAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MzAsIGhqdXN0PTEsIHZqdXN0PTEpLA0KICAgICAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgICAgIHN0cmlwLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MCwgc2l6ZT05LCBmYWNlPSJib2xkIiksDQogICAgICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X2JsYW5rKCksDQogICAgICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbD0id2hpdGUiKSwNCiAgICAgICAgcGFuZWwuc3BhY2luZyA9IHVuaXQoMC4xLCAncG9pbnRzJyksDQogICAgICAgIHBhbmVsLmdyaWQubWFqb3IueSA9IGVsZW1lbnRfbGluZShjb2xvcj0iI0M5YzljOSIsIGxpbmV3aWR0aD0wLjIsIGxpbmV0eXBlPTMpLA0KICAgICAgICBwYW5lbC5ncmlkLm1pbm9yPWVsZW1lbnRfYmxhbmsoKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci54PWVsZW1lbnRfYmxhbmsoKSkNCg0KYGBgDQoNCmBgYHtyfQ0KDQpnZ3NhdmUoIi4vb3V0cHV0L3Bsb3QyLmpwZyIsIGhlaWdodD04LCB3aWR0aD0xMiwgZHBpPTI0MDApDQoNCg0KYGBgDQoNCg0KDQojIyBGaWd1cmUgMzogQ29ob3J0IHNwbGl0cw0KDQpgYGB7cn0NCg0Kb3JpZ2luYWwgPC0gY29oMSR0MA0KYmlhcyA8LSBjb2xNZWFucyhjb2gxJHQpIC0gY29oMSR0MA0Kc2UgPC0gYXBwbHkoY29oMSR0LCAyLCBzZCkNCg0KZGYucm9idXN0M2EgPC0gZGF0YS5mcmFtZShvcmlnaW5hbD1vcmlnaW5hbCwgYmlhcz1iaWFzLCBzZT1zZSkNCg0KDQoNCnJvdy5uYW1lcyhkZi5yb2J1c3QzYSkgPC0gYygiQU1FX2dlbmRlcl9tMSIsICJBTUVfZ2VuZGVyX20yIiwgIkFNRV9nZW5kZXJfbTNhIiwgIkFNRV9nZW5kZXJfbTNiIiwgIkFNRV9nZW5kZXJfbTNjIiwgIkFNRV9nZW5kZXJfbTQiLCAiQU1FX3RpbWVfbTEiLCAiQU1FX3RpbWVfbTIiLCAiQU1FX3RpbWVfbTNhIiwgIkFNRV90aW1lX20zYiIsICJBTUVfdGltZV9tM2MiLCAiQU1FX3RpbWVfbTQiLCAiQU1FX2dlbmRlcnRpbWVfbTIiLCAiQU1FX2dlbmRlcnRpbWVfbTNhIiwgIkFNRV9nZW5kZXJ0aW1lX20zYiIsICJBTUVfZ2VuZGVydGltZV9tM2MiLCAiQU1FX2dlbmRlcnRpbWVfbTQiLCAiQU1FX25ldHNpemVfbTNiIiwgIkFNRV9uZXRzaXplX20zYyIsICJBTUVfbmV0c2l6ZV9tNCIsICJBTUVfcHJvZl9tM2IiLCAiQU1FX3Byb2ZfbTNjIiwgIkFNRV9wcm9mX200IiwgIkFNRV93b21zdl9tM2MiLCAiQU1FX3dvbXN2X200IiwgIkFNRV9nZW5kZXJzaXplX200IiwgIkFNRV9nZW5kZXJwcm9mX200IiwgIkFNRV9nZW5kZXJ3b21zdl9tNCIsICJBTUVfZ2VuZGVyX2QzYWIiKQ0KDQpkZi5yb2J1c3QzYSR0IDwtIChkZi5yb2J1c3QzYSRvcmlnaW5hbCAvIGRmLnJvYnVzdDNhJHNlKQ0KDQpyb3VuZChkZi5yb2J1c3QzYSwgNSkNCg0KZGYucm9idXN0M2EgPC0gZGYucm9idXN0M2FbMyxdDQoNCmRmLnJvYnVzdDNhICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgY29ob3J0ID0gIkNvaG9ydCAxIikgJT4lDQogIHNlbGVjdChhbWUsIHNlLCBjb2hvcnQpIC0+IGFtZXMxDQoNCg0Kb3JpZ2luYWwgPC0gY29oMiR0MA0KYmlhcyA8LSBjb2xNZWFucyhjb2gyJHQpIC0gY29oMiR0MA0Kc2UgPC0gYXBwbHkoY29oMiR0LCAyLCBzZCkNCg0KZGYucm9idXN0M2IgPC0gZGF0YS5mcmFtZShvcmlnaW5hbD1vcmlnaW5hbCwgYmlhcz1iaWFzLCBzZT1zZSkNCg0KDQpyb3cubmFtZXMoZGYucm9idXN0M2IpIDwtIGMoIkFNRV9nZW5kZXJfbTEiLCAiQU1FX2dlbmRlcl9tMiIsICJBTUVfZ2VuZGVyX20zYSIsICJBTUVfZ2VuZGVyX20zYiIsICJBTUVfZ2VuZGVyX20zYyIsICJBTUVfZ2VuZGVyX200IiwgIkFNRV90aW1lX20xIiwgIkFNRV90aW1lX20yIiwgIkFNRV90aW1lX20zYSIsICJBTUVfdGltZV9tM2IiLCAiQU1FX3RpbWVfbTNjIiwgIkFNRV90aW1lX200IiwgIkFNRV9nZW5kZXJ0aW1lX20yIiwgIkFNRV9nZW5kZXJ0aW1lX20zYSIsICJBTUVfZ2VuZGVydGltZV9tM2IiLCAiQU1FX2dlbmRlcnRpbWVfbTNjIiwgIkFNRV9nZW5kZXJ0aW1lX200IiwgIkFNRV9uZXRzaXplX20zYiIsICJBTUVfbmV0c2l6ZV9tM2MiLCAiQU1FX25ldHNpemVfbTQiLCAiQU1FX3Byb2ZfbTNiIiwgIkFNRV9wcm9mX20zYyIsICJBTUVfcHJvZl9tNCIsICJBTUVfd29tc3ZfbTNjIiwgIkFNRV93b21zdl9tNCIsICJBTUVfZ2VuZGVyc2l6ZV9tNCIsICJBTUVfZ2VuZGVycHJvZl9tNCIsICJBTUVfZ2VuZGVyd29tc3ZfbTQiLCAiQU1FX2dlbmRlcl9kM2FiIikNCg0KZGYucm9idXN0M2IkdCA8LSAoZGYucm9idXN0M2Ikb3JpZ2luYWwgLyBkZi5yb2J1c3QzYiRzZSkNCg0Kcm91bmQoZGYucm9idXN0M2IsIDUpICANCg0KZGYucm9idXN0M2IgPC0gZGYucm9idXN0M2JbMyxdDQoNCmRmLnJvYnVzdDNiICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgY29ob3J0ID0gIkNvaG9ydCAyIikgJT4lDQogIHNlbGVjdChhbWUsIHNlLCBjb2hvcnQpIC0+IGFtZXMyDQoNCm9yaWdpbmFsIDwtIGNvaDMkdDANCmJpYXMgPC0gY29sTWVhbnMoY29oMyR0KSAtIGNvaDMkdDANCnNlIDwtIGFwcGx5KGNvaDMkdCwgMiwgc2QpDQoNCmRmLnJvYnVzdDNjIDwtIGRhdGEuZnJhbWUob3JpZ2luYWw9b3JpZ2luYWwsIGJpYXM9Ymlhcywgc2U9c2UpDQoNCg0Kcm93Lm5hbWVzKGRmLnJvYnVzdDNjKSA8LSBjKCJBTUVfZ2VuZGVyX20xIiwgIkFNRV9nZW5kZXJfbTIiLCAiQU1FX2dlbmRlcl9tM2EiLCAiQU1FX2dlbmRlcl9tM2IiLCAiQU1FX2dlbmRlcl9tM2MiLCAiQU1FX2dlbmRlcl9tNCIsICJBTUVfdGltZV9tMSIsICJBTUVfdGltZV9tMiIsICJBTUVfdGltZV9tM2EiLCAiQU1FX3RpbWVfbTNiIiwgIkFNRV90aW1lX20zYyIsICJBTUVfdGltZV9tNCIsICJBTUVfZ2VuZGVydGltZV9tMiIsICJBTUVfZ2VuZGVydGltZV9tM2EiLCAiQU1FX2dlbmRlcnRpbWVfbTNiIiwgIkFNRV9nZW5kZXJ0aW1lX20zYyIsICJBTUVfZ2VuZGVydGltZV9tNCIsICJBTUVfbmV0c2l6ZV9tM2IiLCAiQU1FX25ldHNpemVfbTNjIiwgIkFNRV9uZXRzaXplX200IiwgIkFNRV9wcm9mX20zYiIsICJBTUVfcHJvZl9tM2MiLCAiQU1FX3Byb2ZfbTQiLCAiQU1FX3dvbXN2X20zYyIsICJBTUVfd29tc3ZfbTQiLCAiQU1FX2dlbmRlcnNpemVfbTQiLCAiQU1FX2dlbmRlcnByb2ZfbTQiLCAiQU1FX2dlbmRlcndvbXN2X200IiwgIkFNRV9nZW5kZXJfZDNhYiIpDQoNCmRmLnJvYnVzdDNjJHQgPC0gKGRmLnJvYnVzdDNjJG9yaWdpbmFsIC8gZGYucm9idXN0M2Mkc2UpDQoNCnJvdW5kKGRmLnJvYnVzdDNjLCA1KQ0KDQpkZi5yb2J1c3QzYyA8LSBkZi5yb2J1c3QzY1szLF0NCg0KZGYucm9idXN0M2MgJT4lDQogIG11dGF0ZShhbWUgPSBvcmlnaW5hbCwgDQogICAgICAgICBjb2hvcnQgPSAiQ29ob3J0IDMiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIGNvaG9ydCkgLT4gYW1lczMNCg0KDQpvcmlnaW5hbCA8LSBjb2g0JHQwDQpiaWFzIDwtIGNvbE1lYW5zKGNvaDQkdCkgLSBjb2g0JHQwDQpzZSA8LSBhcHBseShjb2g0JHQsIDIsIHNkKQ0KDQpkZi5yb2J1c3QzZCA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0KDQoNCnJvdy5uYW1lcyhkZi5yb2J1c3QzZCkgPC0gYygiQU1FX2dlbmRlcl9tMSIsICJBTUVfZ2VuZGVyX20yIiwgIkFNRV9nZW5kZXJfbTNhIiwgIkFNRV9nZW5kZXJfbTNiIiwgIkFNRV9nZW5kZXJfbTNjIiwgIkFNRV9nZW5kZXJfbTQiLCAiQU1FX3RpbWVfbTEiLCAiQU1FX3RpbWVfbTIiLCAiQU1FX3RpbWVfbTNhIiwgIkFNRV90aW1lX20zYiIsICJBTUVfdGltZV9tM2MiLCAiQU1FX3RpbWVfbTQiLCAiQU1FX2dlbmRlcnRpbWVfbTIiLCAiQU1FX2dlbmRlcnRpbWVfbTNhIiwgIkFNRV9nZW5kZXJ0aW1lX20zYiIsICJBTUVfZ2VuZGVydGltZV9tM2MiLCAiQU1FX2dlbmRlcnRpbWVfbTQiLCAiQU1FX25ldHNpemVfbTNiIiwgIkFNRV9uZXRzaXplX20zYyIsICJBTUVfbmV0c2l6ZV9tNCIsICJBTUVfcHJvZl9tM2IiLCAiQU1FX3Byb2ZfbTNjIiwgIkFNRV9wcm9mX200IiwgIkFNRV93b21zdl9tM2MiLCAiQU1FX3dvbXN2X200IiwgIkFNRV9nZW5kZXJzaXplX200IiwgIkFNRV9nZW5kZXJwcm9mX200IiwgIkFNRV9nZW5kZXJ3b21zdl9tNCIsICJBTUVfZ2VuZGVyX2QzYWIiKQ0KDQpkZi5yb2J1c3QzZCR0IDwtIChkZi5yb2J1c3QzZCRvcmlnaW5hbCAvIGRmLnJvYnVzdDNkJHNlKQ0KDQpyb3VuZChkZi5yb2J1c3QzZCwgNSkNCg0KZGYucm9idXN0M2QgPC0gZGYucm9idXN0M2RbMyxdDQoNCmRmLnJvYnVzdDNkICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgY29ob3J0ID0gIkNvaG9ydCA0IikgJT4lDQogIHNlbGVjdChhbWUsIHNlLCBjb2hvcnQpIC0+IGFtZXM0DQoNCg0KQU1FcyA8LSBkby5jYWxsKCJyYmluZCIsIGxpc3QoYW1lczEsIGFtZXMyLCBhbWVzMywgYW1lczQpKQ0KDQpBTUVzJGNvdmFyaWF0ZSA8LSBjKCJXb21hbiAoY29oLiAxOTk3LTIwMDYpIiwgIldvbWFuIChjb2guIDIwMDctMjAxMCkiLCAiV29tYW4gKGNvaC4gMjAxMS0yMDEzKSIsICJXb21hbiAoY29oLiAyMDE0LTIwMTkpIikNCg0KDQpgYGANCg0KDQoNCmBgYHtyfQ0KDQpnZ3Bsb3QoQU1FcywgYWVzKHk9YW1lLCB4PWNvdmFyaWF0ZSkpICsNCiAgZ2VvbV9obGluZSh5aW50ZXJjZXB0PTAsIGNvbG9yPSJicm93bjQiLCBsaW5ld2lkdGg9LjUpICsNCiAgZ2VvbV9wb2ludCgpICsNCiAgZ2VvbV9wb2ludHJhbmdlKGFlcyh5bWluID0gYW1lIC0gMS45NipzZSwgeW1heCA9IGFtZSArIDEuOTYqc2UpLCBzaXplPTAuMSkgKw0KICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygtMC4wMDYsIDAuMDA3KSwgYnJlYWtzPXNlcSgtMC4wMDUsIDAuMDEwLCBieSA9IDAuMDA1KSkgKw0KICBsYWJzKHk9IkFNRSIpICsNCiAgdGhlbWUoYXhpcy50aXRsZS54ID0gZWxlbWVudF9ibGFuaygpLA0KICAgICAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MjAsIGhqdXN0PTEsIHZqdXN0PTEpLA0KICAgICAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgICAgIHN0cmlwLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MCwgc2l6ZT05LCBmYWNlPSJib2xkIiksDQogICAgICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X2JsYW5rKCksDQogICAgICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbD0id2hpdGUiKSwNCiAgICAgICAgcGFuZWwuc3BhY2luZyA9IHVuaXQoMC4xLCAncG9pbnRzJyksDQogICAgICAgIHBhbmVsLmdyaWQubWFqb3IueSA9IGVsZW1lbnRfbGluZShjb2xvcj0iI0M5YzljOSIsIGxpbmV3aWR0aD0wLjIsIGxpbmV0eXBlPTMpLA0KICAgICAgICBwYW5lbC5ncmlkLm1pbm9yPWVsZW1lbnRfYmxhbmsoKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci54PWVsZW1lbnRfYmxhbmsoKSkNCg0KYGBgDQoNCmBgYHtyfQ0KDQpnZ3NhdmUoIi4vb3V0cHV0L3Bsb3QzLmpwZyIsIGhlaWdodD04LCB3aWR0aD0xMiwgZHBpPTI0MDApDQoNCmBgYA0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1lbnRvcmluZyBmb3IgZ2VuZGVyIGVxdWFsaXR5IGluIGVhcmx5LWNhcmVlciBncmFudCByZWNlaXB0OiBmaWd1cmVzIg0KZGF0ZTogIkxhc3QgY29tcGlsZWQgb24gYHIgU3lzLkRhdGUoKWAiDQpvdXRwdXQ6IA0KICBodG1sX2RvY3VtZW50Og0KICAgIGNzczogdHdlYWtzLmNzcw0KICAgIHRvYzogIHRydWUNCiAgICB0b2NfZmxvYXQ6IHRydWUNCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBjb2RlX2Rvd25sb2FkOiB5ZXMNCiAgICANCi0tLQ0KDQpUaGlzIGxhYiBqb3VybmFsIGRlbW9uc3RyYXRlcyBob3cgd2UgY3JlYXRlIHRoZSBmaWd1cmVzIGZlYXR1cmVkIGluIHRoZSBwYXBlci4gDQogIA0KLS0tLQ0KDQojIEN1c3RvbSBmdW5jdGlvbnMNCg0KLSBgcGFja2FnZS5jaGVja2A6IENoZWNrIGlmIHBhY2thZ2VzIGFyZSBpbnN0YWxsZWQgKGFuZCBpbnN0YWxsIGlmIG5vdCkgaW4gUiAoW3NvdXJjZV0oaHR0cHM6Ly92YmFsaWdhLmdpdGh1Yi5pby92ZXJpZnktdGhhdC1yLXBhY2thZ2VzLWFyZS1pbnN0YWxsZWQtYW5kLWxvYWRlZC8pKS4gDQoNCg0KYGBge3IsIHJlc3VsdHM9J2hpZGUnfQ0KDQpybShsaXN0PWxzKCkpDQoNCg0KZnBhY2thZ2UuY2hlY2sgPC0gZnVuY3Rpb24ocGFja2FnZXMpIHsNCiAgbGFwcGx5KHBhY2thZ2VzLCBGVU4gPSBmdW5jdGlvbih4KSB7DQogICAgaWYgKCFyZXF1aXJlKHgsIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSkpIHsNCiAgICAgIGluc3RhbGwucGFja2FnZXMoeCwgZGVwZW5kZW5jaWVzID0gVFJVRSkNCiAgICAgIGxpYnJhcnkoeCwgY2hhcmFjdGVyLm9ubHkgPSBUUlVFKQ0KICAgIH0NCiAgfSkNCn0NCg0KDQoNCmZzYXZlIDwtIGZ1bmN0aW9uKHgsIGZpbGUsIGxvY2F0aW9uPSIuL2RhdGEvcHJvY2Vzc2VkLyIpIHsNCiAgZGF0ZW5hbWUgPC0gc3Vic3RyKGdzdWIoIls6LV0iLCAiIiwgU3lzLnRpbWUoKSksIDEsOCkgIA0KICB0b3RhbG5hbWUgPC0gcGFzdGUobG9jYXRpb24sIGRhdGVuYW1lLCBmaWxlLCBzZXA9IiIpDQogIHNhdmUoeCwgZmlsZSA9IHRvdGFsbmFtZSkgIA0KfQ0KDQoNCg0KYGBgDQoNCi0tLSAgDQoNCiMgUGFja2FnZXMNCg0KDQotIGB0aWR5dmVyc2VgOiBGb3IgZ2VuZXJhbCBkYXRhIG1hbmlwdWxhdGlvbg0KDQotIGBib290YDogVG8gY3JlYXRlIGJvb3RzdHJhcHBlZCBzdGFuZGFyZCBlcnJvcnMsIGZvbGxvd2luZyB0aGUgcHJvY2VkdXJlIGRlbGluZWF0ZWQgW2hlcmVdKGh0dHBzOi8vd3d3LmpvY2hlbXRvbHNtYS5ubC90dXRvcmlhbHMvbWUvKQ0KDQotIGBnZ3RleHRgOiB0byBlZGl0IGZvcm1hdHRpbmcgb2YgdGV4dCBpbiBnZ3Bsb3QgZmlndXJlcw0KDQoNCmBgYHtyLCByZXN1bHRzPSdoaWRlJ30NCg0KcGFja2FnZXMgPSBjKCJ0aWR5dmVyc2UiLCAiYm9vdCIsICJnZ3RleHQiKQ0KDQpmcGFja2FnZS5jaGVjayhwYWNrYWdlcykNCg0KYGBgDQoNCi0tLSANCg0KDQojIElucHV0DQoNCldlIHVzZSBzZXZlcmFsIHJlc3VsdHMgb2JqZWN0czoNCg0KKiBbdmVuaV9wcGZdKGRhdGEvcHJvY2Vzc2VkL3ZlbmlfcHBmLnJkYSk6IFByb2Nlc3NlZCBkYXRhc2V0IGNvbnRhaW5pbmcgYWxsIGluZGVwZW5kZW50IHZhcmlhYmxlcyBhbmQgdGhlIGRlcGVuZGVudCB2YXJpYWJsZQ0KICAgIC0gbmFtZSBvZiBkYXRhc2V0OiBgdmVuaV9wcGZgDQogICAgLSB1c2VkIGhlcmUgdG8gc2hvdyBWZW5pIGhhemFyZCByYXRlcyBwZXIgeWVhciBhZnRlciBvYnRhaW5pbmcgZG9jdG9yYXRlDQoNCiogWzIwMjUwNTA2X2FtZS5yZGFdKGh0dHBzOi8vZ2l0aHViLmNvbS9hbW11bGRlcnMvYW1hdHRlcm9mdGltZS9yZXN1bHRzL2NvbnRfY29ob3J0LzIwMjUwNTA2X2FtZS5yZGEpOiByZXN1bHRzIG9mIG91ciBtYWluIGFuYWx5c2VzIHdpdGggYm9vdHN0cmFwcGVkIHN0YW5kYXJkIGVycm9ycw0KDQoqIFsyMDI1MDUwN19jMS0zLnJkYV0oaHR0cHM6Ly9naXRodWIuY29tL2FtbXVsZGVycy9hbWF0dGVyb2Z0aW1lL3Jlc3VsdHMvcm9idXN0bmVzcy9ieWNvaG9ydC8yMDI1MDUwN19jMS5yZGEpOiByZXN1bHRzIG9mIG91ciBtb2RlbHMgc3BsaXQgb3V0IGJ5IGNvaG9ydA0KDQoNCg0KYGBge3IgZmlsZXMsIGV2YWw9VFJVRX0NCg0KDQpsb2FkKGZpbGU9Ii4vcmVzdWx0cy9jb250X2NvaG9ydC8yMDI1MDUwNl9hbWUucmRhIikNCkFNRXMgPC0geA0KDQpsb2FkKCIuL2RhdGEvcHJvY2Vzc2VkL3ZlbmlfcHBmLnJkYSIpDQoNCg0KDQpsb2FkKGZpbGUgPSAiLi9yZXN1bHRzL3JvYnVzdG5lc3MvYnljb2hvcnQvMjAyNTA1MDdfYzEucmRhIikNCmNvaDEgPC0geA0Kcm0oeCkNCg0KbG9hZChmaWxlID0gIi4vcmVzdWx0cy9yb2J1c3RuZXNzL2J5Y29ob3J0LzIwMjUwNTA3X2MyLnJkYSIpDQpjb2gyIDwtIHgNCnJtKHgpDQoNCmxvYWQoZmlsZSA9ICIuL3Jlc3VsdHMvcm9idXN0bmVzcy9ieWNvaG9ydC8yMDI1MDUwN19jMy5yZGEiKQ0KY29oMyA8LSB4DQpybSh4KQ0KDQoNCg0KYGBgDQoNCg0KDQoNCiMjIEZpZ3VyZSAxOiBWZW5pIGhhemFyZCByYXRlIGJ5IHRpbWUgYW5kIGdlbmRlcg0KDQoNCmBgYHtyfQ0KDQptZW5jIDwtICIjRDFDMTY2Ig0Kd29tZW5jIDwtICIjNDhhMzYzIg0KDQp2ZW5pX3BwZiAlPiUNCiAgZmlsdGVyKHllYXI+MjAwMikgJT4lDQogIGdyb3VwX2J5KHRpbWUsIGdlbmRlcl8yKSAlPiUNCiAgc3VtbWFyaXNlKGV2ZW50ID0gc3VtKHZlbmkpLA0KICAgICAgICAgICAgdG90YWwgPSBuKCkpICU+JQ0KICBtdXRhdGUoaGF6YXJkID0gZXZlbnQvdG90YWwpICU+JQ0KICBnZ3Bsb3QoYWVzKHg9dGltZSwgeSA9IGhhemFyZCwgZ3JvdXAgPSBnZW5kZXJfMiwgY29sb3I9Z2VuZGVyXzIpKSArDQogIGdlb21fcG9pbnQoKSArDQogIGxhYnMoeCA9ICJUaW1lIGluIHllYXJzIHNpbmNlIGRvY3RvcmF0ZSByZWNlaXB0IiwgeT0iSGF6YXJkIikgKw0KICBnZW9tX2xpbmUoKSArIA0KICBzY2FsZV9jb2xvcl9tYW51YWwodmFsdWVzPWMobWVuYywgd29tZW5jKSwgbmFtZT0iR2VuZGVyIikgKw0KICB0aGVtZShheGlzLnRpdGxlPWVsZW1lbnRfdGV4dChmYWNlPSJib2xkIiksIA0KICAgICAgICBsZWdlbmQudGl0bGU9ZWxlbWVudF90ZXh0KGZhY2U9ImJvbGQiKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci54ID0gZWxlbWVudF9ibGFuaygpLCANCiAgICAgICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsPSJ3aGl0ZSIpLA0KICAgICAgICBwYW5lbC5ncmlkLm1ham9yLnkgPSBlbGVtZW50X2xpbmUoY29sb3I9IiNDOWM5YzkiLCBsaW5ld2lkdGg9MC4yKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5taW5vcj1lbGVtZW50X2JsYW5rKCkpDQoNCg0KDQp2ZW5pX3BwZiAlPiUNCiAgZmlsdGVyKHllYXI+MjAwMikgJT4lDQogIGdyb3VwX2J5KHRpbWUsIGdlbmRlcl8yKSAlPiUNCiAgc3VtbWFyaXNlKGV2ZW50ID0gc3VtKHZlbmkpLA0KICAgICAgICAgICAgdG90YWwgPSBuKCkpICU+JQ0KICBtdXRhdGUoaGF6YXJkID0gZXZlbnQvdG90YWwpIC0+IGRhdGFjaGVjaw0KICANCg0KYGBgDQoNCg0KDQoNCiMjIEZpZ3VyZSAyOiBNb2RlbCBjb2VmZmljaWVudHMNCg0KDQpMb2FkaW5nIGluIHRoZSBtb2RlbCBvdXRwdXQgYW5kIGNyZWF0aW5nIGRhdGFmcmFtZXMgZm9yIGVhY2ggbW9kZWwNCg0KDQpgYGB7cn0NCg0Kb3JpZ2luYWwgPC0gQU1FcyR0MA0KYmlhcyA8LSBjb2xNZWFucyhBTUVzJHQpIC0gQU1FcyR0MA0Kc2UgPC0gYXBwbHkoQU1FcyR0LCAyLCBzZCkNCg0KQU1Fcy5kZiA8LSBkYXRhLmZyYW1lKG9yaWdpbmFsPW9yaWdpbmFsLCBiaWFzPWJpYXMsIHNlPXNlKQ0Kcm93Lm5hbWVzKEFNRXMuZGYpIDwtIGMoIkFNRV9nZW5kZXJfbTEiLCAiQU1FX2dlbmRlcl9tMiIsICJBTUVfZ2VuZGVyX20zYSIsICJBTUVfZ2VuZGVyX20zYiIsICJBTUVfZ2VuZGVyX20zYyIsICJBTUVfZ2VuZGVyX200IiwgIkFNRV9jb2hvcnRfbTIiLCAiQU1FX2NvaG9ydF9tM2EiLCAiQU1FX2NvaG9ydF9tM2IiLCAiQU1FX2NvaG9ydF9tM2MiLCAiQU1FX2NvaG9ydF9tNCIsICJBTUVfZ2VuZGVyY29ob3J0X20yIiwgIkFNRV9nZW5kZXJjb2hvcnRfbTNhIiwgIkFNRV9nZW5kZXJjb2hvcnRfbTNiIiwgIkFNRV9nZW5kZXJjb2hvcnRfbTNjIiwgIkFNRV9nZW5kZXJjb2hvcnRfbTQiLCAiQU1FX3RpbWVfbTEiLCAiQU1FX3RpbWVfbTIiLCAiQU1FX3RpbWVfbTNhIiwgIkFNRV90aW1lX20zYiIsICJBTUVfdGltZV9tM2MiLCAiQU1FX3RpbWVfbTQiLCAiQU1FX2NwdWJzX20zYSIsICJBTUVfY3B1YnNfbTNiIiwgIkFNRV9jcHVic19tM2MiLCAiQU1FX2NwdWJzX200IiwgIkFNRV9wcHVic19tM2EiLCAiQU1FX3BwdWJzX20zYiIsICJBTUVfcHB1YnNfbTNjIiwgIkFNRV9wcHVic19tNCIsICJBTUVfbmV0c2l6ZV9tM2IiLCAiQU1FX25ldHNpemVfbTNjIiwgIkFNRV9uZXRzaXplX200IiwgIkFNRV9wcm9mX20zYiIsICJBTUVfcHJvZl9tM2MiLCAiQU1FX3Byb2ZfbTQiLCAiQU1FX3N2cHVic19tM2IiLCAiQU1FX3N2cHVic19tM2MiLCAiQU1FX3N2cHVic19tNCIsICJBTUVfd29tc3ZfbTNjIiwgIkFNRV93b21zdl9tNCIsICJBTUVfZ2VuZGVyd29tc3ZfbTQiKQ0KDQpBTUVzJHQgPC0gKEFNRXMkb3JpZ2luYWwgLyBBTUVzJHNlKQ0KDQoNCmBgYA0KDQoNCmBgYHtyfQ0KDQp0b3QgPC0gIiM0MTQxNDEiDQptZW5jIDwtICIjRDFDMTY2Ig0Kd29tZW5jIDwtICIjNDhhMzYzIg0KDQpgYGANCg0KDQpFeHRyYWN0aW5nIHJlbGV2YW50IGNvZWZmaWNpZW50cyBhbmQgY3JlYXRpbmcgYSBjb21iaW5lZCBkYXRhZnJhbWUgY29udGFpbmluZyB0aGUgcmVzdWx0cyBvZiBhbGwgbW9kZWxzDQpgYGB7cn0NCg0KbW9kZWxzIDwtIHJvd25hbWVzKEFNRXMuZGYpDQoNCkFNRXMuZGYgJT4lDQogIG11dGF0ZShhbWUgPSBvcmlnaW5hbCwNCiAgICAgICAgIG1vZGVsID0gdG91cHBlcihzdHJfcmVtb3ZlKG1vZGVscywgIl4uKl8iKSkpICU+JQ0KICBzZWxlY3QoYW1lLCBtb2RlbCwgc2UpIC0+IGFtZXMNCiAgDQpyb3cubmFtZXMoYW1lcykgPC0gbW9kZWxzDQoNCmFtZXMkY292MiA8LSBzdHJfcmVtb3ZlKHJvd25hbWVzKGFtZXMpLCAiX21bOmRpZ2l0Ol1bYWJjXT8iKQ0KDQphbWVzJGNvdmFyaWF0ZSA8LSAiIg0KYW1lcyRjb3ZhcmlhdGUgPC0gaWZlbHNlKGFtZXMkY292Mj09IkFNRV9nZW5kZXIiLCAiV29tYW4gKiooSDEpKioiLCBhbWVzJGNvdmFyaWF0ZSkNCmFtZXMkY292YXJpYXRlIDwtIGlmZWxzZShhbWVzJGNvdjI9PSJBTUVfY29ob3J0IiwgIlBoRCBjb2hvcnQgKiooSDJhKSoqIiwgYW1lcyRjb3ZhcmlhdGUpDQphbWVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoYW1lcyRjb3YyPT0iQU1FX3RpbWUiLCAiVGltZSBpbiB5ZWFycyBzaW5jZSBQaEQiLCBhbWVzJGNvdmFyaWF0ZSkNCmFtZXMkY292YXJpYXRlIDwtIGlmZWxzZShhbWVzJGNvdjI9PSJBTUVfZ2VuZGVyY29ob3J0IiwgIlBoRCBjb2hvcnQgKiBXb21hbiAqKihIMmIpKioiLCBhbWVzJGNvdmFyaWF0ZSkNCmFtZXMkY292YXJpYXRlIDwtIGlmZWxzZShhbWVzJGNvdjI9PSJBTUVfY3B1YnMiLCAiUHVibGljYXRpb25zOiBjdW11bGF0aXZlIiwgYW1lcyRjb3ZhcmlhdGUpDQphbWVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoYW1lcyRjb3YyPT0iQU1FX3BwdWJzIiwgIlB1YmxpY2F0aW9uczogcHJldmlvdXMgeWVhciIsIGFtZXMkY292YXJpYXRlKQ0KYW1lcyRjb3ZhcmlhdGUgPC0gaWZlbHNlKGFtZXMkY292Mj09IkFNRV9uZXRzaXplIiwgIlN1cGVydmlzaW9uIHRlYW06IHNpemUgKiooSDNhKSoqIiwgYW1lcyRjb3ZhcmlhdGUpDQphbWVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoYW1lcyRjb3YyPT0iQU1FX3Byb2YiLCAiU3VwZXJ2aXNpb24gdGVhbTogMisgcHJvZmVzc29ycyAqKihIM2IpKioiLCBhbWVzJGNvdmFyaWF0ZSkNCmFtZXMkY292YXJpYXRlIDwtIGlmZWxzZShhbWVzJGNvdjI9PSJBTUVfc3ZwdWJzIiwgIlN1cGVydmlzaW9uIHRlYW06IHB1YmxpY2F0aW9ucyAqKihIM2MpKioiLCBhbWVzJGNvdmFyaWF0ZSkNCmFtZXMkY292YXJpYXRlIDwtIGlmZWxzZShhbWVzJGNvdjI9PSJBTUVfd29tc3YiLCAiU3VwZXJ2aXNpb24gdGVhbTogMSsgd29tYW4gKiooSDRhKSoqIiwgYW1lcyRjb3ZhcmlhdGUpDQphbWVzJGNvdmFyaWF0ZSA8LSBpZmVsc2UoYW1lcyRjb3YyPT0iQU1FX2dlbmRlcndvbXN2IiwgIldvbWFuICogMSsgd29tYW4gKiooSDRiKSoqIiwgYW1lcyRjb3ZhcmlhdGUpDQoNCmFtZXMkY292YXJpYXRlIDwtIGZhY3RvcihhbWVzJGNvdmFyaWF0ZSwgbGV2ZWxzPWMoIldvbWFuICoqKEgxKSoqIiwgIlBoRCBjb2hvcnQgKiooSDJhKSoqIiwgIlRpbWUgaW4geWVhcnMgc2luY2UgUGhEIiwgIlBoRCBjb2hvcnQgKiBXb21hbiAqKihIMmIpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogc2l6ZSAqKihIM2EpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogMisgcHJvZmVzc29ycyAqKihIM2IpKioiLCAiU3VwZXJ2aXNpb24gdGVhbTogcHVibGljYXRpb25zICoqKEgzYykqKiIsICJTdXBlcnZpc2lvbiB0ZWFtOiAxKyB3b21hbiAqKihINGEpKioiLCAiV29tYW4gKiAxKyB3b21hbiAqKihINGIpKioiLCAiUHVibGljYXRpb25zOiBjdW11bGF0aXZlIiwgIlB1YmxpY2F0aW9uczogcHJldmlvdXMgeWVhciIpKQ0KDQphbWVzIDwtIGFtZXMgJT4lIG11dGF0ZShtb2RlbCA9IGlmZWxzZShtb2RlbD09Ik00IiwgIk02IiwgbW9kZWwpLA0KICAgICAgICAgICAgICAgICAgICAgICAgbW9kZWwgPSBpZmVsc2UobW9kZWw9PSJNM0EiLCAiTTMiLCBtb2RlbCksDQogICAgICAgICAgICAgICAgICAgICAgICBtb2RlbCA9IGlmZWxzZShtb2RlbD09Ik0zQiIsICJNNCIsIG1vZGVsKSwNCiAgICAgICAgICAgICAgICAgICAgICAgIG1vZGVsID0gaWZlbHNlKG1vZGVsPT0iTTNDIiwgIk01IiwgbW9kZWwpKQ0KDQphbWVzJG1vZGVsIDwtIGZhY3RvcihhbWVzJG1vZGVsLCBsZXZlbHM9YygiTTEiLCAiTTIiLCAiTTMiLCAiTTQiLCAiTTUiLCAiTTYiKSkNCiNBTUVzJG1vZGVsIDwtIGZhY3RvcihBTUVzJG1vZGVsLCBsZXZlbHM9YygiTTYiLCAiTTUiLCAiTTQiLCAiTTMiLCAiTTIiLCAiTTEiKSkNCg0KYW1lcyA8LSBhbWVzICU+JSBhcnJhbmdlKGNvdmFyaWF0ZSwgbW9kZWwpDQoNCmBgYA0KDQoNCg0KYGBge3J9DQoNCmdncGxvdChhbWVzLCBhZXMoeT1hbWUsIHg9Y292YXJpYXRlKSkgKw0KICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQ9MCwgY29sb3I9ImJyb3duNCIsIGxpbmV3aWR0aD0uNSkgKw0KICBnZW9tX3BvaW50KCkgKw0KICBmYWNldF93cmFwKG1vZGVsIH4gLiwgbnJvdz0zLCBuY29sPTIsIHNjYWxlcyA9ICJmcmVlIikgKyANCiAgZ2VvbV9wb2ludHJhbmdlKGFlcyh5bWluID0gYW1lIC0gMS45NipzZSwgeW1heCA9IGFtZSArIDEuOTYqc2UpLCBzaXplPTAuMSkgKw0KICBzY2FsZV95X2NvbnRpbnVvdXMobGltaXRzID0gYygtMC4wMDUsIDAuMDA1KSwgYnJlYWtzPXNlcSgtMC4wMDUsIDAuMDA1LCBieSA9IDAuMDA1KSkgKw0KICBsYWJzKHk9IkFNRSIpICsNCiAgdGhlbWUoYXhpcy50aXRsZS54ID0gZWxlbWVudF9ibGFuaygpLA0KICAgICAgICBheGlzLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MzAsIGhqdXN0PTEsIHZqdXN0PTEpLA0KICAgICAgICBsZWdlbmQucG9zaXRpb24gPSAibm9uZSIsDQogICAgICAgIHN0cmlwLnRleHQueCA9IGVsZW1lbnRfbWFya2Rvd24oYW5nbGU9MCwgc2l6ZT05LCBmYWNlPSJib2xkIiksDQogICAgICAgIHN0cmlwLmJhY2tncm91bmQgPSBlbGVtZW50X2JsYW5rKCksDQogICAgICAgIHBhbmVsLmJhY2tncm91bmQgPSBlbGVtZW50X3JlY3QoZmlsbD0id2hpdGUiKSwNCiAgICAgICAgcGFuZWwuc3BhY2luZyA9IHVuaXQoMC4xLCAncG9pbnRzJyksDQogICAgICAgIHBhbmVsLmdyaWQubWFqb3IueSA9IGVsZW1lbnRfbGluZShjb2xvcj0iI0M5YzljOSIsIGxpbmV3aWR0aD0wLjIsIGxpbmV0eXBlPTMpLA0KICAgICAgICBwYW5lbC5ncmlkLm1pbm9yPWVsZW1lbnRfYmxhbmsoKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci54PWVsZW1lbnRfYmxhbmsoKSkNCg0KYGBgDQoNCg0KDQojIyBGaWd1cmUgMzogQ29ob3J0IHNwbGl0cw0KDQoNCmBgYHtyfQ0KDQpvcmlnaW5hbCA8LSBjb2gxJHQwDQpiaWFzIDwtIGNvbE1lYW5zKGNvaDEkdCkgLSBjb2gxJHQwDQpzZSA8LSBhcHBseShjb2gxJHQsIDIsIHNkKQ0KDQpkZi5jb2gxIDwtIGRhdGEuZnJhbWUob3JpZ2luYWw9b3JpZ2luYWwsIGJpYXM9Ymlhcywgc2U9c2UpDQoNCnJvdy5uYW1lcyhkZi5jb2gxKSA8LSBjKCJBTUVfZ2VuZGVyX20xIiwgIkFNRV9nZW5kZXJfbTIiLCAiQU1FX2dlbmRlcl9tM2EiLCAiQU1FX2dlbmRlcl9tM2IiLCAiQU1FX2dlbmRlcl9tM2MiLCAiQU1FX2dlbmRlcl9tNCIsICJBTUVfdGltZV9tMSIsICJBTUVfdGltZV9tMiIsICJBTUVfdGltZV9tM2EiLCAiQU1FX3RpbWVfbTNiIiwgIkFNRV90aW1lX20zYyIsICJBTUVfdGltZV9tNCIsICJBTUVfY3B1YnNfbTNhIiwgIkFNRV9jcHVic19tM2IiLCAiQU1FX2NwdWJzX20zYyIsICJBTUVfY3B1YnNfbTQiLCAiQU1FX3BwdWJzX20zYSIsICJBTUVfcHB1YnNfbTNiIiwgIkFNRV9wcHVic19tM2MiLCAiQU1FX3BwdWJzX200IiwgIkFNRV9uZXRzaXplX20zYiIsICJBTUVfbmV0c2l6ZV9tM2MiLCAiQU1FX25ldHNpemVfbTQiLCAiQU1FX3Byb2ZfbTNiIiwgIkFNRV9wcm9mX20zYyIsICJBTUVfcHJvZl9tNCIsICJBTUVfc3ZwdWJzX20zYiIsICJBTUVfc3ZwdWJzX20zYyIsICJBTUVfc3ZwdWJzX200IiwgIkFNRV93b21zdl9tM2MiLCAiQU1FX3dvbXN2X200IiwgIkFNRV9nZW5kZXJ3b21zdl9tNCIpDQoNCmRmLmNvaDEkdCA8LSAoZGYuY29oMSRvcmlnaW5hbCAvIGRmLmNvaDEkc2UpDQoNCnJvdW5kKGRmLmNvaDEsIDUpDQoNCmRmLmNvaDEgPC0gZGYuY29oMVszLF0gIyBzZWxlY3Qgb25seSBnZW5kZXIgTTMNCg0KZGYuY29oMSAlPiUNCiAgbXV0YXRlKGFtZSA9IG9yaWdpbmFsLCANCiAgICAgICAgIGNvaG9ydCA9ICJDb2hvcnQgMSIpICU+JQ0KICBzZWxlY3QoYW1lLCBzZSwgY29ob3J0KSAtPiBhbWVzMQ0KDQoNCm9yaWdpbmFsIDwtIGNvaDIkdDANCmJpYXMgPC0gY29sTWVhbnMoY29oMiR0KSAtIGNvaDIkdDANCnNlIDwtIGFwcGx5KGNvaDIkdCwgMiwgc2QpDQoNCmRmLmNvaDIgPC0gZGF0YS5mcmFtZShvcmlnaW5hbD1vcmlnaW5hbCwgYmlhcz1iaWFzLCBzZT1zZSkNCg0Kcm93Lm5hbWVzKGRmLmNvaDIpIDwtIGMoIkFNRV9nZW5kZXJfbTEiLCAiQU1FX2dlbmRlcl9tMiIsICJBTUVfZ2VuZGVyX20zYSIsICJBTUVfZ2VuZGVyX20zYiIsICJBTUVfZ2VuZGVyX20zYyIsICJBTUVfZ2VuZGVyX200IiwgIkFNRV90aW1lX20xIiwgIkFNRV90aW1lX20yIiwgIkFNRV90aW1lX20zYSIsICJBTUVfdGltZV9tM2IiLCAiQU1FX3RpbWVfbTNjIiwgIkFNRV90aW1lX200IiwgIkFNRV8yMDE1X20yIiwgIkFNRV8yMDE1X20zYSIsICJBTUVfMjAxNV9tM2IiLCAiQU1FXzIwMTVfbTNjIiwgIkFNRV8yMDE1X200IiwgIkFNRV9nZW5kZXIyMDE1X20yIiwgIkFNRV9nZW5kZXIyMDE1X20zYSIsICJBTUVfZ2VuZGVyMjAxNV9tM2IiLCAiQU1FX2dlbmRlcjIwMTVfbTNjIiwgIkFNRV9nZW5kZXIyMDE1X200IiwgIkFNRV9jcHVic19tM2EiLCAiQU1FX2NwdWJzX20zYiIsICJBTUVfY3B1YnNfbTNjIiwgIkFNRV9jcHVic19tNCIsICJBTUVfcHB1YnNfbTNhIiwgIkFNRV9wcHVic19tM2IiLCAiQU1FX3BwdWJzX20zYyIsICJBTUVfcHB1YnNfbTQiLCAiQU1FX25ldHNpemVfbTNiIiwgIkFNRV9uZXRzaXplX20zYyIsICJBTUVfbmV0c2l6ZV9tNCIsICJBTUVfcHJvZl9tM2IiLCAiQU1FX3Byb2ZfbTNjIiwgIkFNRV9wcm9mX200IiwgIkFNRV9zdnB1YnNfbTNiIiwgIkFNRV9zdnB1YnNfbTNjIiwgIkFNRV9zdnB1YnNfbTQiLCAiQU1FX3dvbXN2X20zYyIsICJBTUVfd29tc3ZfbTQiLCAiQU1FX2dlbmRlcndvbXN2X200IikNCg0KZGYuY29oMiR0IDwtIChkZi5jb2gyJG9yaWdpbmFsIC8gZGYuY29oMiRzZSkNCg0Kcm91bmQoZGYuY29oMiwgNSkgIA0KDQpkZi5jb2gyIDwtIGRmLmNvaDJbMyxdDQoNCmRmLmNvaDIgJT4lDQogIG11dGF0ZShhbWUgPSBvcmlnaW5hbCwgDQogICAgICAgICBjb2hvcnQgPSAiQ29ob3J0IDIiKSAlPiUNCiAgc2VsZWN0KGFtZSwgc2UsIGNvaG9ydCkgLT4gYW1lczINCg0KDQpvcmlnaW5hbCA8LSBjb2gzJHQwDQpiaWFzIDwtIGNvbE1lYW5zKGNvaDMkdCkgLSBjb2gzJHQwDQpzZSA8LSBhcHBseShjb2gzJHQsIDIsIHNkKQ0KDQpkZi5jb2gzIDwtIGRhdGEuZnJhbWUob3JpZ2luYWw9b3JpZ2luYWwsIGJpYXM9Ymlhcywgc2U9c2UpDQoNCg0Kcm93Lm5hbWVzKGRmLmNvaDMpIDwtIGMoIkFNRV9nZW5kZXJfbTEiLCAiQU1FX2dlbmRlcl9tMiIsICJBTUVfZ2VuZGVyX20zYSIsICJBTUVfZ2VuZGVyX20zYiIsICJBTUVfZ2VuZGVyX20zYyIsICJBTUVfZ2VuZGVyX200IiwgIkFNRV90aW1lX20xIiwgIkFNRV90aW1lX20yIiwgIkFNRV90aW1lX20zYSIsICJBTUVfdGltZV9tM2IiLCAiQU1FX3RpbWVfbTNjIiwgIkFNRV90aW1lX200IiwgIkFNRV9jcHVic19tM2EiLCAiQU1FX2NwdWJzX20zYiIsICJBTUVfY3B1YnNfbTNjIiwgIkFNRV9jcHVic19tNCIsICJBTUVfcHB1YnNfbTNhIiwgIkFNRV9wcHVic19tM2IiLCAiQU1FX3BwdWJzX20zYyIsICJBTUVfcHB1YnNfbTQiLCAiQU1FX25ldHNpemVfbTNiIiwgIkFNRV9uZXRzaXplX20zYyIsICJBTUVfbmV0c2l6ZV9tNCIsICJBTUVfcHJvZl9tM2IiLCAiQU1FX3Byb2ZfbTNjIiwgIkFNRV9wcm9mX200IiwgIkFNRV9zdnB1YnNfbTNiIiwgIkFNRV9zdnB1YnNfbTNjIiwgIkFNRV9zdnB1YnNfbTQiLCAiQU1FX3dvbXN2X20zYyIsICJBTUVfd29tc3ZfbTQiLCAiQU1FX2dlbmRlcndvbXN2X200IikNCg0KZGYuY29oMyR0IDwtIChkZi5jb2gzJG9yaWdpbmFsIC8gZGYuY29oMyRzZSkNCg0Kcm91bmQoZGYuY29oMywgNSkNCg0KZGYuY29oMyA8LSBkZi5jb2gzWzMsXQ0KDQpkZi5jb2gzICU+JQ0KICBtdXRhdGUoYW1lID0gb3JpZ2luYWwsIA0KICAgICAgICAgY29ob3J0ID0gIkNvaG9ydCAzIikgJT4lDQogIHNlbGVjdChhbWUsIHNlLCBjb2hvcnQpIC0+IGFtZXMzDQoNCkFNRXMgPC0gZG8uY2FsbCgicmJpbmQiLCBsaXN0KGFtZXMxLCBhbWVzMiwgYW1lczMpKQ0KDQpBTUVzJGNvdmFyaWF0ZSA8LSBjKCJXb21hbiAoY29oLiAxOTk3LTIwMDYpIiwgIldvbWFuIChjb2guIDIwMDctMjAxNCkiLCAiV29tYW4gKGNvaC4gMjAxNS0yMDE5KSIpDQoNCg0KYGBgDQoNCg0KYGBge3J9DQoNCmdncGxvdChBTUVzLCBhZXMoeT1hbWUsIHg9Y292YXJpYXRlKSkgKw0KICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQ9MCwgY29sb3I9ImJyb3duNCIsIGxpbmV3aWR0aD0uNSkgKw0KICBnZW9tX3BvaW50KCkgKw0KICBnZW9tX3BvaW50cmFuZ2UoYWVzKHltaW4gPSBhbWUgLSAxLjk2KnNlLCB5bWF4ID0gYW1lICsgMS45NipzZSksIHNpemU9MC4xKSArDQogIHNjYWxlX3lfY29udGludW91cyhsaW1pdHMgPSBjKC0wLjAwNCwgMC4wMDgpLCBicmVha3M9c2VxKC0wLjAwNSwgMC4wMTAsIGJ5ID0gMC4wMDUpKSArDQogIGxhYnMoeT0iQU1FIikgKw0KICB0aGVtZShheGlzLnRpdGxlLnggPSBlbGVtZW50X2JsYW5rKCksDQogICAgICAgIGF4aXMudGV4dC54ID0gZWxlbWVudF9tYXJrZG93bihhbmdsZT0yMCwgaGp1c3Q9MSwgdmp1c3Q9MSksDQogICAgICAgIGxlZ2VuZC5wb3NpdGlvbiA9ICJub25lIiwNCiAgICAgICAgc3RyaXAudGV4dC54ID0gZWxlbWVudF9tYXJrZG93bihhbmdsZT0wLCBzaXplPTksIGZhY2U9ImJvbGQiKSwNCiAgICAgICAgc3RyaXAuYmFja2dyb3VuZCA9IGVsZW1lbnRfYmxhbmsoKSwNCiAgICAgICAgcGFuZWwuYmFja2dyb3VuZCA9IGVsZW1lbnRfcmVjdChmaWxsPSJ3aGl0ZSIpLA0KICAgICAgICBwYW5lbC5zcGFjaW5nID0gdW5pdCgwLjEsICdwb2ludHMnKSwNCiAgICAgICAgcGFuZWwuZ3JpZC5tYWpvci55ID0gZWxlbWVudF9saW5lKGNvbG9yPSIjQzljOWM5IiwgbGluZXdpZHRoPTAuMiwgbGluZXR5cGU9MyksDQogICAgICAgIHBhbmVsLmdyaWQubWlub3I9ZWxlbWVudF9ibGFuaygpLA0KICAgICAgICBwYW5lbC5ncmlkLm1ham9yLng9ZWxlbWVudF9ibGFuaygpKQ0KDQpgYGANCg0K</div>
 <style>
   .center {
     text-align: center;

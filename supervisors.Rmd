@@ -77,6 +77,8 @@ fpackage.check <- function(packages) {
 
 - `stringi`: For string manipulations
 
+- `tidyr`: For pivoting from wide to long & vice versa
+
 
 ```{r, results='hide'}
 
@@ -110,7 +112,10 @@ We use four processed datasets and one raw dataset
     - name of dataset: `gender` 
 
 * [genderizer](https://github.com/ammulders/amatteroftime/data/processed/genderizer.rda): web scraped gender data for the first names in the example data, from GenderizeR global, Morocco, Turkey and Netherlands
-    - name of dataset: `genderizer`  
+    - name of dataset: `genderizer`
+    
+* [pubs_sv](data/processed/pubs_sv.rda): web scraped OpenAlex publication/citation data
+    - name of dataset: `pubs_sv`
 
 
 ```{r files, eval=TRUE}
@@ -125,6 +130,7 @@ load(file = "data/processed/gender.rda")
 
 load(file = "data/processed/genderizer.rda")
 
+load(file = "./data/processed/pubs_sv.rda")
 
 ```
 
@@ -209,7 +215,7 @@ phdgender$supervisor10 <- trimws(phdgender$supervisor10)
 phdgender$supervisor11 <- trimws(phdgender$supervisor11)
 
 
-phdgender <- pivot_longer(phdgender, cols=c(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisor6, supervisor7, supervisor8, supervisor9, supervisor10, supervisor11), names_to="sv_n", values_to="supervisor")
+phdgender <- tidyr::pivot_longer(phdgender, cols=c(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisor6, supervisor7, supervisor8, supervisor9, supervisor10, supervisor11), names_to="sv_n", values_to="supervisor")
 
 
 # adding a phd-supervisor ID variable
@@ -325,7 +331,7 @@ supervisors %>%
 # fill first names for supervisors in case the name format varies per PhD (e.g. some have only initials, some have name and initials) 
 supervisors %>%
   group_by(sv_ln, sv_ini) %>%
-  fill(sv_fn, .direction="downup") -> supervisors
+  tidyr::fill(sv_fn, .direction="downup") -> supervisors
 
 
 ```
@@ -371,8 +377,8 @@ supervisors_nomatch <- left_join(supervisors_nomatch, full, by=c("sv_ln"="lastna
 
 supervisors_nomatch %>%
   group_by(id_phd_sv) %>%
-  fill(firstname_pr, .direction="downup") %>%
-  fill(id_pr, .direction="downup") %>%
+  tidyr::fill(firstname_pr, .direction="downup") %>%
+  tidyr::fill(id_pr, .direction="downup") %>%
   slice_head() -> supervisors_nomatch
 
 
@@ -679,7 +685,7 @@ teamgender %>%
 teamgender$prop <- teamgender$n / teamgender$teamsize # calculating the share of m/f/missing gender supervisors
 
 
-teamgender <- pivot_wider(teamgender, id_cols="id_phd", names_from = "sv_gender", names_prefix = "prop", values_from = "prop") # reshaping the dataframe so that one phd has one row again
+teamgender <- tidyr::pivot_wider(teamgender, id_cols="id_phd", names_from = "sv_gender", names_prefix = "prop", values_from = "prop") # reshaping the dataframe so that one phd has one row again
 
 # set NA values to 0
 teamgender$propmen <- ifelse(is.na(teamgender$propmen), 0, teamgender$propmen) # some PhDs have no men on their supervision team
@@ -721,6 +727,83 @@ phd_supervisors <- subset(phd_supervisors, select=-supervisors)
 supervisors <- subset(supervisors, select=-supervisors)
 
 ```
+
+
+
+
+# Adding no. pubs / citations of supervisor
+
+Scraping and cleaning of this data in `supervisors-pubs.rmd`
+
+```{r}
+
+
+supervisors %>%
+  left_join(pubs_sv, by="id_phd_sv") -> supervisors 
+
+# calculating the mean number of publications and citations at the level of phds, then log-transforming it
+supervisors %>%
+  group_by(id_phd) %>%
+  summarise(npubs_sv = log(mean(pubs_sv, na.rm=TRUE)+1),
+            ncites_sv = log(mean(cites_sv, na.rm=TRUE)+1)) -> teampubs
+
+
+# adding the variables to the dataframe
+phd_supervisors <- phd_supervisors %>% left_join(teampubs, by=c("id"="id_phd"))
+
+
+```
+
+
+
+
+# Next, we normalize the publications + citation counts
+
+We deactivated this line of code for this replication example, because it would all be 0 due to there being only one observation per PhD year. But we still show the code below, which we used to compute the normalized publication count.
+
+
+```{r, eval=FALSE}
+
+# Calculate mean publication counts/cites per PhD year
+phdgender %>%
+  select(id, phd_year) %>%
+  right_join(phd_supervisors, by="id") %>%
+  group_by(phd_year) %>%
+  summarise(teamsize = mean(teamsize, na.rm=TRUE),
+            prof2p = mean(prof2p, na.rm=TRUE),
+            wom_sv1 = mean(wom_sv1, na.rm=TRUE),
+            npubs = mean(npubs_sv, na.rm=TRUE),
+            ncites = mean(ncites_sv, na.rm=TRUE)) -> stats_by_cohort
+
+
+# adding phd year to our original dataframe
+phdgender %>%
+  select(id, phd_year) %>%
+  right_join(phd_supervisors, by="id") -> phd_supervisors
+
+# subtracting average counts by PhD year from the observed counts
+stats_by_cohort %>%
+  select(phd_year, npubs, ncites) %>%
+  right_join(phd_supervisors, by=c("phd_year")) %>%
+  mutate(npubs_sv_norm = npubs_sv - npubs,
+         ncites_sv_norm = ncites_sv - ncites) %>%
+  select(-phd_year) -> phd_supervisors
+
+
+```
+
+
+
+# One row per PhD
+
+```{r}
+
+phd_supervisors %>%
+  distinct(id, .keep_all = TRUE) -> phd_supervisors
+
+
+```
+
 
 
 
