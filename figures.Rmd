@@ -78,31 +78,31 @@ We use several results objects:
     - name of dataset: `veni_ppf`
     - used here to show Veni hazard rates per year after obtaining doctorate
 
-* [20250506_ame.rda](https://github.com/ammulders/amatteroftime/results/cont_cohort/20250506_ame.rda): results of our main analyses with bootstrapped standard errors
+* [20250605_ame.rda](https://github.com/ammulders/amatteroftime/results/cont_cohort/20250506_ame.rda): results of our main analyses with bootstrapped standard errors
 
-* [20250507_c1-3.rda](https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20250507_c1.rda): results of our models split out by cohort
+* [20250610_c1-3.rda](https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20250507_c1.rda): results of our models split out by cohort
 
 
 
 ```{r files, eval=TRUE}
 
 
-load(file="./results/cont_cohort/20250506_ame.rda")
+load(file="./results/cont_cohort/20250605_ame.rda")
 AMEs <- x
 
 load("./data/processed/veni_ppf.rda")
 
 
 
-load(file = "./results/robustness/bycohort/20250507_c1.rda")
+load(file = "./results/robustness/bycohort/20250609_c1.rda")
 coh1 <- x
 rm(x)
 
-load(file = "./results/robustness/bycohort/20250507_c2.rda")
+load(file = "./results/robustness/bycohort/20250610_c2.rda")
 coh2 <- x
 rm(x)
 
-load(file = "./results/robustness/bycohort/20250507_c3.rda")
+load(file = "./results/robustness/bycohort/20250610_c3.rda")
 coh3 <- x
 rm(x)
 
@@ -153,11 +153,12 @@ veni_ppf %>%
 
 
 
-
 ## Figure 2: Model coefficients
 
 
 Loading in the model output and creating dataframes for each model
+
+
 
 
 ```{r}
@@ -166,11 +167,15 @@ original <- AMEs$t0
 bias <- colMeans(AMEs$t) - AMEs$t0
 se <- apply(AMEs$t, 2, sd)
 
+
 AMEs.df <- data.frame(original=original, bias=bias, se=se)
-row.names(AMEs.df) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_cohort_m2", "AME_cohort_m3a", "AME_cohort_m3b", "AME_cohort_m3c", "AME_cohort_m4", "AME_gendercohort_m2", "AME_gendercohort_m3a", "AME_gendercohort_m3b", "AME_gendercohort_m3c", "AME_gendercohort_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+row.names(AMEs.df) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_cohort_m2", "AME_cohort_m3a", "AME_cohort_m3b", "AME_cohort_m3c", "AME_cohort_m4", "AME_gendercohort_m2", "AME_gendercohort_m3a", "AME_gendercohort_m3b", "AME_gendercohort_m3c", "AME_gendercohort_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8",  "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
-AMEs$t <- (AMEs$original / AMEs$se)
+# remove the time rows, too many to include (8 dummies per model)
+rows_to_remove <- grep("^AME_time_m(1|2|3a|3b|3c|4)_[0-8]$", rownames(AMEs.df))
+AMEs.df <- AMEs.df[-rows_to_remove, ]
 
+AMEs.df$t <- (AMEs.df$original / AMEs.df$se)
 
 ```
 
@@ -201,7 +206,6 @@ ames$cov2 <- str_remove(rownames(ames), "_m[:digit:][abc]?")
 ames$covariate <- ""
 ames$covariate <- ifelse(ames$cov2=="AME_gender", "Woman **(H1)**", ames$covariate)
 ames$covariate <- ifelse(ames$cov2=="AME_cohort", "PhD cohort **(H2a)**", ames$covariate)
-ames$covariate <- ifelse(ames$cov2=="AME_time", "Time in years since PhD", ames$covariate)
 ames$covariate <- ifelse(ames$cov2=="AME_gendercohort", "PhD cohort * Woman **(H2b)**", ames$covariate)
 ames$covariate <- ifelse(ames$cov2=="AME_cpubs", "Publications: cumulative", ames$covariate)
 ames$covariate <- ifelse(ames$cov2=="AME_ppubs", "Publications: previous year", ames$covariate)
@@ -211,7 +215,7 @@ ames$covariate <- ifelse(ames$cov2=="AME_svpubs", "Supervision team: publication
 ames$covariate <- ifelse(ames$cov2=="AME_womsv", "Supervision team: 1+ woman **(H4a)**", ames$covariate)
 ames$covariate <- ifelse(ames$cov2=="AME_genderwomsv", "Woman * 1+ woman **(H4b)**", ames$covariate)
 
-ames$covariate <- factor(ames$covariate, levels=c("Woman **(H1)**", "PhD cohort **(H2a)**", "Time in years since PhD", "PhD cohort * Woman **(H2b)**", "Supervision team: size **(H3a)**", "Supervision team: 2+ professors **(H3b)**", "Supervision team: publications **(H3c)**", "Supervision team: 1+ woman **(H4a)**", "Woman * 1+ woman **(H4b)**", "Publications: cumulative", "Publications: previous year"))
+ames$covariate <- factor(ames$covariate, levels=c("Woman **(H1)**", "PhD cohort **(H2a)**", "PhD cohort * Woman **(H2b)**", "Supervision team: size **(H3a)**", "Supervision team: 2+ professors **(H3b)**", "Supervision team: publications **(H3c)**", "Supervision team: 1+ woman **(H4a)**", "Woman * 1+ woman **(H4b)**", "Publications: cumulative", "Publications: previous year"))
 
 ames <- ames %>% mutate(model = ifelse(model=="M4", "M6", model),
                         model = ifelse(model=="M3A", "M3", model),
@@ -224,6 +228,25 @@ ames$model <- factor(ames$model, levels=c("M1", "M2", "M3", "M4", "M5", "M6"))
 ames <- ames %>% arrange(covariate, model)
 
 ```
+
+
+
+
+
+```{r}
+
+ames %>%
+  mutate(ymin = ame - 1.96*se,
+         ymax = ame + 1.96*se) -> check_minmax
+
+
+
+min(round(check_minmax$ymin, 3))
+max(round(check_minmax$ymax, 3))
+
+```
+
+
 
 
 
@@ -262,7 +285,8 @@ se <- apply(coh1$t, 2, sd)
 
 df.coh1 <- data.frame(original=original, bias=bias, se=se)
 
-row.names(df.coh1) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+row.names(df.coh1) <- c(c('AME_gender_m1', 'AME_gender_m2', 'AME_gender_m3a', 'AME_gender_m3b', 'AME_gender_m3c', 'AME_gender_m4', "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8", 'AME_cpubs_m3a', 'AME_cpubs_m3b', 'AME_cpubs_m3c', 'AME_cpubs_m4', 'AME_ppubs_m3a', 'AME_ppubs_m3b', 'AME_ppubs_m3c', 'AME_ppubs_m4', 'AME_netsize_m3b', 'AME_netsize_m3c', 'AME_netsize_m4', 'AME_prof_m3b', 'AME_prof_m3c', 'AME_prof_m4', 'AME_svpubs_m3b', 'AME_svpubs_m3c', 'AME_svpubs_m4', 'AME_womsv_m3c', 'AME_womsv_m4', 'AME_genderwomsv_m4'))
+
 
 df.coh1$t <- (df.coh1$original / df.coh1$se)
 
@@ -282,7 +306,8 @@ se <- apply(coh2$t, 2, sd)
 
 df.coh2 <- data.frame(original=original, bias=bias, se=se)
 
-row.names(df.coh2) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_2015_m2", "AME_2015_m3a", "AME_2015_m3b", "AME_2015_m3c", "AME_2015_m4", "AME_gender2015_m2", "AME_gender2015_m3a", "AME_gender2015_m3b", "AME_gender2015_m3c", "AME_gender2015_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+row.names(df.coh2) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8", "AME_2015_m2", "AME_2015_m3a", "AME_2015_m3b", "AME_2015_m3c", "AME_2015_m4", "AME_gender2015_m2", "AME_gender2015_m3a", "AME_gender2015_m3b", "AME_gender2015_m3c", "AME_gender2015_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+
 
 df.coh2$t <- (df.coh2$original / df.coh2$se)
 
@@ -302,8 +327,9 @@ se <- apply(coh3$t, 2, sd)
 
 df.coh3 <- data.frame(original=original, bias=bias, se=se)
 
+row.names(df.coh3) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5","AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
 
-row.names(df.coh3) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1", "AME_time_m2", "AME_time_m3a", "AME_time_m3b", "AME_time_m3c", "AME_time_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+
 
 df.coh3$t <- (df.coh3$original / df.coh3$se)
 
@@ -326,14 +352,29 @@ AMEs$covariate <- c("Woman (coh. 1997-2006)", "Woman (coh. 2007-2014)", "Woman (
 
 ```{r}
 
+AMEs %>%
+  mutate(ymin = ame - 1.96*se,
+         ymax = ame + 1.96*se) -> check_minmax2
+
+
+
+min(round(check_minmax2$ymin, 3))
+max(round(check_minmax2$ymax, 3))
+
+```
+
+
+```{r}
+
 ggplot(AMEs, aes(y=ame, x=covariate)) +
   geom_hline(yintercept=0, color="brown4", linewidth=.5) +
   geom_point() +
   geom_pointrange(aes(ymin = ame - 1.96*se, ymax = ame + 1.96*se), size=0.1) +
-  scale_y_continuous(limits = c(-0.004, 0.008), breaks=seq(-0.005, 0.010, by = 0.005)) +
+  scale_y_continuous(limits = c(-0.005, 0.008), breaks=seq(-0.005, 0.010, by = 0.005)) +
   labs(y="AME") +
   theme(axis.title.x = element_blank(),
-        axis.text.x = element_markdown(angle=20, hjust=1, vjust=1),
+        axis.text.x = element_markdown(angle=20, hjust=1, vjust=1, size=11),
+        axis.text.y = element_text(size=11),
         legend.position = "none",
         strip.text.x = element_markdown(angle=0, size=9, face="bold"),
         strip.background = element_blank(),
