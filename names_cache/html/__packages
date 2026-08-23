@@ -1,5 +1,3 @@
-knitr
-formatR
 tidyverse
 ggplot2
 tibble
@@ -11,11 +9,9 @@ stringr
 forcats
 lubridate
 stringi
-kableExtra
 boot
-ggpubr
+kableExtra
+knitr
 ggtext
-gridtext
-visreg
-casebase
 rrapply
+formatR

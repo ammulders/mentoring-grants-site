@@ -19,7 +19,6 @@ library(knitr)
 library(formatR)
 opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=FALSE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"), cache.lazy = FALSE)
 options(width = 100)
-rgl::setupKnitr()
 
 colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
 

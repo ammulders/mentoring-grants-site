@@ -10,4 +10,5 @@ forcats
 lubridate
 stringi
 boot
+kableExtra
 knitr
