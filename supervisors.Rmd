@@ -25,12 +25,6 @@ colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", co
 
 ```
 
-```{r klippy, echo=FALSE, include=TRUE}
-
-klippy::klippy(position = c('top', 'right'))
-
-```
-
 
 
 
@@ -149,57 +143,69 @@ load(file = "./data/processed/pubs_sv.rda")
 
 # create one object for each supervisor
 
+# str_remove()/str_remove_all() error (or, for the _all variant, warn) when
+# `pattern` contains NA or "" per row. Throughout this block, a NA/"" pattern
+# always means "nothing to remove here" for that row, so this helper swaps
+# those out for a regex that never matches -- a true no-op removal -- instead
+# of coalescing to "" (which is fine for str_remove but still triggers a
+# warning in str_remove_all when a row's pattern is genuinely "").
+safe_str_remove <- function(string, pattern, all = FALSE) {
+  never_match <- "(?!)"
+  pattern <- ifelse(is.na(pattern) | pattern == "", never_match, pattern)
+  if (all) str_remove_all(string, pattern) else str_remove(string, pattern)
+}
+
 # supervisor 1 and 2
 phdgender$supervisor1 <- str_remove(phdgender$supervisors, ";.*") # delete everything after the first ;
-phdgender$supervisor2 <- str_remove_all(phdgender$supervisors, phdgender$supervisor1) # remove supervisor1 from the supervisor object to get supervisors 2-k
+phdgender$supervisor2 <- safe_str_remove(phdgender$supervisors, phdgender$supervisor1, all = TRUE) # remove supervisor1 from the supervisor object to get supervisors 2-k
 phdgender$supervisor2 <- str_remove_all(phdgender$supervisor2, "^(\\s)?;\\s") # remove ; at the beginning of this object
 phdgender$supervisor2 <- ifelse(phdgender$supervisor2=="" | phdgender$supervisor2==" ", NA, phdgender$supervisor2)
 
 # supervisor 3
 phdgender$supervisor3 <- str_extract(phdgender$supervisor2, ";.*$") # get supervisor 3 by extracting everything after ; in supervisor 2
-phdgender$supervisor2 <- ifelse(!is.na(phdgender$supervisor3), str_remove(phdgender$supervisor2, phdgender$supervisor3), phdgender$supervisor2) 
+phdgender$supervisor2 <- safe_str_remove(phdgender$supervisor2, phdgender$supervisor3)
 # remove supervisor 3 from the supervisor 2 object, but only if there is a third supervisor present
 phdgender$supervisor3 <- str_extract(phdgender$supervisor3, "[:upper:].*") # remove ; at the beginning of this object
 
 # supervisor 4
 phdgender$supervisor4 <- str_extract(phdgender$supervisor3, ";.*$") # same procedure as for supervisor 3 from now on
-phdgender$supervisor3 <- ifelse(!is.na(phdgender$supervisor4), str_remove(phdgender$supervisor3, phdgender$supervisor4), phdgender$supervisor3) 
+phdgender$supervisor3 <- safe_str_remove(phdgender$supervisor3, phdgender$supervisor4)
 phdgender$supervisor4 <- str_extract(phdgender$supervisor4, "[:upper:].*")
 
 # supervisor 5
-phdgender$supervisor5 <- str_extract(phdgender$supervisor4, ";.*$") 
-phdgender$supervisor4 <- ifelse(!is.na(phdgender$supervisor5), str_remove(phdgender$supervisor4, phdgender$supervisor5), phdgender$supervisor4) 
-phdgender$supervisor5 <- str_extract(phdgender$supervisor5, "[:upper:].*") 
+phdgender$supervisor5 <- str_extract(phdgender$supervisor4, ";.*$")
+phdgender$supervisor4 <- safe_str_remove(phdgender$supervisor4, phdgender$supervisor5)
+phdgender$supervisor5 <- str_extract(phdgender$supervisor5, "[:upper:].*")
 
 # supervisor 6
-phdgender$supervisor6 <- str_extract(phdgender$supervisor5, ";.*$") 
-phdgender$supervisor5 <- ifelse(!is.na(phdgender$supervisor6),str_remove(phdgender$supervisor5, phdgender$supervisor6), phdgender$supervisor5) 
-phdgender$supervisor6 <- str_extract(phdgender$supervisor6, "[:upper:].*") 
+phdgender$supervisor6 <- str_extract(phdgender$supervisor5, ";.*$")
+phdgender$supervisor5 <- safe_str_remove(phdgender$supervisor5, phdgender$supervisor6)
+phdgender$supervisor6 <- str_extract(phdgender$supervisor6, "[:upper:].*")
 
 # supervisor 7
-phdgender$supervisor7 <- str_extract(phdgender$supervisor6, ";.*$") 
-phdgender$supervisor6 <- ifelse(!is.na(phdgender$supervisor7),str_remove(phdgender$supervisor6, phdgender$supervisor7), phdgender$supervisor6) 
-phdgender$supervisor7 <- str_extract(phdgender$supervisor7, "[:upper:].*") 
+phdgender$supervisor7 <- str_extract(phdgender$supervisor6, ";.*$")
+phdgender$supervisor6 <- safe_str_remove(phdgender$supervisor6, phdgender$supervisor7)
+phdgender$supervisor7 <- str_extract(phdgender$supervisor7, "[:upper:].*")
 
 # supervisor 8
-phdgender$supervisor8 <- str_extract(phdgender$supervisor7, ";.*$") 
-phdgender$supervisor7 <- ifelse(!is.na(phdgender$supervisor8),str_remove(phdgender$supervisor7, phdgender$supervisor8), phdgender$supervisor7) 
-phdgender$supervisor8 <- str_extract(phdgender$supervisor8, "[:upper:].*") 
+phdgender$supervisor8 <- str_extract(phdgender$supervisor7, ";.*$")
+phdgender$supervisor7 <- safe_str_remove(phdgender$supervisor7, phdgender$supervisor8)
+phdgender$supervisor8 <- str_extract(phdgender$supervisor8, "[:upper:].*")
 
 # supervisor 9
-phdgender$supervisor9 <- str_extract(phdgender$supervisor8, ";.*$") 
-phdgender$supervisor8 <- ifelse(!is.na(phdgender$supervisor9),str_remove(phdgender$supervisor8, phdgender$supervisor9), phdgender$supervisor8) 
-phdgender$supervisor9 <- str_extract(phdgender$supervisor9, "[:upper:].*") 
+phdgender$supervisor9 <- str_extract(phdgender$supervisor8, ";.*$")
+phdgender$supervisor8 <- safe_str_remove(phdgender$supervisor8, phdgender$supervisor9)
+phdgender$supervisor9 <- str_extract(phdgender$supervisor9, "[:upper:].*")
 
 # supervisor 10
-phdgender$supervisor10 <- str_extract(phdgender$supervisor9, ";.*$") 
-phdgender$supervisor9 <- ifelse(!is.na(phdgender$supervisor10), str_remove(phdgender$supervisor9, phdgender$supervisor10), phdgender$supervisor9) 
-phdgender$supervisor10 <- str_extract(phdgender$supervisor10, "[:upper:].*") 
+phdgender$supervisor10 <- str_extract(phdgender$supervisor9, ";.*$")
+phdgender$supervisor9 <- safe_str_remove(phdgender$supervisor9, phdgender$supervisor10)
+phdgender$supervisor10 <- str_extract(phdgender$supervisor10, "[:upper:].*")
 
 # supervisor 11
-phdgender$supervisor11 <- str_extract(phdgender$supervisor10, ";.*$") 
-phdgender$supervisor10 <- ifelse(!is.na(phdgender$supervisor11),str_remove(phdgender$supervisor10, phdgender$supervisor11), phdgender$supervisor10) 
-phdgender$supervisor11 <- str_extract(phdgender$supervisor11, "[:upper:].*") 
+phdgender$supervisor11 <- str_extract(phdgender$supervisor10, ";.*$")
+phdgender$supervisor10 <- safe_str_remove(phdgender$supervisor10, phdgender$supervisor11)
+phdgender$supervisor11 <- str_extract(phdgender$supervisor11, "[:upper:].*")
 
 # trim whitespaces
 phdgender$supervisor1 <- trimws(phdgender$supervisor1)
@@ -666,6 +672,50 @@ summary(as.factor(teamsize$teamsize))
 
 ```
 
+Combining team size and professor count (robustness check: replacing individual supervision-team predictors with combined variables)
+
+```{r}
+
+team_comp <- teamsize %>%
+  left_join(sumprof, by = "id_phd")
+
+table(team_comp$teamsize, team_comp$sumprof)
+
+# Cross-tab shows sumprof==0 occurring for every teamsize, which shouldn't be
+# possible in practice (the promotor must formally hold a professorship), so
+# those rows are a data-quality gap rather than a genuine "0 professors" team
+# -- they're merged into the next-lowest professor count below.
+#
+# From teamsize 4 onward, exact professor counts get too sparse to use
+# directly (e.g. teamsize 5 with 5 professors: n=129; teamsize 6 with 6
+# professors: n=38), so those are grouped into size bands (4-6 vs. 7+) split
+# by professor *share* instead of exact count; teamsize 7+ (n=505 combined)
+# is left as a single catch-all since it's too thin to split further.
+team_comp <- team_comp %>%
+  mutate(
+    prof_share = sumprof / teamsize,
+    team_prof_size = case_when(
+      teamsize == 1                         ~ "1 professor",
+      teamsize == 2 & sumprof >= 2          ~ "2 professors",
+      teamsize == 2 & sumprof <  2          ~ "1 professor, 1 non-professor",
+      teamsize == 3 & sumprof == 3          ~ "3 professors",
+      teamsize == 3 & sumprof == 2          ~ "2 professors, 1 non-professor",
+      teamsize == 3 & sumprof <  2          ~ "1 professor, 2 non-professors",
+      teamsize %in% 4:6 & prof_share >= 0.5 ~ "4-6 team, majority professors",
+      teamsize %in% 4:6 & prof_share <  0.5 ~ "4-6 team, minority professors",
+      teamsize >= 7                         ~ "7+ team",
+      TRUE ~ NA_character_
+    )
+  )
+
+summary(as.factor(team_comp$team_prof_size))
+
+team_comp <- subset(team_comp, select = c("id_phd", "team_prof_size"))
+
+summary(as.factor(team_comp$team_prof_size))
+
+```
+
 
 Percentage of women in the team
 
@@ -705,6 +755,32 @@ teamgender$wom_sv1 <- ifelse(teamgender$propwomen==0, 0, 1)
 
 ```
 
+Combining gender and professor status (robustness check)
+
+```{r}
+
+# per-supervisor flag: is this supervisor a woman AND a professor?
+supervisors$fem_prof <- ifelse(supervisors$sv_gender == "women" & supervisors$prof == 1, 1, 0)
+
+supervisors %>%
+  group_by(id_phd) %>%
+  summarise(any_fem_prof = max(fem_prof, na.rm = TRUE)) -> team_femprof
+
+team_gender_prof <- teamgender %>%
+  select(id_phd, wom_sv1) %>%
+  left_join(team_femprof, by = "id_phd") %>%
+  mutate(team_gender_prof = case_when(
+    wom_sv1 == 0 ~ "no women supervisors",
+    wom_sv1 == 1 & any_fem_prof == 0 ~ "1+ woman (no professor)",
+    any_fem_prof == 1 ~ "1+ woman professor"
+  ))
+
+team_gender_prof <- subset(team_gender_prof, select = c("id_phd", "team_gender_prof"))
+
+summary(as.factor(team_gender_prof$team_gender_prof))
+
+```
+
 
 
 Adding both variables to the PhD dataframe
@@ -721,6 +797,10 @@ phd_supervisors <- phd_supervisors[!duplicated(phd_supervisors$id),]
 phd_supervisors <- left_join(phd_supervisors, teamsize, by=c("id"="id_phd"))
 phd_supervisors <- left_join(phd_supervisors, teamgender, by=c("id"="id_phd"))
 phd_supervisors <- left_join(phd_supervisors, professorsteam, by=c("id"="id_phd"))
+
+# adding combined team-composition variables
+phd_supervisors <- left_join(phd_supervisors, team_comp, by=c("id"="id_phd"))
+phd_supervisors <- left_join(phd_supervisors, team_gender_prof, by=c("id"="id_phd"))
 
 # removing the supervisors string, as it is already present in the base data
 phd_supervisors <- subset(phd_supervisors, select=-supervisors)
@@ -810,7 +890,7 @@ phd_supervisors %>%
 
 # saving
 
-```{r, eval=FALSE}
+```{r}
 
 save(supervisors, file="./data/processed/supervisors.rda") # saving the data in the format of one row per supervisor
 

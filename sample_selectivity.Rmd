@@ -1,0 +1,724 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: sample selectivity analyses"
+date: "Last compiled on `r Sys.Date()`"
+output: 
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+    
+---
+
+
+# Purpose of this appendix
+
+Our sample of Veni laureates is constructed by starting from the population of
+scholars who obtained doctorate in the Netherlands and matching them to NWO Veni
+grant records. This appendix is used to assess whether our matching
+procedure introduces selection bias into the sample of laureates we analyze.
+
+To do so, we took the following steps:
+
+1. Search for Veni laureates among PhDs who were present in our full,
+   pre-selection dataset but excluded from the final analytic sample (Q1
+   below), which lets us compare laureates *inside* vs. *outside* our
+   analytic sample. We compare our original set of Veni recipients to
+   the additionally matched laureates on: university of doctorate, PhD cohort,
+   gender and ethnicity.
+2. Characterize *all* Veni laureates we could not match at all — inside or
+   outside our original sample — and test whether being matched is related to Veni
+   cohort, university, gender, or ethnicity (Q2).
+
+## A note on privacy and reproducibility
+
+Building the comparison groups above requires linking individuals by name and
+by a unique person identifier, and our ethnicity/origin variable is derived
+from surnames. This underlying data cannot be shared on this replication
+website for privacy reasons.
+
+To keep this appendix both transparent and reproducible, we use a hybrid
+setup:
+
+- All code chunks that require the restricted, identifying data — loading the
+  raw files, and matching and constructing the comparison groups for both Q1
+  and Q2 — are grouped together in the next section and shown in full, but
+  set to `eval=FALSE`. They are included to demonstrate how we matched Veni's
+  to PhDs, but cannot be executed because they require non-anonymised data.
+- That section ends by writing out two small, de-identified data frames.
+  All checks can be executed on the anonymised data published in the
+  repository, so every table and figure in the Analyses section below can be
+  regenerated live from this data.
+
+---
+
+# Constructing the comparison data (not executed on this website)
+
+## Setup
+
+### Custom functions
+
+- `fpackage.check()`: checks whether packages are installed (and installs
+  them if not) ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)).
+
+```{r, results='hide'}
+rm(list = ls())
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+```
+
+### Packages
+
+```{r, results='hide'}
+packages <- c("tidyverse", "stringr", "stringi", "zoo", "kableExtra")
+fpackage.check(packages)
+```
+
+### Table prep
+
+Some code to make the tables look more readable. 
+
+```{r}
+# Basic kable styling, reused for every table below
+fkable <- function(df, digits = 3, caption = NULL) {
+  df %>%
+    kable("html", digits = digits, caption = caption) %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = FALSE)
+}
+
+# Turns a prop.table()/table() crosstab into a readable table, with the row
+# variable (e.g. group, matched_original) as its own first column
+fkable_prop <- function(tab, rowname = " ") {
+  tab %>%
+    as.data.frame.matrix() %>%
+    tibble::rownames_to_column(rowname) %>%
+    fkable(digits = 3)
+}
+
+# Turns a chisq.test()/wilcox.test() result into a one-row readable table
+fkable_test <- function(test, digits = 3) {
+  # capture values first: naming a tibble column "test" while `test` is also
+  # the argument would otherwise make later rows see the new column instead
+  # of the original htest object
+  test_name <- test$method
+  test_statistic <- unname(test$statistic)
+  test_df <- if (!is.null(test$parameter)) unname(test$parameter) else NA_real_
+  test_p <- test$p.value
+
+  tibble::tibble(
+    test = test_name,
+    statistic = test_statistic,
+    df = test_df,
+    p.value = test_p
+  ) %>%
+    fkable(digits = digits)
+}
+```
+
+## Data (restricted — not run on the website)
+
+We load the processed PhD and Veni datasets used throughout the paper, plus
+two small manually-coded lookup files used to fill in gender and
+ethnicity/origin for laureates that could not be classified automatically
+(`data/lookups/gender_veni_additional_filled.csv` and
+`data/lookups/ethnicity_veni_additional_cleaned.csv`). These files contain
+names and unique person identifiers and are not published; this chunk is shown
+for transparency only.
+
+```{r files, eval=FALSE}
+load(file = "data/processed/phds_variables.rda")
+load(file = "data/processed/phd_supervisors.rda")
+load(file = "data/processed/veni_ppf.rda")
+load(file = "data/processed/veni_ppf_r2.rda")
+load(file = "data/processed/veni_narcis_p.rda")
+load(file = "data/processed/veni_NWO_p.rda")
+load(file = "data/processed/fn_gender.rda")
+
+genderize_addit <- read.csv(file = "data/lookups/gender_veni_additional_filled.csv")
+
+load(file = "data/processed/ln_origin.rda")
+
+origin_addit <- read.csv(file = "data/lookups/ethnicity_veni_additional_cleaned.csv")
+```
+
+Next, we pull out the Veni laureates who are part of our original, analyzed
+sample of PhDs, and attach their first and last names (needed for the
+name-based matching below).
+
+```{r, eval=FALSE}
+veni_ppf %>%
+  filter(veni == 1) -> oursample_winners
+
+phds_variables %>%
+  select(id, firstname, lastname) %>%
+  right_join(oursample_winners, by = c("id")) -> oursample_winners
+```
+
+## Q1 matching: Veni laureates outside our analytic sample
+
+Our analytic sample excludes PhDs for several reasons (e.g., no publication
+record after the PhD, PhD cohort selection). Here we take the PhDs who were
+originally excluded and check whether any of them are Veni laureates we missed.
+We use the same two matching strategies used to build the original sample:
+
+- **PRS strategy (NARCIS):** matching on a unique person identifier.
+- **Name strategy (NWO):** matching on first and last name.
+
+```{r, eval=FALSE}
+# Selecting only PhDs outside our analytic sample
+phds <- phds_variables %>% filter(!id %in% veni_ppf$id)
+
+# Creating matching data frames
+# Dataset 1: PRS strategy (NARCIS)
+match_df1 <- veni_narcis %>% select(veni, year, prs) %>% rename(veni1 = "veni", year1 = "year")
+
+# Dataset 2: First and last name (NWO)
+match_df2 <- veni_NWO %>%
+  filter(!is.na(first)) %>%
+  filter(!is.na(ln)) %>%
+  select(veni, year, first, ln) %>%
+  rename(veni2 = "veni", year2 = "year")
+
+# Match 1: PRS
+phds <- phds %>% left_join(match_df1, by = "prs")
+phds$veni1 <- ifelse(is.na(phds$veni1), 0, phds$veni1)
+
+nrow(phds[duplicated(phds$id), ])
+summary(as.factor(phds$veni1))
+
+# Match 2: first name / last name
+phds <- phds %>% left_join(match_df2, by = c("firstname" = "first", "lastname" = "ln"))
+phds$veni2 <- ifelse(is.na(phds$veni2), 0, phds$veni2)
+
+nrow(phds[duplicated(phds$id), ])
+summary(as.factor(phds$veni2))
+
+# Removing duplicates introduced by the two matching strategies
+duplicatedids <- phds$id[which(duplicated(phds$id))]
+inspect <- phds[phds$id %in% duplicatedids, ]
+# no convergence similar to the actual matching procedure used for the
+# analytic sample, so we just remove one of the duplicates at random
+inspect <- inspect %>%
+  group_by(id) %>%
+  sample_n(1)
+phds <- phds %>% filter(!phds$id %in% duplicatedids)
+phds <- rbind.data.frame(phds, inspect)
+
+# Collating the results of both matching strategies: matched if either
+# strategy found a match
+phds$veni <- pmax(phds$veni1, phds$veni2)
+summary(as.factor(phds$veni))
+
+# Comparing the Veni years found by each strategy
+xtabs(~ phds$year1 + phds$year2)
+
+phds$year <- phds$year1
+phds$year <- ifelse(is.na(phds$year1), phds$year2, phds$year1)
+
+# Keep only matches where the Veni year is plausible given the PhD year
+# (Veni is an early-career grant, awarded within a fixed window after the PhD)
+phds <- phds[phds$year >= phds$phd_year, ]
+phds <- phds[phds$year < phds$phd_year + 9, ]
+
+outsidesample_winners <- phds %>% filter(veni == 1)
+
+oursample_winners$group <- "in_sample"
+outsidesample_winners$group <- "outside_sample"
+outsidesample_winners$phd_year <- outsidesample_winners$phd_year - 1997
+
+# Kept under a separate name (not `df_all`) because it still carries prs and
+# firstname, which the Q2 matching below needs. `df_all` itself is reserved
+# for the de-identified, publishable version created further down.
+df_all_full <- bind_rows(oursample_winners, outsidesample_winners)
+
+# Adding ethnicity/origin (same lookup used later for Q2's `checks`)
+ln_origin <- ln_origin %>%
+  mutate(
+    origin = as.character(origin),
+    origin = ifelse(is.na(origin), "other", origin)
+  )
+
+df_all_full <- df_all_full %>%
+  left_join(ln_origin, by = "lastname") %>%
+  left_join(origin_addit, by = "lastname") %>%
+  mutate(origin = ifelse(is.na(origin.y), origin.x, origin.y)) %>%
+  select(-c(origin.x, origin.y))
+
+# Turkish/Moroccan/Caribbean are individually very sparse, so we collapse
+# them into one "minority" category for a more robust test, as we do for Q2.
+df_all_full <- df_all_full %>%
+  mutate(origin_collapsed = case_when(
+    origin %in% c("turkish", "moroccan", "carribean") ~ "minority",
+    TRUE ~ origin
+  ))
+```
+
+## Q2 matching: Veni laureates matched to any PhD at all
+
+The check above compares laureates matched inside vs. outside our analytic
+sample. This second check is broader: among *all* Veni laureates (from both
+the NARCIS and NWO source lists), which ones can we match to any PhD at all,
+and does the probability of being matched depend on the laureate's Veni
+cohort, university, gender, or ethnicity? As above, this requires names and
+identifiers.
+
+```{r, eval=FALSE}
+# Continues from df_all_full (the identity-bearing object built for Q1).
+df_all_full <- df_all_full %>%
+  mutate(
+    matched_prs = ifelse(prs %in% veni_narcis$prs, 1, 0),
+    matched_fnln = ifelse(matched_prs == 1, 0, 1)
+  )
+
+# Matched Veni's - NARCIS source
+veni_narcis <- veni_narcis %>%
+  mutate(
+    matched = ifelse(prs %in% df_all_full$prs, 1, 0),
+    # matched to the original (pre-selection) sample specifically, i.e. the
+    # sample actually analyzed in the paper
+    matched_original = ifelse(prs %in% oursample_winners$prs, 1, 0)
+  )
+
+# Matched Veni's - NWO source
+veni_NWO <- veni_NWO %>%
+  distinct(first, ln, .keep_all = TRUE)
+
+veni_NWO <- df_all_full %>%
+  filter(!is.na(firstname)) %>%
+  mutate(matched = 1) %>%
+  select(firstname, lastname, matched) %>%
+  right_join(veni_NWO, by = c("firstname" = "first", "lastname" = "ln")) %>%
+  mutate(matched = ifelse(is.na(matched), 0, matched))
+
+# Note: after the previous right_join, veni_NWO's key columns are already
+# named firstname/lastname (dplyr renames to the left-hand side's names), so
+# this second join no longer needs the first/ln renaming
+veni_NWO <- oursample_winners %>%
+  filter(!is.na(firstname)) %>%
+  mutate(matched_original = 1) %>%
+  select(firstname, lastname, matched_original) %>%
+  right_join(veni_NWO, by = c("firstname", "lastname")) %>%
+  mutate(matched_original = ifelse(is.na(matched_original), 0, matched_original))
+
+# Number of matched and unmatched laureates per source
+summary(as.factor(veni_narcis$matched))
+summary(as.factor(veni_NWO$matched))
+summary(as.factor(veni_narcis$matched_original))
+summary(as.factor(veni_NWO$matched_original))
+```
+
+### Combining the NARCIS and NWO Veni lists
+
+Next, we combine the Veni data from NARCIS and NWO into a single laureate
+list, so each laureate is counted once regardless of which source we found
+them in.
+
+```{r, eval=FALSE}
+# Standardizing variable names/selection across sources
+veni_narcis %>%
+  mutate(lastname = ln) %>%
+  select(year, lastname, uni, matched, matched_original, prs) -> veni_narcis_std
+
+veni_NWO %>%
+  select(year, firstname, lastname, uni, matched, matched_original) -> veni_NWO_std
+
+# There appeared to be some duplicates in both lists - remove these
+veni_NWO_std <- veni_NWO_std %>%
+  distinct(year, lastname, uni, .keep_all = TRUE)
+
+# NARCIS needs special treatment because of NA values on last name (matching
+# is still possible there via prs)
+veni_narcis_std %>%
+  filter(is.na(lastname)) -> veni_narcis_std_noln
+
+veni_narcis_std %>%
+  filter(!is.na(lastname)) -> veni_narcis_std_ln
+
+veni_narcis_std_ln <- veni_narcis_std_ln %>%
+  distinct(year, lastname, uni, .keep_all = TRUE)
+
+# Combining the data frames
+veni_combined <- full_join(
+  veni_narcis_std_ln %>%
+    select(year, lastname, uni, prs, matched_narcis = matched, matched_narcis_original = matched_original),
+  veni_NWO_std %>%
+    select(year, lastname, uni, firstname, matched_NWO = matched, matched_NWO_original = matched_original),
+  by = c("year", "lastname", "uni")
+)
+
+# Combining 'matched': matched in either source counts as matched
+# - matched: matched to the original sample OR the additional outside-sample search
+# - matched_original: matched to the original (pre-selection) sample specifically,
+#   i.e. the sample actually analyzed in the paper -> primary check for
+#   representativeness/selectivity of the analytic sample
+veni_combined <- veni_combined %>%
+  mutate(
+    matched = case_when(
+      matched_narcis == 1 | matched_NWO == 1 ~ 1,
+      TRUE ~ 0
+    ),
+    matched_original = case_when(
+      matched_narcis_original == 1 | matched_NWO_original == 1 ~ 1,
+      TRUE ~ 0
+    )
+  )
+```
+
+### Adding gender
+
+```{r, eval=FALSE}
+veni_combined %>%
+  left_join(fn_gender, by = "firstname") -> veni_combined
+
+# A small number of first names were not covered by our existing gender
+# lookup, so we executed an additional scrape of these first names from the same
+# database (i.e. Meertens Voornamenbank). The code below regenerates the list of
+# names that needed manual coding; it is commented out now.
+
+# veni_combined %>%
+#   filter(!is.na(firstname)) %>%
+#   filter(is.na(gender)) %>%
+#   select(firstname) -> additional_checks
+# write.csv(additional_checks, file = "./data/lookups/gender_veni_additional.csv")
+
+genderize_addit %>%
+  select(firstname, gender) %>%
+  mutate(gender = case_when(
+    gender == "male" ~ "men",
+    gender == "female" ~ "women",
+    TRUE ~ NA
+  )) %>%
+  distinct(firstname, .keep_all = TRUE) -> genderize_addit
+
+genderize_addit$gender <- as.factor(genderize_addit$gender)
+
+veni_combined %>%
+  left_join(genderize_addit, by = "firstname") %>%
+  mutate(gender = ifelse(is.na(gender.x), as.character(gender.y), as.character(gender.x))) %>%
+  select(-c(gender.x, gender.y)) -> veni_combined
+```
+
+### Adding ethnicity/origin
+
+```{r, eval=FALSE}
+ln_origin <- ln_origin %>%
+  mutate(
+    origin = as.character(origin),
+    origin = ifelse(is.na(origin), "other", origin)
+  )
+
+veni_combined %>%
+  left_join(ln_origin, by = "lastname") -> veni_combined
+
+# As with gender, a small number of last names needed additional scraping.
+# Again, we commented out the code below as it was used to generate the list of
+# names that couldn't be matched to an ethnic origin label using our original data.
+
+# veni_combined %>%
+#   filter(!is.na(lastname)) %>%
+#   filter(is.na(origin)) %>%
+#   select(lastname) -> additional_checks_origin
+# write.csv(additional_checks_origin, file = "./data/lookups/ethnicity_veni_additional.csv")
+
+veni_combined %>%
+  left_join(origin_addit, by = "lastname") %>%
+  mutate(origin = ifelse(is.na(origin.y), origin.x, origin.y)) %>%
+  select(-c(origin.x, origin.y)) -> checks
+
+# Turkish/Moroccan/Caribbean are individually very sparse (especially
+# Moroccan), which makes the chi-square approximation unreliable for the
+# 5-category origin variable. We collapse these three named minority groups
+# into one category for a more robust test, keeping "other" (unspecified
+# foreign) and "dutch" separate.
+checks <- checks %>%
+  mutate(origin_collapsed = case_when(
+    origin %in% c("turkish", "moroccan", "carribean") ~ "minority",
+    TRUE ~ origin
+  ))
+```
+
+## De-identifying the comparison data
+
+We save the necessary columns for the sample selectivity checks, but remove
+identifying columns from the data to maintain anonymity of the sample.  
+This anonymised dataset can be used to replicate our
+analyses.
+
+```{r, eval=FALSE}
+df_all_public <- df_all_full %>%
+  select(group, uni, phd_year, gender_2, origin, origin_collapsed)
+
+checks_public <- checks %>%
+  select(matched, matched_original, year, uni, gender, origin, origin_collapsed)
+
+save(df_all_public, file = "data/selectivity/df_all_public.rda")
+save(checks_public, file = "data/selectivity/checks_public.rda")
+
+```
+
+---
+
+# Analyses
+
+From here on, all code chunks can be run.
+
+```{r}
+load(file = "data/selectivity/df_all_public.rda")
+df_all <- df_all_public
+
+load(file = "data/selectivity/checks_public.rda")
+checks <- checks_public
+```
+
+## Q1: How many Veni laureates can be matched to PhDs outside our analytic sample?
+
+### Comparing in-sample and out-of-sample laureates
+
+If the PhDs we ended up excluding from the analytic sample differ
+systematically from the PhDs we kept, the laureates matched *only* outside
+our sample should look different (in university, PhD cohort, gender, or
+ethnicity/origin) from the laureates matched *within* our sample. We test
+this directly.
+
+```{r}
+# Crosstabulate
+fkable_prop(prop.table(table(df_all$group, df_all$uni), margin = 1), rowname = "group")
+fkable_prop(prop.table(table(df_all$group, df_all$phd_year), margin = 1), rowname = "group")
+fkable_prop(prop.table(table(df_all$group, df_all$gender_2), margin = 1), rowname = "group")
+fkable_prop(prop.table(table(df_all$group, df_all$origin), margin = 1), rowname = "group")
+
+# Test differences with chi-square
+fkable_test(chisq.test(table(df_all$group, df_all$uni)))
+fkable_test(chisq.test(table(df_all$group, df_all$phd_year)))
+fkable_test(chisq.test(table(df_all$group, df_all$gender_2)))
+fkable_test(chisq.test(table(df_all$group, df_all$origin)))
+
+# Robustness: collapsed origin categories, since the 5-category version can
+# have sparse cells
+fkable_test(chisq.test(table(df_all$group, df_all$origin_collapsed)))
+fkable_test(chisq.test(table(df_all$group, df_all$origin_collapsed), simulate.p.value = TRUE))
+
+# Distribution of PhD year, to gain insight into the direction of any difference
+summary(df_all$phd_year[df_all$group == "in_sample"])
+summary(df_all$phd_year[df_all$group == "outside_sample"])
+```
+
+#### University
+
+```{r}
+df_uni <- df_all %>%
+  count(group, uni) %>%
+  group_by(group) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+ggplot(df_uni, aes(x = uni, y = prop, fill = group)) +
+  geom_col(position = "dodge") +
+  labs(x = "University", y = "Proportion within group", fill = "Group") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+#### PhD year
+
+```{r}
+ggplot(df_all, aes(x = phd_year, fill = group)) +
+  geom_density(alpha = 0.4)
+```
+
+#### Ethnicity/origin
+
+```{r}
+df_origin <- df_all %>%
+  filter(!is.na(origin)) %>%
+  count(group, origin) %>%
+  group_by(group) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+ggplot(df_origin, aes(x = origin, y = prop, fill = group)) +
+  geom_col(position = "dodge") +
+  labs(x = "Origin", y = "Proportion within group", fill = "Group") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## Q2: What characterizes Veni laureates we cannot match at all?
+
+For each characteristic (Veni cohort, university, gender, ethnicity)
+we report two checks:
+
+- **Primary check:** matched to the original (analyzed) sample vs. not. This
+  is the check that speaks most directly to whether *our analytic sample* is
+  selective.
+- **Secondary check:** matched to the original sample *or* the additional
+  outside-sample search vs. not matched anywhere. This is a broader check on
+  whether the overall matching procedure (not just our sample selection) is
+  selective.
+
+### Veni cohort (year)
+
+```{r}
+
+# Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$year), margin = 1), rowname = "matched_original")
+
+# Year has many distinct values, so cell counts in the chi-square table can
+# get sparse; we therefore also run a non-parametric test that doesn't rely
+# on that assumption
+fkable_test(chisq.test(table(checks$matched_original, checks$year)))
+fkable_test(wilcox.test(year ~ matched_original, data = checks))
+
+ggplot(checks, aes(x = year, fill = as.factor(matched_original))) +
+  geom_density(alpha = 0.4) +
+  labs(x = "Veni jaar", fill = "Matched (original sample)")
+
+summary(checks$year[checks$matched_original == 1])
+summary(checks$year[checks$matched_original == 0])
+```
+
+```{r}
+
+# Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$year), margin = 1), rowname = "matched")
+fkable_test(chisq.test(table(checks$matched, checks$year)))
+fkable_test(wilcox.test(year ~ matched, data = checks))
+```
+
+### University
+
+```{r}
+
+# Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$uni), margin = 1), rowname = "matched_original")
+fkable_test(chisq.test(table(checks$matched_original, checks$uni)))
+
+df_uni_matched <- checks %>%
+  filter(!is.na(uni)) %>%
+  count(matched_original, uni) %>%
+  group_by(matched_original) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+ggplot(df_uni_matched, aes(x = uni, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = "dodge") +
+  labs(x = "University", y = "Proportion within group", fill = "Matched (original sample)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+
+# Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$uni), margin = 1), rowname = "matched")
+fkable_test(chisq.test(table(checks$matched, checks$uni)))
+```
+
+### Gender
+
+```{r}
+
+# Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$gender), margin = 1), rowname = "matched_original")
+fkable_test(chisq.test(table(checks$matched_original, checks$gender)))
+
+df_gender_matched <- checks %>%
+  filter(!is.na(gender)) %>%
+  count(matched_original, gender) %>%
+  group_by(matched_original) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+ggplot(df_gender_matched, aes(x = gender, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = "dodge") +
+  labs(x = "Gender", y = "Proportion within group", fill = "Matched (original sample)") +
+  theme_minimal()
+```
+
+```{r}
+
+# Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$gender), margin = 1), rowname = "matched")
+fkable_test(chisq.test(table(checks$matched, checks$gender)))
+```
+
+### Ethnicity
+
+```{r}
+
+# Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$origin), margin = 1), rowname = "matched_original")
+fkable_test(chisq.test(table(checks$matched_original, checks$origin)))
+
+df_origin_matched <- checks %>%
+  filter(!is.na(origin)) %>%
+  count(matched_original, origin) %>%
+  group_by(matched_original) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup()
+
+ggplot(df_origin_matched, aes(x = origin, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = "dodge") +
+  labs(x = "Origin", y = "Proportion within group", fill = "Matched (original sample)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+# Robustness: collapsing the sparse Turkish/Moroccan/Caribbean categories
+# into a single "minority" category
+fkable_prop(prop.table(table(checks$matched_original, checks$origin_collapsed), margin = 1), rowname = "matched_original")
+fkable_test(chisq.test(table(checks$matched_original, checks$origin_collapsed)))
+fkable_test(chisq.test(table(checks$matched_original, checks$origin_collapsed), simulate.p.value = TRUE))
+```
+
+```{r}
+# Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$origin), margin = 1), rowname = "matched")
+fkable_test(chisq.test(table(checks$matched, checks$origin)))
+fkable_test(chisq.test(table(checks$matched, checks$origin_collapsed), simulate.p.value = TRUE))
+```
+
+## Summary: is matching selective?
+
+The table below collects the chi-square test p-values from the Q2 checks
+above, for both the primary check (matched to our analytic sample vs. not)
+and the secondary check (matched anywhere vs. not matched at all).
+
+```{r}
+robustness_checks <- tibble::tibble(
+  variable = c(
+    "Veni cohort (year)", "Institution (uni)", "Gender", "Ethnicity/origin",
+    "Ethnicity/origin (turkish/moroccan/carribean collapsed)"
+  ),
+  chisq_p_original_sample = c(
+    chisq.test(table(checks$matched_original, checks$year))$p.value,
+    chisq.test(table(checks$matched_original, checks$uni))$p.value,
+    chisq.test(table(checks$matched_original, checks$gender))$p.value,
+    chisq.test(table(checks$matched_original, checks$origin))$p.value,
+    chisq.test(table(checks$matched_original, checks$origin_collapsed), simulate.p.value = TRUE)$p.value
+  ),
+  chisq_p_incl_outside_sample = c(
+    chisq.test(table(checks$matched, checks$year))$p.value,
+    chisq.test(table(checks$matched, checks$uni))$p.value,
+    chisq.test(table(checks$matched, checks$gender))$p.value,
+    chisq.test(table(checks$matched, checks$origin))$p.value,
+    chisq.test(table(checks$matched, checks$origin_collapsed), simulate.p.value = TRUE)$p.value
+  )
+)
+
+robustness_checks %>%
+  fkable(
+    digits = 3,
+    caption = "Chi-square test p-values for each characteristic, testing whether matched status is related to Veni cohort, university, gender, or ethnicity/origin."
+  )
+```

@@ -21,13 +21,6 @@ colorize <- function(x, color) {sprintf("span style= 'color: %s; '>%s</span>", c
 ```
 
 
-```{r klippy, echo=FALSE, include=TRUE}
-klippy::klippy(position = c('top', 'right'))
-#klippy::klippy(color = 'darkred')
-#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
-```
-
-
 # **Replication package for "Mentoring for gender equality in early-career grant receipt"**
 
 

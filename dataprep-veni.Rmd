@@ -24,13 +24,6 @@ colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", co
 
 ```
 
-```{r klippy, echo=FALSE, include=TRUE}
-klippy::klippy(position = c('top', 'right'))
-#klippy::klippy(color = 'darkred')
-#klippy::klippy(tooltip_message = 'Click to copy', tooltip_success = 'Done')
-```
-
-
 
 ----
 
@@ -443,7 +436,7 @@ df_ppf <- data.frame(id, year, zeroveni)
 df_ppf %>%
   full_join(phds, by=c("id", "year")) %>%
   arrange(id, year) %>%
-  select(id, year, veni, gender, propmen, propwomen, propNA, wom_sv1, prof2p, teamsize, uni, phd_year) -> veni_ppf
+  select(id, year, veni, gender, propmen, propwomen, propNA, wom_sv1, prof2p, teamsize, team_prof_size, team_gender_prof, uni, phd_year) -> veni_ppf
 
 # ! to be added: FIELD
 
@@ -461,6 +454,8 @@ veni_ppf %>%
   fill(wom_sv1, .direction = "downup") %>%
   fill(prof2p, .direction = "downup") %>%
   fill(teamsize, .direction = "downup") %>%
+  fill(team_prof_size, .direction = "downup") %>%
+  fill(team_gender_prof, .direction = "downup") %>%
   ungroup () -> veni_ppf
 
 veni_ppf$veni <- ifelse(is.na(veni_ppf$veni), 0, veni_ppf$veni)

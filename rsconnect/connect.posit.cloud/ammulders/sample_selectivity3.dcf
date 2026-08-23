@@ -1,0 +1,12 @@
+name: sample_selectivity3
+title: sample_selectivity
+username: ammulders
+account: ammulders
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a02f3f-e526-0b7f-a530-9bdfe20672fa
+bundleId:
+url: https://connect.posit.cloud/ammulders/content/01a02f3f-e526-0b7f-a530-9bdfe20672fa
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

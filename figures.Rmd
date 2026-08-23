@@ -78,31 +78,31 @@ We use several results objects:
     - name of dataset: `veni_ppf`
     - used here to show Veni hazard rates per year after obtaining doctorate
 
-* [20250605_ame.rda](https://github.com/ammulders/amatteroftime/results/cont_cohort/20250506_ame.rda): results of our main analyses with bootstrapped standard errors
+* [20260822_ame.rda](https://github.com/ammulders/amatteroftime/results/cont_cohort/20260822_ame.rda): results of our main analyses with bootstrapped standard errors
 
-* [20250610_c1-3.rda](https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20250507_c1.rda): results of our models split out by cohort
+* [20260822_c1-3.rda](https://github.com/ammulders/amatteroftime/results/robustness/bycohort/20260822_c1.rda): results of our models split out by cohort
 
 
 
 ```{r files, eval=TRUE}
 
 
-load(file="./results/cont_cohort/20250605_ame.rda")
+load(file="./results/cont_cohort/20260822_ame.rda")
 AMEs <- x
 
 load("./data/processed/veni_ppf.rda")
 
 
 
-load(file = "./results/robustness/bycohort/20250609_c1.rda")
+load(file = "./results/robustness/bycohort/20260822_c1.rda")
 coh1 <- x
 rm(x)
 
-load(file = "./results/robustness/bycohort/20250610_c2.rda")
+load(file = "./results/robustness/bycohort/20260822_c2.rda")
 coh2 <- x
 rm(x)
 
-load(file = "./results/robustness/bycohort/20250610_c3.rda")
+load(file = "./results/robustness/bycohort/20260822_c3.rda")
 coh3 <- x
 rm(x)
 

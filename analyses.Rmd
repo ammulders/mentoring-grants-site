@@ -62,6 +62,14 @@ fpackage.check(packages)
 
 ```
 
+The bootstrap chunks below are gated by a single switch, so a normal knit doesn't accidentally re-trigger a multi-hour bootstrap: keep `RUN_BOOTSTRAPS` at `FALSE` to skip them, or set it to `TRUE` to regenerate the results.
+
+```{r}
+
+RUN_BOOTSTRAPS <- FALSE
+
+```
+
 --- 
 
 
@@ -286,7 +294,7 @@ summary(M6)
 
 ## All models
 
-```{r, eval=FALSE}
+```{r, eval=RUN_BOOTSTRAPS}
 
 
 # defining some of the key values of the bootstrapping function
@@ -720,7 +728,7 @@ fsave(AMEs, file = "_ame.rda", location = "./results/cont_cohort/")
 
 ```{r, echo=FALSE}
 
-load("./results/cont_cohort/20250605_ame.rda")
+load("./results/cont_cohort/20260822_ame.rda")
 AMEs <- x
 rm(x)
 
@@ -826,7 +834,7 @@ kable(table_df, "html", escape = FALSE, align = "lcccccc",
 
 # Mediation analyses
 
-```{r,eval=FALSE}
+```{r, eval=RUN_BOOTSTRAPS}
 
 # defining some of the key values of the bootstrapping function
 nIter <- 1000
@@ -998,7 +1006,7 @@ fsave(mediations, file = "mediations.rda", location = "./results/")
 
 ```{r, echo=FALSE}
 
-load("./results/20250609mediations.rda")
+load("./results/20260822mediations.rda")
 mediations <- x
 rm(x)
 
@@ -1028,7 +1036,7 @@ round(boot.dfmed, 5)
 
 
 ## Cohort group 1 (1997-2006)
-```{r, eval=FALSE}
+```{r, eval=RUN_BOOTSTRAPS}
 
 # defining some of the key values of the bootstrapping function
 nIter <- 500
@@ -1385,7 +1393,7 @@ fsave(AMEs, file = "_c1.rda", location = "./results/robustness/bycohort/")
 
 ```{r, echo=FALSE}
 
-load("./results/robustness/bycohort/20250609_c1.rda")
+load("./results/robustness/bycohort/20260822_c1.rda")
 cohort1 <- x
 rm(x)
 
@@ -1418,7 +1426,7 @@ round(df.coh1, 5)
 
 Adding a variable: after 2015. To measure whether chances of obtaining a Veni are actually larger for this group in the years after the extension policy was introduced. 
 
-```{r, eval=FALSE}
+```{r, eval=RUN_BOOTSTRAPS}
 
 # defining some of the key values of the bootstrapping function
 nIter <- 500
@@ -1859,7 +1867,7 @@ fsave(AMEs, file = "_c2.rda", location = "./results/robustness/bycohort/")
 
 ```{r, echo=FALSE}
 
-load("./results/robustness/bycohort/20250610_c2.rda")
+load("./results/robustness/bycohort/20260822_c2.rda")
 cohort2 <- x
 rm(x)
 
@@ -1888,7 +1896,7 @@ round(df.coh2, 5)
 
 
 ## Cohort group 3 (2015-2019)
-```{r, eval=FALSE}
+```{r, eval=RUN_BOOTSTRAPS}
 
 
 # defining some of the key values of the bootstrapping function
@@ -2247,7 +2255,7 @@ fsave(AMEs, file = "_c3.rda", location = "./results/robustness/bycohort/")
 
 ```{r, echo=FALSE}
 
-load("./results/robustness/bycohort/20250610_c3.rda")
+load("./results/robustness/bycohort/20260822_c3.rda")
 cohort3 <- x
 rm(x)
 
@@ -2359,6 +2367,14 @@ table_ames_coh2 <- df.coh2 %>%
   mutate(label = case_when(
     str_detect(term, "gendercohort") ~ "PhD cohort * Woman",
     str_detect(term, "genderwomsv") ~ "Women supervisors * Woman",
+    # these two must come before the generic "gender" check below: cohort 2's
+    # model has extra AME_2015_mX / AME_gender2015_mX terms (not present in
+    # cohort 1/3) for a post-2015 check, and "AME_gender2015_mX" also matches
+    # "gender" -- without this, it collides with the real AME_gender_mX row
+    # (same label+model, different value), which pivot_wider can't collapse
+    # ("not uniquely identified" warning, then a crash on the NA/factor step)
+    str_detect(term, "gender2015") ~ "Post-2015 * Woman",
+    str_detect(term, "^AME_2015") ~ "Post-2015",
     str_detect(term, "gender") ~ "Woman",
     str_detect(term, "time") ~ paste0("Time since PhD: ", str_extract(term, "[:digit:]$"), " years"),
     str_detect(term, "cohort") ~ "PhD cohort",
@@ -2374,7 +2390,7 @@ table_ames_coh2 <- df.coh2 %>%
   select(label, model, value)
 
 # correct table ordering
-rows_tab <- c("Woman", "Time since PhD: 1 years", "Time since PhD: 2 years", "Time since PhD: 3 years", "Time since PhD: 4 years", "Time since PhD: 5 years", "Time since PhD: 6 years", "Time since PhD: 7 years", "Time since PhD: 8 years", "PhD cohort", "PhD cohort * Woman", "Cumulative publications", "Previous publications", "Team size", "2+ professors", "Supervisors' productivity", "Women supervisors", "Women supervisors * Woman")
+rows_tab <- c("Woman", "Time since PhD: 1 years", "Time since PhD: 2 years", "Time since PhD: 3 years", "Time since PhD: 4 years", "Time since PhD: 5 years", "Time since PhD: 6 years", "Time since PhD: 7 years", "Time since PhD: 8 years", "PhD cohort", "PhD cohort * Woman", "Post-2015", "Post-2015 * Woman", "Cumulative publications", "Previous publications", "Team size", "2+ professors", "Supervisors' productivity", "Women supervisors", "Women supervisors * Woman")
 
 
 # Reshape to wide format

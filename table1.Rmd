@@ -1,0 +1,237 @@
+---
+title: "Table 1"
+date: "Last compiled on `r format(Sys.time(), '%B, %Y')`"
+output:
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+
+---
+
+
+
+```{r, globalsettings, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=100),tidy=TRUE, warning = FALSE, message = FALSE,comment = "#>", cache=TRUE, class.source=c("test"), class.output=c("test2"), cache.lazy = FALSE)
+options(width = 100)
+rgl::setupKnitr()
+
+colorize <- function(x, color) {sprintf("<span style='color: %s;'>%s</span>", color, x) }
+
+```
+
+----
+
+This lab journal replicates table 1.
+
+
+----
+
+# Custom functions
+
+- `fpackage.check`: Check if packages are installed (and install if not) in R ([source](https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/)).
+
+
+```{r, results='hide'}
+
+rm(list = ls())
+
+fpackage.check <- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}
+
+
+```
+
+
+---
+
+# Packages
+
+- `tidyverse`: tidy data manipulations
+- `kableExtra`: creating tables in consistent formatting
+
+
+```{r, results='hide'}
+
+packages = c("tidyverse", "kableExtra")
+
+fpackage.check(packages)
+
+```
+
+
+---
+
+# Input
+
+We use the same `veni_ppf` person-period file as the main analyses, collapsed
+to one row per PhD. This reproduces the actual published Table 1 (N=6,409
+women / N=7,514 men).
+
+```{r data}
+
+load(file = "./data/processed/veni_ppf.rda")
+
+# one row per PhD; drop the period-level veni flag, since it's only 1 in the
+# person-period row where the Veni was actually received, not a person-level summary
+veni_ppf %>%
+  distinct(id, .keep_all = TRUE) %>%
+  select(-veni) -> phds
+
+# person-level "ever received a Veni" flag, from the person-period file
+veni_ppf %>%
+  group_by(id) %>%
+  summarize(veni = max(veni)) -> veni_person
+
+phds <- phds %>% left_join(veni_person, by = "id")
+
+```
+
+
+
+
+# Tables
+
+
+## Table 1
+
+Descriptives
+
+```{r}
+
+phds_wom <- phds[phds$gender_2 == "women", ]
+phds_men <- phds[phds$gender_2 == "men", ]
+
+n_wom <- nrow(phds_wom)
+n_men <- nrow(phds_men)
+
+# time to Veni is only defined for actual recipients, and lives in the
+# person-period file (veni_ppf$time), not in phds
+veni_ppf %>% filter(veni == 1, gender_2 == "women") %>% pull(time) -> time_wom
+veni_ppf %>% filter(veni == 1, gender_2 == "men") %>% pull(time) -> time_men
+
+# continuous variable: Min/Max/Mean/SD for both genders in one row
+cont_row <- function(x_wom, x_men) {
+  c(min(x_wom, na.rm=TRUE), max(x_wom, na.rm=TRUE), mean(x_wom, na.rm=TRUE), sd(x_wom, na.rm=TRUE),
+    min(x_men, na.rm=TRUE), max(x_men, na.rm=TRUE), mean(x_men, na.rm=TRUE), sd(x_men, na.rm=TRUE))
+}
+
+# binary variable: Min/Max fixed at 0/1, no SD (matches the published table)
+bin_row <- function(x_wom, x_men) {
+  c(0, 1, mean(x_wom, na.rm=TRUE), NA,
+    0, 1, mean(x_men, na.rm=TRUE), NA)
+}
+
+# one level of a categorical variable, treated as its own 0/1 dummy row
+cat_row <- function(x_wom, x_men, level) {
+  c(0, 1, mean(x_wom == level, na.rm=TRUE), NA,
+    0, 1, mean(x_men == level, na.rm=TRUE), NA)
+}
+
+# data level -> published row label
+field_map <- c(
+  "Biological and Health Sciences"     = "Biological and Health Sciences",
+  "Physical and Mathematical Sciences" = "Physical and mathematical sciences",
+  "Social and Behavioral Sciences"     = "Social and behavioral sciences",
+  "Engineering"                        = "Engineering",
+  "Agricultural Sciences"              = "Agricultural sciences",
+  "Humanities"                         = "Humanities",
+  "other"                              = "Other",
+  "missing"                            = "Missing"
+)
+
+uni_map <- c(
+  "EUR" = "Erasmus University Rotterdam",
+  "LU"  = "Leiden University",
+  "RU"  = "Radboud University",
+  "RUG" = "University of Groningen",
+  "TUD" = "Delft University of Technology",
+  "TUE" = "Eindhoven University of Technology",
+  "TI"  = "Tilburg University",
+  "UM"  = "Maastricht University",
+  "UT"  = "University of Twente",
+  "UU"  = "Utrecht University",
+  "UvA" = "University of Amsterdam",
+  "VU"  = "Vrije Universiteit Amsterdam",
+  "WUR" = "Wageningen University and Research Centre"
+)
+
+rows <- list(
+  "Veni receipt"             = bin_row(phds_wom$veni, phds_men$veni),
+  "Time to Veni (in years)"  = cont_row(time_wom, time_men),
+  "PhD cohort"                = cont_row(phds_wom$phd_year, phds_men$phd_year),
+  "Team size"                = cont_row(phds_wom$teamsize, phds_men$teamsize),
+  "2+ Professors"            = bin_row(phds_wom$prof2p, phds_men$prof2p),
+  "Publication productivity" = cont_row(phds_wom$npubs_sv_norm, phds_men$npubs_sv_norm),
+  "1+ Women"                 = bin_row(phds_wom$wom_sv1, phds_men$wom_sv1)
+)
+
+for (lvl in names(field_map)) {
+  rows[[field_map[[lvl]]]] <- cat_row(phds_wom$field, phds_men$field, lvl)
+}
+
+for (code in names(uni_map)) {
+  rows[[uni_map[[code]]]] <- cat_row(phds_wom$uni, phds_men$uni, code)
+}
+
+t1 <- as.data.frame(do.call(rbind, rows))
+colnames(t1) <- c("Min", "Max", "Mean", "SD", "Min", "Max", "Mean", "SD")
+
+# section header rows (no data, matches "Supervision team"/"Field"/"University"
+# in the published table) -- tracked as index positions for pack_rows() below
+supervision_start <- match("Team size", rownames(t1))
+supervision_end   <- match("1+ Women", rownames(t1))
+field_start       <- match(field_map[[1]], rownames(t1))
+field_end         <- match(field_map[[length(field_map)]], rownames(t1))
+uni_start         <- match(uni_map[[1]], rownames(t1))
+uni_end           <- match(uni_map[[length(uni_map)]], rownames(t1))
+
+# Min/Max print at their natural precision (so 0/1/7/22 show as plain
+# integers, matching the published table), while Mean/SD are always padded
+# to 3 decimals
+minmax_cols <- c(1, 2, 5, 6)
+meansd_cols <- c(3, 4, 7, 8)
+
+t1_fmt <- t1
+t1_fmt[minmax_cols] <- lapply(t1[minmax_cols], function(x) ifelse(is.na(x), "", format(round(x, 3), trim = TRUE)))
+t1_fmt[meansd_cols] <- lapply(t1[meansd_cols], function(x) ifelse(is.na(x), "", format(round(x, 3), nsmall = 3, trim = TRUE)))
+rownames(t1_fmt) <- rownames(t1)
+
+```
+
+
+```{r}
+
+t1_fmt %>%
+  kable(format = 'html', align = "cccccccc", escape = FALSE,
+        caption = '<b>Table 1.</b> Descriptive statistics, split out by gender') %>%
+  add_header_above(c(" " = 1,
+                      setNames(4, paste0("Women (N=", format(n_wom, big.mark=","), ")")),
+                      setNames(4, paste0("Men (N=", format(n_men, big.mark=","), ")")))) %>%
+  kable_classic(full_width = FALSE, html_font = "Cambria") %>%
+  pack_rows("Supervision team", supervision_start, supervision_end) %>%
+  pack_rows("Field", field_start, field_end) %>%
+  pack_rows("University", uni_start, uni_end) %>%
+  kable_styling(font_size = 14) %>%
+  footnote(general = c("Time to Veni only summarized for Veni recipients.",
+                        "Source: Dutch Doctoral Recipients (D3) data 1997-2019."),
+           general_title = "") -> table1
+
+table1
+
+```
+
+
+
+-----

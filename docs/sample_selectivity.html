@@ -1,0 +1,3345 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="A.M. Mulders" />
+
+<meta name="date" content="2026-08-22" />
+
+<title>Online Appendix: Assessing the Representativeness of the Veni Sample</title>
+
+<script src="site_libs/header-attrs-2.31/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Independent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="names.html">Names</a>
+    </li>
+    <li>
+      <a href="gender.html">Gender</a>
+    </li>
+    <li>
+      <a href="supervisors.html">Supervisor variables</a>
+    </li>
+    <li>
+      <a href="discipline.html">Discipline</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Dependent variables
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="dataprep-veni.html">Veni receipt</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Analyses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="analyses.html">Main analysis Veni receipt</a>
+    </li>
+    <li>
+      <a href="robustness.html">Supplementary analyses</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="figures.html">Figures</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/">
+    <span class="fab fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Online Appendix: Assessing the
+Representativeness of the Veni Sample</h1>
+<h4 class="author">A.M. Mulders</h4>
+<h4 class="date">2026-08-22</h4>
+
+</div>
+
+
+<div id="purpose-of-this-appendix" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Purpose of this
+appendix</h1>
+<p>Our sample of Veni laureates is constructed by starting from the
+population of scholars who obtained doctorate in the Netherlands and
+matching them to NWO Veni grant records. This appendix is used to assess
+whether our matching procedure introduces selection bias into the sample
+of laureates we analyze.</p>
+<p>To do so, we took the following steps:</p>
+<ol style="list-style-type: decimal">
+<li>Search for Veni laureates among PhDs who were present in our full,
+pre-selection dataset but excluded from the final analytic sample (Q1
+below), which lets us compare laureates <em>inside</em>
+vs. <em>outside</em> our analytic sample. We compare our original set of
+Veni recipients to the additionally matched laureates on: university of
+doctorate, PhD cohort, gender and ethnicity.</li>
+<li>Characterize <em>all</em> Veni laureates we could not match at all —
+inside or outside our original sample — and test whether being matched
+is related to Veni cohort, university, gender, or ethnicity (Q2).</li>
+</ol>
+<div id="a-note-on-privacy-and-reproducibility" class="section level2"
+number="1.1">
+<h2><span class="header-section-number">1.1</span> A note on privacy and
+reproducibility</h2>
+<p>Building the comparison groups above requires linking individuals by
+name and by a unique person identifier, and our ethnicity/origin
+variable is derived from surnames. This underlying data cannot be shared
+on this replication website for privacy reasons.</p>
+<p>To keep this appendix both transparent and reproducible, we use a
+hybrid setup:</p>
+<ul>
+<li>All code chunks that require the restricted, identifying data —
+loading the raw files, and matching and constructing the comparison
+groups for both Q1 and Q2 — are grouped together in the next section and
+shown in full, but set to <code>eval=FALSE</code>. They are included to
+demonstrate how we matched Veni’s to PhDs, but cannot be executed
+because they require non-anonymised data.</li>
+<li>That section ends by writing out two small, de-identified data
+frames. All checks can be executed on the anonymised data published in
+the repository, so every table and figure in the Analyses section below
+can be regenerated live from this data.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="constructing-the-comparison-data-not-executed-on-this-website"
+class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Constructing the
+comparison data (not executed on this website)</h1>
+<div id="setup" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Setup</h2>
+<div id="custom-functions" class="section level3" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Custom
+functions</h3>
+<ul>
+<li><code>fpackage.check()</code>: checks whether packages are installed
+(and installs them if not) (<a
+href="https://vbaliga.github.io/verify-that-r-packages-are-installed-and-loaded/">source</a>).</li>
+</ul>
+<pre class="r"><code>rm(list = ls())
+
+fpackage.check &lt;- function(packages) {
+  lapply(packages, FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  })
+}</code></pre>
+</div>
+<div id="packages" class="section level3" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Packages</h3>
+<pre class="r"><code>packages &lt;- c(&quot;tidyverse&quot;, &quot;stringr&quot;, &quot;stringi&quot;, &quot;zoo&quot;, &quot;kableExtra&quot;)
+fpackage.check(packages)</code></pre>
+<pre><code>## Loading required package: tidyverse</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.2.1     ✔ readr     2.2.0
+## ✔ forcats   1.0.1     ✔ stringr   1.6.0
+## ✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+## ✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+## ✔ purrr     1.2.2     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
+## Loading required package: stringi
+## 
+## Loading required package: zoo
+## 
+## 
+## Attaching package: &#39;zoo&#39;
+## 
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric
+## 
+## 
+## Loading required package: kableExtra
+## 
+## 
+## Attaching package: &#39;kableExtra&#39;
+## 
+## 
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
+</div>
+<div id="table-prep" class="section level3" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Table prep</h3>
+<p>Some code to make the tables look more readable.</p>
+<pre class="r"><code># Basic kable styling, reused for every table below
+fkable &lt;- function(df, digits = 3, caption = NULL) {
+  df %&gt;%
+    kable(&quot;html&quot;, digits = digits, caption = caption) %&gt;%
+    kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;, &quot;responsive&quot;), full_width = FALSE)
+}
+
+# Turns a prop.table()/table() crosstab into a readable table, with the row
+# variable (e.g. group, matched_original) as its own first column
+fkable_prop &lt;- function(tab, rowname = &quot; &quot;) {
+  tab %&gt;%
+    as.data.frame.matrix() %&gt;%
+    tibble::rownames_to_column(rowname) %&gt;%
+    fkable(digits = 3)
+}
+
+# Turns a chisq.test()/wilcox.test() result into a one-row readable table
+fkable_test &lt;- function(test, digits = 3) {
+  # capture values first: naming a tibble column &quot;test&quot; while `test` is also
+  # the argument would otherwise make later rows see the new column instead
+  # of the original htest object
+  test_name &lt;- test$method
+  test_statistic &lt;- unname(test$statistic)
+  test_df &lt;- if (!is.null(test$parameter)) unname(test$parameter) else NA_real_
+  test_p &lt;- test$p.value
+
+  tibble::tibble(
+    test = test_name,
+    statistic = test_statistic,
+    df = test_df,
+    p.value = test_p
+  ) %&gt;%
+    fkable(digits = digits)
+}</code></pre>
+</div>
+</div>
+<div id="data-restricted-not-run-on-the-website" class="section level2"
+number="2.2">
+<h2><span class="header-section-number">2.2</span> Data (restricted —
+not run on the website)</h2>
+<p>We load the processed PhD and Veni datasets used throughout the
+paper, plus two small manually-coded lookup files used to fill in gender
+and ethnicity/origin for laureates that could not be classified
+automatically
+(<code>review-resub/gender_veni_additional_filled.csv</code> and
+<code>review-resub/ethnicity_veni_additional_cleaned.csv</code>). These
+files contain names and unique person identifiers and are not published;
+this chunk is shown for transparency only.</p>
+<pre class="r"><code>load(file = &quot;data/processed/phds_variables.rda&quot;)
+load(file = &quot;data/processed/phd_supervisors.rda&quot;)
+load(file = &quot;data/processed/veni_ppf.rda&quot;)
+load(file = &quot;data/processed/veni_ppf_r2.rda&quot;)
+load(file = &quot;data/processed/veni_narcis_p.rda&quot;)
+load(file = &quot;data/processed/veni_NWO_p.rda&quot;)
+load(file = &quot;data/processed/fn_gender.rda&quot;)
+
+genderize_addit &lt;- read.csv(file = &quot;review-resub/gender_veni_additional_filled.csv&quot;)
+
+load(file = &quot;data/processed/ln_origin.rda&quot;)
+
+origin_addit &lt;- read.csv(file = &quot;review-resub/ethnicity_veni_additional_cleaned.csv&quot;)</code></pre>
+<p>Next, we pull out the Veni laureates who are part of our original,
+analyzed sample of PhDs, and attach their first and last names (needed
+for the name-based matching below).</p>
+<pre class="r"><code>veni_ppf %&gt;%
+  filter(veni == 1) -&gt; oursample_winners
+
+phds_variables %&gt;%
+  select(id, firstname, lastname) %&gt;%
+  right_join(oursample_winners, by = c(&quot;id&quot;)) -&gt; oursample_winners</code></pre>
+</div>
+<div id="q1-matching-veni-laureates-outside-our-analytic-sample"
+class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Q1 matching: Veni
+laureates outside our analytic sample</h2>
+<p>Our analytic sample excludes PhDs for several reasons (e.g., no
+publication record after the PhD, PhD cohort selection). Here we take
+the PhDs who were originally excluded and check whether any of them are
+Veni laureates we missed. We use the same two matching strategies used
+to build the original sample:</p>
+<ul>
+<li><strong>PRS strategy (NARCIS):</strong> matching on a unique person
+identifier.</li>
+<li><strong>Name strategy (NWO):</strong> matching on first and last
+name.</li>
+</ul>
+<pre class="r"><code># Selecting only PhDs outside our analytic sample
+phds &lt;- phds_variables %&gt;% filter(!id %in% veni_ppf$id)
+
+# Creating matching data frames
+# Dataset 1: PRS strategy (NARCIS)
+match_df1 &lt;- veni_narcis %&gt;% select(veni, year, prs) %&gt;% rename(veni1 = &quot;veni&quot;, year1 = &quot;year&quot;)
+
+# Dataset 2: First and last name (NWO)
+match_df2 &lt;- veni_NWO %&gt;%
+  filter(!is.na(first)) %&gt;%
+  filter(!is.na(ln)) %&gt;%
+  select(veni, year, first, ln) %&gt;%
+  rename(veni2 = &quot;veni&quot;, year2 = &quot;year&quot;)
+
+# Match 1: PRS
+phds &lt;- phds %&gt;% left_join(match_df1, by = &quot;prs&quot;)
+phds$veni1 &lt;- ifelse(is.na(phds$veni1), 0, phds$veni1)
+
+nrow(phds[duplicated(phds$id), ])
+summary(as.factor(phds$veni1))
+
+# Match 2: first name / last name
+phds &lt;- phds %&gt;% left_join(match_df2, by = c(&quot;firstname&quot; = &quot;first&quot;, &quot;lastname&quot; = &quot;ln&quot;))
+phds$veni2 &lt;- ifelse(is.na(phds$veni2), 0, phds$veni2)
+
+nrow(phds[duplicated(phds$id), ])
+summary(as.factor(phds$veni2))
+
+# Removing duplicates introduced by the two matching strategies
+duplicatedids &lt;- phds$id[which(duplicated(phds$id))]
+inspect &lt;- phds[phds$id %in% duplicatedids, ]
+# no convergence similar to the actual matching procedure used for the
+# analytic sample, so we just remove one of the duplicates at random
+inspect &lt;- inspect %&gt;%
+  group_by(id) %&gt;%
+  sample_n(1)
+phds &lt;- phds %&gt;% filter(!phds$id %in% duplicatedids)
+phds &lt;- rbind.data.frame(phds, inspect)
+
+# Collating the results of both matching strategies: matched if either
+# strategy found a match
+phds$veni &lt;- pmax(phds$veni1, phds$veni2)
+summary(as.factor(phds$veni))
+
+# Comparing the Veni years found by each strategy
+xtabs(~ phds$year1 + phds$year2)
+
+phds$year &lt;- phds$year1
+phds$year &lt;- ifelse(is.na(phds$year1), phds$year2, phds$year1)
+
+# Keep only matches where the Veni year is plausible given the PhD year
+# (Veni is an early-career grant, awarded within a fixed window after the PhD)
+phds &lt;- phds[phds$year &gt;= phds$phd_year, ]
+phds &lt;- phds[phds$year &lt; phds$phd_year + 9, ]
+
+outsidesample_winners &lt;- phds %&gt;% filter(veni == 1)
+
+oursample_winners$group &lt;- &quot;in_sample&quot;
+outsidesample_winners$group &lt;- &quot;outside_sample&quot;
+outsidesample_winners$phd_year &lt;- outsidesample_winners$phd_year - 1997
+
+# Kept under a separate name (not `df_all`) because it still carries prs and
+# firstname, which the Q2 matching below needs. `df_all` itself is reserved
+# for the de-identified, publishable version created further down.
+df_all_full &lt;- bind_rows(oursample_winners, outsidesample_winners)
+
+# Adding ethnicity/origin (same lookup used later for Q2&#39;s `checks`)
+ln_origin &lt;- ln_origin %&gt;%
+  mutate(
+    origin = as.character(origin),
+    origin = ifelse(is.na(origin), &quot;other&quot;, origin)
+  )
+
+df_all_full &lt;- df_all_full %&gt;%
+  left_join(ln_origin, by = &quot;lastname&quot;) %&gt;%
+  left_join(origin_addit, by = &quot;lastname&quot;) %&gt;%
+  mutate(origin = ifelse(is.na(origin.y), origin.x, origin.y)) %&gt;%
+  select(-c(origin.x, origin.y))
+
+# Turkish/Moroccan/Caribbean are individually very sparse, so we collapse
+# them into one &quot;minority&quot; category for a more robust test, as we do for Q2.
+df_all_full &lt;- df_all_full %&gt;%
+  mutate(origin_collapsed = case_when(
+    origin %in% c(&quot;turkish&quot;, &quot;moroccan&quot;, &quot;carribean&quot;) ~ &quot;minority&quot;,
+    TRUE ~ origin
+  ))</code></pre>
+</div>
+<div id="q2-matching-veni-laureates-matched-to-any-phd-at-all"
+class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Q2 matching: Veni
+laureates matched to any PhD at all</h2>
+<p>The check above compares laureates matched inside vs. outside our
+analytic sample. This second check is broader: among <em>all</em> Veni
+laureates (from both the NARCIS and NWO source lists), which ones can we
+match to any PhD at all, and does the probability of being matched
+depend on the laureate’s Veni cohort, university, gender, or ethnicity?
+As above, this requires names and identifiers.</p>
+<pre class="r"><code># Continues from df_all_full (the identity-bearing object built for Q1).
+df_all_full &lt;- df_all_full %&gt;%
+  mutate(
+    matched_prs = ifelse(prs %in% veni_narcis$prs, 1, 0),
+    matched_fnln = ifelse(matched_prs == 1, 0, 1)
+  )
+
+# Matched Veni&#39;s - NARCIS source
+veni_narcis &lt;- veni_narcis %&gt;%
+  mutate(
+    matched = ifelse(prs %in% df_all_full$prs, 1, 0),
+    # matched to the original (pre-selection) sample specifically, i.e. the
+    # sample actually analyzed in the paper
+    matched_original = ifelse(prs %in% oursample_winners$prs, 1, 0)
+  )
+
+# Matched Veni&#39;s - NWO source
+veni_NWO &lt;- veni_NWO %&gt;%
+  distinct(first, ln, .keep_all = TRUE)
+
+veni_NWO &lt;- df_all_full %&gt;%
+  filter(!is.na(firstname)) %&gt;%
+  mutate(matched = 1) %&gt;%
+  select(firstname, lastname, matched) %&gt;%
+  right_join(veni_NWO, by = c(&quot;firstname&quot; = &quot;first&quot;, &quot;lastname&quot; = &quot;ln&quot;)) %&gt;%
+  mutate(matched = ifelse(is.na(matched), 0, matched))
+
+# Note: after the previous right_join, veni_NWO&#39;s key columns are already
+# named firstname/lastname (dplyr renames to the left-hand side&#39;s names), so
+# this second join no longer needs the first/ln renaming
+veni_NWO &lt;- oursample_winners %&gt;%
+  filter(!is.na(firstname)) %&gt;%
+  mutate(matched_original = 1) %&gt;%
+  select(firstname, lastname, matched_original) %&gt;%
+  right_join(veni_NWO, by = c(&quot;firstname&quot;, &quot;lastname&quot;)) %&gt;%
+  mutate(matched_original = ifelse(is.na(matched_original), 0, matched_original))
+
+# Number of matched and unmatched laureates per source
+summary(as.factor(veni_narcis$matched))
+summary(as.factor(veni_NWO$matched))
+summary(as.factor(veni_narcis$matched_original))
+summary(as.factor(veni_NWO$matched_original))</code></pre>
+<div id="combining-the-narcis-and-nwo-veni-lists" class="section level3"
+number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Combining the
+NARCIS and NWO Veni lists</h3>
+<p>Next, we combine the Veni data from NARCIS and NWO into a single
+laureate list, so each laureate is counted once regardless of which
+source we found them in.</p>
+<pre class="r"><code># Standardizing variable names/selection across sources
+veni_narcis %&gt;%
+  mutate(lastname = ln) %&gt;%
+  select(year, lastname, uni, matched, matched_original, prs) -&gt; veni_narcis_std
+
+veni_NWO %&gt;%
+  select(year, firstname, lastname, uni, matched, matched_original) -&gt; veni_NWO_std
+
+# There appeared to be some duplicates in both lists - remove these
+veni_NWO_std &lt;- veni_NWO_std %&gt;%
+  distinct(year, lastname, uni, .keep_all = TRUE)
+
+# NARCIS needs special treatment because of NA values on last name (matching
+# is still possible there via prs)
+veni_narcis_std %&gt;%
+  filter(is.na(lastname)) -&gt; veni_narcis_std_noln
+
+veni_narcis_std %&gt;%
+  filter(!is.na(lastname)) -&gt; veni_narcis_std_ln
+
+veni_narcis_std_ln &lt;- veni_narcis_std_ln %&gt;%
+  distinct(year, lastname, uni, .keep_all = TRUE)
+
+# Combining the data frames
+veni_combined &lt;- full_join(
+  veni_narcis_std_ln %&gt;%
+    select(year, lastname, uni, prs, matched_narcis = matched, matched_narcis_original = matched_original),
+  veni_NWO_std %&gt;%
+    select(year, lastname, uni, firstname, matched_NWO = matched, matched_NWO_original = matched_original),
+  by = c(&quot;year&quot;, &quot;lastname&quot;, &quot;uni&quot;)
+)
+
+# Combining &#39;matched&#39;: matched in either source counts as matched
+# - matched: matched to the original sample OR the additional outside-sample search
+# - matched_original: matched to the original (pre-selection) sample specifically,
+#   i.e. the sample actually analyzed in the paper -&gt; primary check for the
+#   representativeness/selectivity questions raised by reviewers
+veni_combined &lt;- veni_combined %&gt;%
+  mutate(
+    matched = case_when(
+      matched_narcis == 1 | matched_NWO == 1 ~ 1,
+      TRUE ~ 0
+    ),
+    matched_original = case_when(
+      matched_narcis_original == 1 | matched_NWO_original == 1 ~ 1,
+      TRUE ~ 0
+    )
+  )</code></pre>
+</div>
+<div id="adding-gender" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Adding gender</h3>
+<pre class="r"><code>veni_combined %&gt;%
+  left_join(fn_gender, by = &quot;firstname&quot;) -&gt; veni_combined
+
+# A small number of first names were not covered by our existing gender
+# lookup, so we executed an additional scrape of these first names from the same
+# database (i.e. Meertens Voornamenbank). The code below regenerates the list of
+# names that needed manual coding; it is commented out now.
+
+# veni_combined %&gt;%
+#   filter(!is.na(firstname)) %&gt;%
+#   filter(is.na(gender)) %&gt;%
+#   select(firstname) -&gt; additional_checks
+# write.csv(additional_checks, file = &quot;./review-resub/gender_veni_additional.csv&quot;)
+
+genderize_addit %&gt;%
+  select(firstname, gender) %&gt;%
+  mutate(gender = case_when(
+    gender == &quot;male&quot; ~ &quot;men&quot;,
+    gender == &quot;female&quot; ~ &quot;women&quot;,
+    TRUE ~ NA
+  )) %&gt;%
+  distinct(firstname, .keep_all = TRUE) -&gt; genderize_addit
+
+genderize_addit$gender &lt;- as.factor(genderize_addit$gender)
+
+veni_combined %&gt;%
+  left_join(genderize_addit, by = &quot;firstname&quot;) %&gt;%
+  mutate(gender = ifelse(is.na(gender.x), as.character(gender.y), as.character(gender.x))) %&gt;%
+  select(-c(gender.x, gender.y)) -&gt; veni_combined</code></pre>
+</div>
+<div id="adding-ethnicityorigin" class="section level3" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> Adding
+ethnicity/origin</h3>
+<pre class="r"><code>ln_origin &lt;- ln_origin %&gt;%
+  mutate(
+    origin = as.character(origin),
+    origin = ifelse(is.na(origin), &quot;other&quot;, origin)
+  )
+
+veni_combined %&gt;%
+  left_join(ln_origin, by = &quot;lastname&quot;) -&gt; veni_combined
+
+# As with gender, a small number of last names needed additional scraping.
+# Again, we commented out the code below as it was used to generate the list of
+# names that couldn&#39;t be matched to an ethnic origin label using our original data.
+
+# veni_combined %&gt;%
+#   filter(!is.na(lastname)) %&gt;%
+#   filter(is.na(origin)) %&gt;%
+#   select(lastname) -&gt; additional_checks_origin
+# write.csv(additional_checks_origin, file = &quot;./review-resub/ethnicity_veni_additional.csv&quot;)
+
+veni_combined %&gt;%
+  left_join(origin_addit, by = &quot;lastname&quot;) %&gt;%
+  mutate(origin = ifelse(is.na(origin.y), origin.x, origin.y)) %&gt;%
+  select(-c(origin.x, origin.y)) -&gt; checks
+
+# Turkish/Moroccan/Caribbean are individually very sparse (especially
+# Moroccan), which makes the chi-square approximation unreliable for the
+# 5-category origin variable. We collapse these three named minority groups
+# into one category for a more robust test, keeping &quot;other&quot; (unspecified
+# foreign) and &quot;dutch&quot; separate.
+checks &lt;- checks %&gt;%
+  mutate(origin_collapsed = case_when(
+    origin %in% c(&quot;turkish&quot;, &quot;moroccan&quot;, &quot;carribean&quot;) ~ &quot;minority&quot;,
+    TRUE ~ origin
+  ))</code></pre>
+</div>
+</div>
+<div id="de-identifying-the-comparison-data" class="section level2"
+number="2.5">
+<h2><span class="header-section-number">2.5</span> De-identifying the
+comparison data</h2>
+<p>We save the necessary columns for the sample selectivity checks, but
+remove identifying columns from the data to maintain anonymity of the
+sample.<br />
+This anonymised dataset can be used to replicate our analyses.</p>
+<pre class="r"><code>df_all_public &lt;- df_all_full %&gt;%
+  select(group, uni, phd_year, gender_2, origin, origin_collapsed)
+
+checks_public &lt;- checks %&gt;%
+  select(matched, matched_original, year, uni, gender, origin, origin_collapsed)
+
+save(df_all_public, file = &quot;data/selectivity/df_all_public.rda&quot;)
+save(checks_public, file = &quot;data/selectivity/checks_public.rda&quot;)</code></pre>
+<hr />
+</div>
+</div>
+<div id="analyses" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Analyses</h1>
+<p>From here on, all code chunks can be run.</p>
+<pre class="r"><code>load(file = &quot;data/selectivity/df_all_public.rda&quot;)
+df_all &lt;- df_all_public
+
+load(file = &quot;data/selectivity/checks_public.rda&quot;)
+checks &lt;- checks_public</code></pre>
+<div
+id="q1-how-many-veni-laureates-can-be-matched-to-phds-outside-our-analytic-sample"
+class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Q1: How many Veni
+laureates can be matched to PhDs outside our analytic sample?</h2>
+<div id="comparing-in-sample-and-out-of-sample-laureates"
+class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Comparing in-sample
+and out-of-sample laureates</h3>
+<p>If the PhDs we ended up excluding from the analytic sample differ
+systematically from the PhDs we kept, the laureates matched
+<em>only</em> outside our sample should look different (in university,
+PhD cohort, gender, or ethnicity/origin) from the laureates matched
+<em>within</em> our sample. We test this directly.</p>
+<pre class="r"><code># Crosstabulate
+fkable_prop(prop.table(table(df_all$group, df_all$uni), margin = 1), rowname = &quot;group&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+EUR
+</th>
+<th style="text-align:right;">
+LU
+</th>
+<th style="text-align:right;">
+RU
+</th>
+<th style="text-align:right;">
+RUG
+</th>
+<th style="text-align:right;">
+TUD
+</th>
+<th style="text-align:right;">
+TUE
+</th>
+<th style="text-align:right;">
+TI
+</th>
+<th style="text-align:right;">
+UM
+</th>
+<th style="text-align:right;">
+UT
+</th>
+<th style="text-align:right;">
+UU
+</th>
+<th style="text-align:right;">
+UvA
+</th>
+<th style="text-align:right;">
+VU
+</th>
+<th style="text-align:right;">
+WUR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+in_sample
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.037
+</td>
+<td style="text-align:right;">
+0.187
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.010
+</td>
+<td style="text-align:right;">
+0.101
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.167
+</td>
+<td style="text-align:right;">
+0.165
+</td>
+<td style="text-align:right;">
+0.119
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outside_sample
+</td>
+<td style="text-align:right;">
+0.110
+</td>
+<td style="text-align:right;">
+0.121
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.138
+</td>
+<td style="text-align:right;">
+0.079
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.038
+</td>
+<td style="text-align:right;">
+0.169
+</td>
+<td style="text-align:right;">
+0.167
+</td>
+<td style="text-align:right;">
+0.011
+</td>
+<td style="text-align:right;">
+0.002
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_prop(prop.table(table(df_all$group, df_all$phd_year), margin = 1), rowname = &quot;group&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+1
+</th>
+<th style="text-align:right;">
+2
+</th>
+<th style="text-align:right;">
+3
+</th>
+<th style="text-align:right;">
+4
+</th>
+<th style="text-align:right;">
+5
+</th>
+<th style="text-align:right;">
+6
+</th>
+<th style="text-align:right;">
+7
+</th>
+<th style="text-align:right;">
+8
+</th>
+<th style="text-align:right;">
+9
+</th>
+<th style="text-align:right;">
+10
+</th>
+<th style="text-align:right;">
+11
+</th>
+<th style="text-align:right;">
+12
+</th>
+<th style="text-align:right;">
+13
+</th>
+<th style="text-align:right;">
+14
+</th>
+<th style="text-align:right;">
+15
+</th>
+<th style="text-align:right;">
+16
+</th>
+<th style="text-align:right;">
+17
+</th>
+<th style="text-align:right;">
+18
+</th>
+<th style="text-align:right;">
+19
+</th>
+<th style="text-align:right;">
+20
+</th>
+<th style="text-align:right;">
+21
+</th>
+<th style="text-align:right;">
+22
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+in_sample
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+0.051
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.051
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.089
+</td>
+<td style="text-align:right;">
+0.077
+</td>
+<td style="text-align:right;">
+0.082
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.043
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.05
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outside_sample
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+0.016
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+<td style="text-align:right;">
+0.043
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.078
+</td>
+<td style="text-align:right;">
+0.062
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+0.078
+</td>
+<td style="text-align:right;">
+0.062
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.087
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+<td style="text-align:right;">
+0.03
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_prop(prop.table(table(df_all$group, df_all$gender_2), margin = 1), rowname = &quot;group&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+women
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+in_sample
+</td>
+<td style="text-align:right;">
+0.550
+</td>
+<td style="text-align:right;">
+0.450
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outside_sample
+</td>
+<td style="text-align:right;">
+0.586
+</td>
+<td style="text-align:right;">
+0.414
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_prop(prop.table(table(df_all$group, df_all$origin), margin = 1), rowname = &quot;group&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+carribean
+</th>
+<th style="text-align:right;">
+dutch
+</th>
+<th style="text-align:right;">
+moroccan
+</th>
+<th style="text-align:right;">
+other
+</th>
+<th style="text-align:right;">
+turkish
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+in_sample
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.755
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.238
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+outside_sample
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.730
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.258
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Test differences with chi-square
+fkable_test(chisq.test(table(df_all$group, df_all$uni)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+363.067
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(df_all$group, df_all$phd_year)))</code></pre>
+<pre><code>## Warning in chisq.test(table(df_all$group, df_all$phd_year)): Chi-squared
+## approximation may be incorrect</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+57.05
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(df_all$group, df_all$gender_2)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with Yates’ continuity correction
+</td>
+<td style="text-align:right;">
+1.53
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.216
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(df_all$group, df_all$origin)))</code></pre>
+<pre><code>## Warning in chisq.test(table(df_all$group, df_all$origin)): Chi-squared
+## approximation may be incorrect</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+3.455
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0.485
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Robustness: collapsed origin categories, since the 5-category version can
+# have sparse cells
+fkable_test(chisq.test(table(df_all$group, df_all$origin_collapsed)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+1.997
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.368
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(df_all$group, df_all$origin_collapsed), simulate.p.value = TRUE))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with simulated p-value (based on 2000
+replicates)
+</td>
+<td style="text-align:right;">
+1.997
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0.365
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Distribution of PhD year, to gain insight into the direction of any difference
+summary(df_all$phd_year[df_all$group == &quot;in_sample&quot;])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     2.0     9.0    12.0    12.3    16.0    22.0</code></pre>
+<pre class="r"><code>summary(df_all$phd_year[df_all$group == &quot;outside_sample&quot;])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.00   10.00   13.00   13.22   17.00   21.00</code></pre>
+<div id="university" class="section level4" number="3.1.1.1">
+<h4><span class="header-section-number">3.1.1.1</span> University</h4>
+<pre class="r"><code>df_uni &lt;- df_all %&gt;%
+  count(group, uni) %&gt;%
+  group_by(group) %&gt;%
+  mutate(prop = n / sum(n)) %&gt;%
+  ungroup()
+
+ggplot(df_uni, aes(x = uni, y = prop, fill = group)) +
+  geom_col(position = &quot;dodge&quot;) +
+  labs(x = &quot;Universiteit&quot;, y = &quot;Proportie binnen groep&quot;, fill = &quot;Groep&quot;) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-13-1.png" alt="" width="672" /></p>
+</div>
+<div id="phd-year" class="section level4" number="3.1.1.2">
+<h4><span class="header-section-number">3.1.1.2</span> PhD year</h4>
+<pre class="r"><code>ggplot(df_all, aes(x = phd_year, fill = group)) +
+  geom_density(alpha = 0.4)</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-14-1.png" alt="" width="672" /></p>
+</div>
+<div id="ethnicityorigin" class="section level4" number="3.1.1.3">
+<h4><span class="header-section-number">3.1.1.3</span>
+Ethnicity/origin</h4>
+<pre class="r"><code>df_origin &lt;- df_all %&gt;%
+  filter(!is.na(origin)) %&gt;%
+  count(group, origin) %&gt;%
+  group_by(group) %&gt;%
+  mutate(prop = n / sum(n)) %&gt;%
+  ungroup()
+
+ggplot(df_origin, aes(x = origin, y = prop, fill = group)) +
+  geom_col(position = &quot;dodge&quot;) +
+  labs(x = &quot;Origin&quot;, y = &quot;Proportie binnen groep&quot;, fill = &quot;Groep&quot;) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-15-1.png" alt="" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="q2-what-characterizes-veni-laureates-we-cannot-match-at-all"
+class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Q2: What
+characterizes Veni laureates we cannot match at all?</h2>
+<p>For each characteristic (Veni cohort, university, gender, ethnicity)
+we report two checks:</p>
+<ul>
+<li><strong>Primary check:</strong> matched to the original (analyzed)
+sample vs. not. This is the check that speaks most directly to whether
+<em>our analytic sample</em> is selective.</li>
+<li><strong>Secondary check:</strong> matched to the original sample
+<em>or</em> the additional outside-sample search vs. not matched
+anywhere. This is a broader check on whether the overall matching
+procedure (not just our sample selection) is selective.</li>
+</ul>
+<div id="veni-cohort-year" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Veni cohort
+(year)</h3>
+<pre class="r"><code># Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$year), margin = 1), rowname = &quot;matched_original&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched_original
+</th>
+<th style="text-align:right;">
+2002
+</th>
+<th style="text-align:right;">
+2003
+</th>
+<th style="text-align:right;">
+2004
+</th>
+<th style="text-align:right;">
+2005
+</th>
+<th style="text-align:right;">
+2006
+</th>
+<th style="text-align:right;">
+2007
+</th>
+<th style="text-align:right;">
+2008
+</th>
+<th style="text-align:right;">
+2009
+</th>
+<th style="text-align:right;">
+2010
+</th>
+<th style="text-align:right;">
+2011
+</th>
+<th style="text-align:right;">
+2012
+</th>
+<th style="text-align:right;">
+2013
+</th>
+<th style="text-align:right;">
+2014
+</th>
+<th style="text-align:right;">
+2015
+</th>
+<th style="text-align:right;">
+2016
+</th>
+<th style="text-align:right;">
+2017
+</th>
+<th style="text-align:right;">
+2018
+</th>
+<th style="text-align:right;">
+2019
+</th>
+<th style="text-align:right;">
+2020
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.014
+</td>
+<td style="text-align:right;">
+0.041
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.042
+</td>
+<td style="text-align:right;">
+0.044
+</td>
+<td style="text-align:right;">
+0.048
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.061
+</td>
+<td style="text-align:right;">
+0.063
+</td>
+<td style="text-align:right;">
+0.062
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.021
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.040
+</td>
+<td style="text-align:right;">
+0.070
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.107
+</td>
+<td style="text-align:right;">
+0.079
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:right;">
+0.051
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Year has many distinct values, so cell counts in the chi-square table can
+# get sparse; we therefore also run a non-parametric test that doesn&#39;t rely
+# on that assumption
+fkable_test(chisq.test(table(checks$matched_original, checks$year)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+45.675
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(wilcox.test(year ~ matched_original, data = checks))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wilcoxon rank sum test with continuity correction
+</td>
+<td style="text-align:right;">
+764063.5
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>ggplot(checks, aes(x = year, fill = as.factor(matched_original))) +
+  geom_density(alpha = 0.4) +
+  labs(x = &quot;Veni jaar&quot;, fill = &quot;Matched (original sample)&quot;)</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-16-1.png" alt="" width="672" /></p>
+<pre class="r"><code>summary(checks$year[checks$matched_original == 1])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2002    2009    2012    2012    2015    2020</code></pre>
+<pre class="r"><code>summary(checks$year[checks$matched_original == 0])</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2002    2009    2013    2012    2016    2020</code></pre>
+<pre class="r"><code># Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$year), margin = 1), rowname = &quot;matched&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched
+</th>
+<th style="text-align:right;">
+2002
+</th>
+<th style="text-align:right;">
+2003
+</th>
+<th style="text-align:right;">
+2004
+</th>
+<th style="text-align:right;">
+2005
+</th>
+<th style="text-align:right;">
+2006
+</th>
+<th style="text-align:right;">
+2007
+</th>
+<th style="text-align:right;">
+2008
+</th>
+<th style="text-align:right;">
+2009
+</th>
+<th style="text-align:right;">
+2010
+</th>
+<th style="text-align:right;">
+2011
+</th>
+<th style="text-align:right;">
+2012
+</th>
+<th style="text-align:right;">
+2013
+</th>
+<th style="text-align:right;">
+2014
+</th>
+<th style="text-align:right;">
+2015
+</th>
+<th style="text-align:right;">
+2016
+</th>
+<th style="text-align:right;">
+2017
+</th>
+<th style="text-align:right;">
+2018
+</th>
+<th style="text-align:right;">
+2019
+</th>
+<th style="text-align:right;">
+2020
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.046
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.057
+</td>
+<td style="text-align:right;">
+0.045
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.071
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.059
+</td>
+<td style="text-align:right;">
+0.053
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.061
+</td>
+<td style="text-align:right;">
+0.071
+</td>
+<td style="text-align:right;">
+0.060
+</td>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.039
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.077
+</td>
+<td style="text-align:right;">
+0.088
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.059
+</td>
+<td style="text-align:right;">
+0.071
+</td>
+<td style="text-align:right;">
+0.071
+</td>
+<td style="text-align:right;">
+0.058
+</td>
+<td style="text-align:right;">
+0.022
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched, checks$year)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+91.111
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(wilcox.test(year ~ matched, data = checks))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Wilcoxon rank sum test with continuity correction
+</td>
+<td style="text-align:right;">
+875693.5
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+0.052
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="university-1" class="section level3" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> University</h3>
+<pre class="r"><code># Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$uni), margin = 1), rowname = &quot;matched_original&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched_original
+</th>
+<th style="text-align:right;">
+EUR
+</th>
+<th style="text-align:right;">
+LU
+</th>
+<th style="text-align:right;">
+RU
+</th>
+<th style="text-align:right;">
+RUG
+</th>
+<th style="text-align:right;">
+TI
+</th>
+<th style="text-align:right;">
+TUD
+</th>
+<th style="text-align:right;">
+TUE
+</th>
+<th style="text-align:right;">
+UM
+</th>
+<th style="text-align:right;">
+UT
+</th>
+<th style="text-align:right;">
+UU
+</th>
+<th style="text-align:right;">
+UvA
+</th>
+<th style="text-align:right;">
+VU
+</th>
+<th style="text-align:right;">
+WUR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+0.124
+</td>
+<td style="text-align:right;">
+0.086
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+0.025
+</td>
+<td style="text-align:right;">
+0.084
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.054
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.156
+</td>
+<td style="text-align:right;">
+0.123
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.026
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.04
+</td>
+<td style="text-align:right;">
+0.075
+</td>
+<td style="text-align:right;">
+0.145
+</td>
+<td style="text-align:right;">
+0.034
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+0.023
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+0.019
+</td>
+<td style="text-align:right;">
+0.176
+</td>
+<td style="text-align:right;">
+0.141
+</td>
+<td style="text-align:right;">
+0.098
+</td>
+<td style="text-align:right;">
+0.098
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched_original, checks$uni)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+181.792
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_uni_matched &lt;- checks %&gt;%
+  filter(!is.na(uni)) %&gt;%
+  count(matched_original, uni) %&gt;%
+  group_by(matched_original) %&gt;%
+  mutate(prop = n / sum(n)) %&gt;%
+  ungroup()
+
+ggplot(df_uni_matched, aes(x = uni, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = &quot;dodge&quot;) +
+  labs(x = &quot;Universiteit&quot;, y = &quot;Proportie binnen groep&quot;, fill = &quot;Matched (original sample)&quot;) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-18-1.png" alt="" width="672" /></p>
+<pre class="r"><code># Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$uni), margin = 1), rowname = &quot;matched&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched
+</th>
+<th style="text-align:right;">
+EUR
+</th>
+<th style="text-align:right;">
+LU
+</th>
+<th style="text-align:right;">
+RU
+</th>
+<th style="text-align:right;">
+RUG
+</th>
+<th style="text-align:right;">
+TI
+</th>
+<th style="text-align:right;">
+TUD
+</th>
+<th style="text-align:right;">
+TUE
+</th>
+<th style="text-align:right;">
+UM
+</th>
+<th style="text-align:right;">
+UT
+</th>
+<th style="text-align:right;">
+UU
+</th>
+<th style="text-align:right;">
+UvA
+</th>
+<th style="text-align:right;">
+VU
+</th>
+<th style="text-align:right;">
+WUR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.045
+</td>
+<td style="text-align:right;">
+0.117
+</td>
+<td style="text-align:right;">
+0.086
+</td>
+<td style="text-align:right;">
+0.112
+</td>
+<td style="text-align:right;">
+0.029
+</td>
+<td style="text-align:right;">
+0.086
+</td>
+<td style="text-align:right;">
+0.036
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.144
+</td>
+<td style="text-align:right;">
+0.126
+</td>
+<td style="text-align:right;">
+0.088
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.103
+</td>
+<td style="text-align:right;">
+0.119
+</td>
+<td style="text-align:right;">
+0.076
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.047
+</td>
+<td style="text-align:right;">
+0.032
+</td>
+<td style="text-align:right;">
+0.069
+</td>
+<td style="text-align:right;">
+0.031
+</td>
+<td style="text-align:right;">
+0.179
+</td>
+<td style="text-align:right;">
+0.130
+</td>
+<td style="text-align:right;">
+0.071
+</td>
+<td style="text-align:right;">
+0.061
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched, checks$uni)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+56.734
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="gender" class="section level3" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Gender</h3>
+<pre class="r"><code># Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$gender), margin = 1), rowname = &quot;matched_original&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched_original
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+women
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.565
+</td>
+<td style="text-align:right;">
+0.435
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.577
+</td>
+<td style="text-align:right;">
+0.423
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched_original, checks$gender)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with Yates’ continuity correction
+</td>
+<td style="text-align:right;">
+0.16
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.689
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_gender_matched &lt;- checks %&gt;%
+  filter(!is.na(gender)) %&gt;%
+  count(matched_original, gender) %&gt;%
+  group_by(matched_original) %&gt;%
+  mutate(prop = n / sum(n)) %&gt;%
+  ungroup()
+
+ggplot(df_gender_matched, aes(x = gender, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = &quot;dodge&quot;) +
+  labs(x = &quot;Gender&quot;, y = &quot;Proportie binnen groep&quot;, fill = &quot;Matched (original sample)&quot;) +
+  theme_minimal()</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-20-1.png" alt="" width="672" /></p>
+<pre class="r"><code># Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$gender), margin = 1), rowname = &quot;matched&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched
+</th>
+<th style="text-align:right;">
+men
+</th>
+<th style="text-align:right;">
+women
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.557
+</td>
+<td style="text-align:right;">
+0.443
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.577
+</td>
+<td style="text-align:right;">
+0.423
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched, checks$gender)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with Yates’ continuity correction
+</td>
+<td style="text-align:right;">
+0.591
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.442
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ethnicity" class="section level3" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Ethnicity</h3>
+<pre class="r"><code># Primary check
+fkable_prop(prop.table(table(checks$matched_original, checks$origin), margin = 1), rowname = &quot;matched_original&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched_original
+</th>
+<th style="text-align:right;">
+carribean
+</th>
+<th style="text-align:right;">
+dutch
+</th>
+<th style="text-align:right;">
+moroccan
+</th>
+<th style="text-align:right;">
+other
+</th>
+<th style="text-align:right;">
+turkish
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.564
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.418
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.770
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.221
+</td>
+<td style="text-align:right;">
+0.005
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched_original, checks$origin)))</code></pre>
+<pre><code>## Warning in chisq.test(table(checks$matched_original, checks$origin)):
+## Chi-squared approximation may be incorrect</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+98.566
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>df_origin_matched &lt;- checks %&gt;%
+  filter(!is.na(origin)) %&gt;%
+  count(matched_original, origin) %&gt;%
+  group_by(matched_original) %&gt;%
+  mutate(prop = n / sum(n)) %&gt;%
+  ungroup()
+
+ggplot(df_origin_matched, aes(x = origin, y = prop, fill = as.factor(matched_original))) +
+  geom_col(position = &quot;dodge&quot;) +
+  labs(x = &quot;Origin&quot;, y = &quot;Proportie binnen groep&quot;, fill = &quot;Matched (original sample)&quot;) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="sample_selectivity_files/figure-html/unnamed-chunk-22-1.png" alt="" width="672" /></p>
+<pre class="r"><code># Robustness: collapsing the sparse Turkish/Moroccan/Caribbean categories
+# into a single &quot;minority&quot; category
+fkable_prop(prop.table(table(checks$matched_original, checks$origin_collapsed), margin = 1), rowname = &quot;matched_original&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched_original
+</th>
+<th style="text-align:right;">
+dutch
+</th>
+<th style="text-align:right;">
+minority
+</th>
+<th style="text-align:right;">
+other
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.564
+</td>
+<td style="text-align:right;">
+0.018
+</td>
+<td style="text-align:right;">
+0.418
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.770
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:right;">
+0.221
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched_original, checks$origin_collapsed)))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+97.641
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched_original, checks$origin_collapsed), simulate.p.value = TRUE))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with simulated p-value (based on 2000
+replicates)
+</td>
+<td style="text-align:right;">
+97.641
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Secondary check
+fkable_prop(prop.table(table(checks$matched, checks$origin), margin = 1), rowname = &quot;matched&quot;)</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+matched
+</th>
+<th style="text-align:right;">
+carribean
+</th>
+<th style="text-align:right;">
+dutch
+</th>
+<th style="text-align:right;">
+moroccan
+</th>
+<th style="text-align:right;">
+other
+</th>
+<th style="text-align:right;">
+turkish
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+0.496
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+0.483
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+0.004
+</td>
+<td style="text-align:right;">
+0.748
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+0.241
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched, checks$origin)))</code></pre>
+<pre><code>## Warning in chisq.test(table(checks$matched, checks$origin)): Chi-squared
+## approximation may be incorrect</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test
+</td>
+<td style="text-align:right;">
+182.326
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>fkable_test(chisq.test(table(checks$matched, checks$origin_collapsed), simulate.p.value = TRUE))</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+test
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:left;">
+df
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Pearson’s Chi-squared test with simulated p-value (based on 2000
+replicates)
+</td>
+<td style="text-align:right;">
+182.149
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="summary-is-matching-selective" class="section level2"
+number="3.3">
+<h2><span class="header-section-number">3.3</span> Summary: is matching
+selective?</h2>
+<p>The table below collects the chi-square test p-values from the Q2
+checks above, for both the primary check (matched to our analytic sample
+vs. not) and the secondary check (matched anywhere vs. not matched at
+all).</p>
+<pre class="r"><code>robustness_checks &lt;- tibble::tibble(
+  variable = c(
+    &quot;Veni cohort (year)&quot;, &quot;Institution (uni)&quot;, &quot;Gender&quot;, &quot;Ethnicity/origin&quot;,
+    &quot;Ethnicity/origin (turkish/moroccan/carribean collapsed)&quot;
+  ),
+  chisq_p_original_sample = c(
+    chisq.test(table(checks$matched_original, checks$year))$p.value,
+    chisq.test(table(checks$matched_original, checks$uni))$p.value,
+    chisq.test(table(checks$matched_original, checks$gender))$p.value,
+    chisq.test(table(checks$matched_original, checks$origin))$p.value,
+    chisq.test(table(checks$matched_original, checks$origin_collapsed), simulate.p.value = TRUE)$p.value
+  ),
+  chisq_p_incl_outside_sample = c(
+    chisq.test(table(checks$matched, checks$year))$p.value,
+    chisq.test(table(checks$matched, checks$uni))$p.value,
+    chisq.test(table(checks$matched, checks$gender))$p.value,
+    chisq.test(table(checks$matched, checks$origin))$p.value,
+    chisq.test(table(checks$matched, checks$origin_collapsed), simulate.p.value = TRUE)$p.value
+  )
+)</code></pre>
+<pre><code>## Warning in chisq.test(table(checks$matched_original, checks$origin)):
+## Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## Warning in chisq.test(table(checks$matched, checks$origin)): Chi-squared
+## approximation may be incorrect</code></pre>
+<pre class="r"><code>robustness_checks %&gt;%
+  fkable(
+    digits = 3,
+    caption = &quot;Chi-square test p-values for each characteristic, testing whether matched status is related to Veni cohort, university, gender, or ethnicity/origin.&quot;
+  )</code></pre>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Chi-square test p-values for each characteristic, testing whether
+matched status is related to Veni cohort, university, gender, or
+ethnicity/origin.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+variable
+</th>
+<th style="text-align:right;">
+chisq_p_original_sample
+</th>
+<th style="text-align:right;">
+chisq_p_incl_outside_sample
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Veni cohort (year)
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Institution (uni)
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gender
+</td>
+<td style="text-align:right;">
+0.689
+</td>
+<td style="text-align:right;">
+0.442
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ethnicity/origin
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ethnicity/origin (turkish/moroccan/carribean collapsed)
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<style>
+  .center {
+    text-align: center;
+    color: red;
+  }
+</style>
+  
+  <hr>
+  <br>
+  <p class="center">Copyright &copy; 2025 </p>
+    
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

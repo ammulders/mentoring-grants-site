@@ -1,0 +1,12 @@
+name: supervisors
+title: supervisors
+username: ammulders
+account: ammulders
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a02904-6093-f211-6d6c-a0343fde042b
+bundleId:
+url: https://connect.posit.cloud/ammulders/content/01a02904-6093-f211-6d6c-a0343fde042b
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -26,7 +26,12 @@ phds <- phds[!duplicated(phds$id),]
 # centered phd_cohort variable
 phds$phd_cohort <- phds$phd_year - 1997
 
-# levels(phds$field) <- c("Biological and Health Sciences", "Physical and Mathematical Sciences", "Social and Behavioral Sciences", "Engineering", "Agricultural Sciences", "Humanities", "other", "missing")
+# NOTE: this used to be `levels(phds$field) <- c(...)`, which reassigns labels
+# by position instead of by name and silently corrupted every discipline label
+# except "Engineering"/"missing" (fixed at the source in mentoring-grants's
+# starting.Rmd). If a specific reference-category order is needed here again,
+# use fct_relevel() instead, which reorders by matching existing names:
+# phds$field <- fct_relevel(phds$field, "Biological and Health Sciences", "Physical and Mathematical Sciences", "Social and Behavioral Sciences", "Engineering", "Agricultural Sciences", "Humanities", "other", "missing")
 
 
 # Descriptive statistics women

@@ -1,0 +1,12 @@
+name: discipline2
+title: discipline
+username: ammulders
+account: ammulders
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a02902-19da-5887-4738-13f016f94f87
+bundleId:
+url: https://connect.posit.cloud/ammulders/content/01a02902-19da-5887-4738-13f016f94f87
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

@@ -29,6 +29,8 @@ navbar:
       href: robustness.html
   - text: "Figures"
     href: figures.html
+  - text: "Appendix"
+    href: sample_selectivity.html
 
 
   right:

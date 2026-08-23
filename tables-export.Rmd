@@ -1,0 +1,300 @@
+---
+title: "Mentoring for gender equality in early-career grant receipt: tables export"
+date: "Last compiled on `r Sys.Date()`"
+output:
+  html_document:
+    css: tweaks.css
+    toc:  true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: yes
+
+---
+
+This file reloads the bootstrap result objects produced by `analyses.Rmd`, and saves each table as its own standalone `.html` file in `tables/`.
+
+----
+
+# Custom functions
+
+```{r setup, results='hide'}
+
+rm(list = ls())
+
+library(tidyverse)
+library(kableExtra)
+
+if (!dir.exists("tables")) dir.create("tables")
+
+# significance stars from the bootstrap t-statistic (original/se), using the
+# standard normal critical values -- add to every table's `value` column
+sig_stars <- function(t) {
+  case_when(
+    abs(t) > 3.291 ~ "***",
+    abs(t) > 2.576 ~ "**",
+    abs(t) > 1.960  ~ "*",
+    TRUE ~ ""
+  )
+}
+
+```
+
+# Table: main analyses (AMEs, M1-M6)
+
+```{r, echo=FALSE}
+
+load("./results/cont_cohort/20260822_ame.rda")
+AMEs <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- AMEs$t0
+bias <- colMeans(AMEs$t) - AMEs$t0
+se <- apply(AMEs$t, 2, sd)
+
+df.ames <- data.frame(original = original, bias = bias, se = se)
+row.names(df.ames) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_cohort_m2", "AME_cohort_m3a", "AME_cohort_m3b", "AME_cohort_m3c", "AME_cohort_m4", "AME_gendercohort_m2", "AME_gendercohort_m3a", "AME_gendercohort_m3b", "AME_gendercohort_m3c", "AME_gendercohort_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8",  "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+
+df.ames$t <- (df.ames$original / df.ames$se)
+
+# remove the time=0 rows, as 0 is the reference category for time
+rows_to_remove <- grep("^AME_time_m(1|2|3a|3b|3c|4)_0$", rownames(df.ames))
+df.ames <- df.ames[-rows_to_remove, ]
+
+```
+
+```{r}
+
+# neat labels (identical to analyses.Rmd's "Table 'Results main analyses'")
+table_ames <- df.ames %>%
+  mutate(term = rownames(df.ames),
+         var = str_extract(term, "(?<=AME_)[^_]+"),
+         model = str_extract(term, "m[1-4][abc]?")) %>%
+  mutate(model = recode(model,
+                        "m1" = "M1",
+                        "m2" = "M2",
+                        "m3a" = "M3",
+                        "m3b" = "M4",
+                        "m3c" = "M5",
+                        "m4" = "M6"),
+         model = factor(model, levels = paste0("M", 1:6))) %>%
+  mutate(label = case_when(
+    str_detect(term, "gendercohort") ~ "PhD cohort * Woman",
+    str_detect(term, "genderwomsv") ~ "Women supervisors * Woman",
+    str_detect(term, "gender") ~ "Woman",
+    str_detect(term, "time") ~ paste0("Time since PhD: ", str_extract(term, "[:digit:]$"), " years"),
+    str_detect(term, "cohort") ~ "PhD cohort",
+    str_detect(term, "womsv") ~ "Women supervisors",
+    str_detect(term, "cpubs") ~ "Cumulative publications",
+    str_detect(term, "ppubs") ~ "Previous publications",
+    str_detect(term, "netsize") ~ "Team size",
+    str_detect(term, "prof") ~ "2+ professors",
+    str_detect(term, "svpubs") ~ "Supervisors' productivity",
+    TRUE ~ str_to_title(var)
+  )) %>%
+  mutate(value = sprintf("%.4f (%.4f)%s", original, se, sig_stars(t))) %>%
+  select(label, model, value)
+
+rows_tab <- c("Woman", "Time since PhD: 1 years", "Time since PhD: 2 years", "Time since PhD: 3 years", "Time since PhD: 4 years", "Time since PhD: 5 years", "Time since PhD: 6 years", "Time since PhD: 7 years", "Time since PhD: 8 years", "PhD cohort", "PhD cohort * Woman", "Cumulative publications", "Previous publications", "Team size", "2+ professors", "Supervisors' productivity", "Women supervisors", "Women supervisors * Woman")
+
+table_df <- table_ames %>%
+  pivot_wider(names_from = model, values_from = value) %>%
+  distinct() %>%
+  mutate(label = factor(label, levels = rows_tab)) %>%
+  arrange(label)
+
+n_coef_rows <- nrow(table_df)
+
+# Controls row: field and university enter the model formula from M3 onward
+# but never get their own AME computed (no counterfactual dataset pair was
+# built for them), so they'd otherwise be silently missing from the table
+controls_row <- tibble::tribble(
+  ~label,       ~M1,            ~M2,            ~M3,        ~M4,        ~M5,        ~M6,
+  "Field",      "Not included", "Not included", "Included", "Included", "Included", "Included",
+  "University", "Not included", "Not included", "Included", "Included", "Included", "Included"
+)
+
+table_df <- bind_rows(table_df, controls_row)
+
+table_df[is.na(table_df)] <- ""
+
+table_main <- kable(table_df, "html", escape = FALSE, align = "lcccccc",
+      col.names = c("", paste0("M", 1:6))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Average Marginal Effects (AMEs) on Veni Receipt" = 6)) %>%
+  pack_rows("Controls", n_coef_rows + 1, n_coef_rows + 2) %>%
+  footnote(general = "* p < .05, ** p < .01, *** p < .001 (based on the bootstrap t-statistic)",
+           general_title = "")
+
+table_main
+
+save_kable(table_main, file = "tables/table_ame_main.html")
+
+```
+
+# Table: mediation analysis
+
+```{r, echo=FALSE}
+
+load("./results/20260822mediations.rda")
+mediations <- x
+rm(x)
+
+```
+
+```{r}
+
+original <- mediations$t0
+bias <- colMeans(mediations$t) - mediations$t0
+se <- apply(mediations$t, 2, sd)
+
+df.med <- data.frame(original = original, bias = bias, se = se)
+row.names(df.med) <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3", "AME_gender_m4_size", "AME_gender_m4_prof", "AME_gender_m4_pubs", "AME_gender_m4", "AME_gender_m5", "AME_gender_m6", "AME_gender_d12", "AME_gender_d23", "AME_gender_d4size", "AME_gender_d4prof", "AME_gender_d4pubs", "AME_gender_d34", "AME_gender_d45", "AME_gender_d56")
+df.med$t <- (df.med$original / df.med$se)
+
+table_med <- df.med %>%
+  mutate(term = rownames(df.med),
+         value = sprintf("%.4f (%.4f)%s", original, se, sig_stars(t))) %>%
+  select(term, value)
+
+table_med_kable <- kable(table_med, "html", escape = FALSE, align = "lc", row.names = FALSE,
+      col.names = c("Term", "AME (SE)")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Mediation analysis: gender gap in Veni receipt" = 1)) %>%
+  footnote(general = "* p < .05, ** p < .01, *** p < .001 (based on the bootstrap t-statistic)",
+           general_title = "")
+
+table_med_kable
+
+save_kable(table_med_kable, file = "tables/table_mediations.html")
+
+```
+
+# Tables: post-hoc analyses by cohort group
+
+```{r, echo=FALSE}
+
+load("./results/robustness/bycohort/20260822_c1.rda")
+cohort1 <- x
+rm(x)
+
+load("./results/robustness/bycohort/20260822_c2.rda")
+cohort2 <- x
+rm(x)
+
+load("./results/robustness/bycohort/20260822_c3.rda")
+cohort3 <- x
+rm(x)
+
+```
+
+```{r}
+
+# each cohort's model has a different set of terms (not just a different N),
+# so each needs its own row-name vector -- these are copied verbatim from
+# the row.names(df.cohX) <- ... assignments in analyses.Rmd, not derived
+# generically:
+# - cohort 1: "base" set, time = 0-8 for every model
+# - cohort 2: same as cohort 1, PLUS AME_2015_mX / AME_gender2015_mX (a
+#   post-2015 check specific to this cohort)
+# - cohort 3: "base" set, but time only goes 0-5 (fewer years observed)
+
+coh1_rownames <- c('AME_gender_m1', 'AME_gender_m2', 'AME_gender_m3a', 'AME_gender_m3b', 'AME_gender_m3c', 'AME_gender_m4', "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8", 'AME_cpubs_m3a', 'AME_cpubs_m3b', 'AME_cpubs_m3c', 'AME_cpubs_m4', 'AME_ppubs_m3a', 'AME_ppubs_m3b', 'AME_ppubs_m3c', 'AME_ppubs_m4', 'AME_netsize_m3b', 'AME_netsize_m3c', 'AME_netsize_m4', 'AME_prof_m3b', 'AME_prof_m3c', 'AME_prof_m4', 'AME_svpubs_m3b', 'AME_svpubs_m3c', 'AME_svpubs_m4', 'AME_womsv_m3c', 'AME_womsv_m4', 'AME_genderwomsv_m4')
+
+coh2_rownames <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m1_6", "AME_time_m1_7", "AME_time_m1_8", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m2_6", "AME_time_m2_7", "AME_time_m2_8", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3a_6", "AME_time_m3a_7", "AME_time_m3a_8", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3b_6", "AME_time_m3b_7", "AME_time_m3b_8", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m3c_6", "AME_time_m3c_7", "AME_time_m3c_8", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5", "AME_time_m4_6", "AME_time_m4_7", "AME_time_m4_8", "AME_2015_m2", "AME_2015_m3a", "AME_2015_m3b", "AME_2015_m3c", "AME_2015_m4", "AME_gender2015_m2", "AME_gender2015_m3a", "AME_gender2015_m3b", "AME_gender2015_m3c", "AME_gender2015_m4", "AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+
+coh3_rownames <- c("AME_gender_m1", "AME_gender_m2", "AME_gender_m3a", "AME_gender_m3b", "AME_gender_m3c", "AME_gender_m4", "AME_time_m1_0", "AME_time_m1_1", "AME_time_m1_2", "AME_time_m1_3", "AME_time_m1_4", "AME_time_m1_5", "AME_time_m2_0", "AME_time_m2_1", "AME_time_m2_2", "AME_time_m2_3", "AME_time_m2_4", "AME_time_m2_5", "AME_time_m3a_0", "AME_time_m3a_1", "AME_time_m3a_2", "AME_time_m3a_3", "AME_time_m3a_4", "AME_time_m3a_5", "AME_time_m3b_0", "AME_time_m3b_1", "AME_time_m3b_2", "AME_time_m3b_3", "AME_time_m3b_4", "AME_time_m3b_5", "AME_time_m3c_0", "AME_time_m3c_1", "AME_time_m3c_2", "AME_time_m3c_3", "AME_time_m3c_4", "AME_time_m3c_5", "AME_time_m4_0", "AME_time_m4_1", "AME_time_m4_2", "AME_time_m4_3", "AME_time_m4_4", "AME_time_m4_5","AME_cpubs_m3a", "AME_cpubs_m3b", "AME_cpubs_m3c", "AME_cpubs_m4", "AME_ppubs_m3a", "AME_ppubs_m3b", "AME_ppubs_m3c", "AME_ppubs_m4", "AME_netsize_m3b", "AME_netsize_m3c", "AME_netsize_m4", "AME_prof_m3b", "AME_prof_m3c", "AME_prof_m4", "AME_svpubs_m3b", "AME_svpubs_m3c", "AME_svpubs_m4", "AME_womsv_m3c", "AME_womsv_m4", "AME_genderwomsv_m4")
+
+rows_tab_coh <- c("Woman", "Time since PhD: 1 years", "Time since PhD: 2 years", "Time since PhD: 3 years", "Time since PhD: 4 years", "Time since PhD: 5 years", "Time since PhD: 6 years", "Time since PhD: 7 years", "Time since PhD: 8 years", "Post-2015", "Post-2015 * Woman", "Cumulative publications", "Previous publications", "Team size", "2+ professors", "Supervisors' productivity", "Women supervisors", "Women supervisors * Woman")
+
+make_coh_table <- function(cohort_obj, row_names, cohort_label) {
+
+  original <- cohort_obj$t0
+  se <- apply(cohort_obj$t, 2, sd)
+
+  df.coh <- data.frame(original = original, se = se)
+  df.coh$t <- df.coh$original / df.coh$se
+  row.names(df.coh) <- row_names
+
+  rows_to_remove <- grep("^AME_time_m(1|2|3a|3b|3c|4)_0$", rownames(df.coh))
+  df.coh <- df.coh[-rows_to_remove, ]
+
+  table_ames_coh <- df.coh %>%
+    mutate(term = rownames(df.coh),
+           var = str_extract(term, "(?<=AME_)[^_]+"),
+           model = str_extract(term, "m[1-4][abc]?")) %>%
+    mutate(model = recode(model,
+                          "m1" = "M1", "m2" = "M2", "m3a" = "M3",
+                          "m3b" = "M4", "m3c" = "M5", "m4" = "M6"),
+           model = factor(model, levels = paste0("M", 1:6))) %>%
+    mutate(label = case_when(
+      str_detect(term, "genderwomsv") ~ "Women supervisors * Woman",
+      # must come before the generic "gender" check: cohort 2 has extra
+      # AME_2015_mX / AME_gender2015_mX terms that "gender" would otherwise
+      # also match, colliding with the real AME_gender_mX row (pivot_wider
+      # can't collapse two different values into the same label+model cell)
+      str_detect(term, "gender2015") ~ "Post-2015 * Woman",
+      str_detect(term, "^AME_2015") ~ "Post-2015",
+      str_detect(term, "gender") ~ "Woman",
+      str_detect(term, "time") ~ paste0("Time since PhD: ", str_extract(term, "[:digit:]$"), " years"),
+      str_detect(term, "womsv") ~ "Women supervisors",
+      str_detect(term, "cpubs") ~ "Cumulative publications",
+      str_detect(term, "ppubs") ~ "Previous publications",
+      str_detect(term, "netsize") ~ "Team size",
+      str_detect(term, "prof") ~ "2+ professors",
+      str_detect(term, "svpubs") ~ "Supervisors' productivity",
+      TRUE ~ str_to_title(var)
+    )) %>%
+    mutate(value = sprintf("%.4f (%.4f)%s", original, se, sig_stars(t))) %>%
+    select(label, model, value)
+
+  table_df_coh <- table_ames_coh %>%
+    pivot_wider(names_from = model, values_from = value) %>%
+    distinct() %>%
+    mutate(label = factor(label, levels = rows_tab_coh)) %>%
+    arrange(label)
+
+  n_coef_rows_coh <- nrow(table_df_coh)
+
+  # same Controls row as the main table (field/uni enter from M3 onward)
+  controls_row <- tibble::tribble(
+    ~label,       ~M1,            ~M2,            ~M3,        ~M4,        ~M5,        ~M6,
+    "Field",      "Not included", "Not included", "Included", "Included", "Included", "Included",
+    "University", "Not included", "Not included", "Included", "Included", "Included", "Included"
+  )
+
+  table_df_coh <- bind_rows(table_df_coh, controls_row)
+
+  table_df_coh[is.na(table_df_coh)] <- ""
+
+  header_label <- setNames(6, paste0("Average Marginal Effects (AMEs) on Veni Receipt (", cohort_label, ")"))
+
+  kable(table_df_coh, "html", escape = FALSE, align = "lcccccc",
+        col.names = c("", paste0("M", 1:6))) %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = FALSE) %>%
+    column_spec(1, bold = TRUE) %>%
+    add_header_above(c(" " = 1, header_label)) %>%
+    pack_rows("Controls", n_coef_rows_coh + 1, n_coef_rows_coh + 2) %>%
+    footnote(general = "* p < .05, ** p < .01, *** p < .001 (based on the bootstrap t-statistic)",
+             general_title = "")
+}
+
+table_coh1 <- make_coh_table(cohort1, coh1_rownames, "Cohort 1: 1997-2006")
+table_coh2 <- make_coh_table(cohort2, coh2_rownames, "Cohort 2: 2007-2014")
+table_coh3 <- make_coh_table(cohort3, coh3_rownames, "Cohort 3: 2015-2019")
+
+table_coh1
+table_coh2
+table_coh3
+
+save_kable(table_coh1, file = "tables/table_cohort1.html")
+save_kable(table_coh2, file = "tables/table_cohort2.html")
+save_kable(table_coh3, file = "tables/table_cohort3.html")
+
+```
